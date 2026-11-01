@@ -172,6 +172,47 @@ section{padding-block:100px}
 .inv-tot span:nth-child(even){font-family:var(--f-num);font-weight:700;direction:ltr;text-align:left}
 .inv-tot .g{font-size:18px;font-weight:600;padding-top:8px;border-top:1px solid #e2e8eb}
 .inv-tot .g.n{color:#0d8a7a;font-weight:800}
+/* sector examples */
+.ex-tabs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:28px}
+.ex-tabs button{font:inherit;font-size:15px;display:inline-flex;align-items:center;gap:9px;padding:10px 18px;border-radius:14px;border:1px solid var(--line);background:var(--sheet);color:var(--ink);cursor:pointer;transition:background .2s,border-color .2s,color .2s,box-shadow .2s}
+.ex-tabs button svg{width:19px;height:19px;stroke:var(--accent)}
+.ex-tabs button:hover{border-color:var(--accent)}
+.ex-tabs button.on{background:var(--night);color:#fff;border-color:transparent;box-shadow:var(--shadow)}
+.ex-tabs button.on svg{stroke:var(--accent-3)}
+.ex{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:28px;align-items:start}
+.sheet{background:#fff;color:#0f1b22;border-radius:20px;padding:34px;box-shadow:0 30px 70px -30px rgba(15,27,34,.35);border:1px solid #e9eef0;font-size:14px;position:relative;animation:pop .35s var(--ease)}
+@keyframes pop{from{opacity:.4;transform:translateY(8px)}}
+.sheet .ribbon{position:absolute;top:18px;left:18px;font-size:12px;background:#fdf1d8;color:#8a5a00;padding:3px 12px;border-radius:999px}
+.sheet-h{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;padding-bottom:18px;border-bottom:1px solid #e2e8eb;position:relative}
+.sheet-h::after{content:"";position:absolute;bottom:-1px;right:0;width:90px;height:3px;border-radius:3px;background:#0d8a7a}
+.sheet-h .co b{font-size:17px;display:block}
+.sheet-h .co span{color:#5d6d76;font-size:13px;display:block}
+.sheet-h h4{margin:0;color:#0d8a7a;font-size:26px;font-weight:600}
+.meta2{display:grid;grid-template-columns:auto auto;gap:2px 14px;font-size:13px;color:#33434b}
+.meta2 .v{font-family:var(--f-num);font-weight:600;direction:ltr;text-align:right}
+.to{background:#f5f8f9;border-radius:12px;padding:12px 16px;margin-block:18px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.to small{color:#5d6d76;display:block;font-size:12px}
+.sheet-t{overflow-x:auto;border:1px solid #eef2f4;border-radius:12px}
+.sheet table{width:100%;border-collapse:collapse;min-width:480px}
+.sheet th{background:#f5f8f9;color:#5d6d76;font-weight:500;font-size:12.5px;padding:10px 12px;text-align:right;white-space:nowrap}
+.sheet td{padding:11px 12px;border-top:1px solid #eef2f4;vertical-align:top}
+.sheet td.n,.sheet th.n{text-align:left;font-family:var(--f-num);font-weight:600;direction:ltr;white-space:nowrap}
+.sheet th.n{font-family:var(--f-body);font-weight:500}
+.sheet td small{display:block;color:#5d6d76;font-size:12px}
+.sheet .tot{display:grid;grid-template-columns:auto auto;gap:6px 26px;justify-content:end;margin-top:16px}
+.sheet .tot span:nth-child(even){font-family:var(--f-num);font-weight:700;direction:ltr;text-align:left}
+.sheet .tot .g{font-size:18px;font-weight:600;padding-top:8px;border-top:1px solid #e2e8eb}
+.sheet .tot .g.n{color:#0d8a7a;font-weight:800}
+.sheet .note{margin-top:18px;padding-top:12px;border-top:1px solid #e2e8eb;color:#5d6d76;font-size:12.5px}
+.mlines{display:none;border:1px solid #eef2f4;border-radius:12px}
+.mlines div{display:flex;justify-content:space-between;gap:12px;padding:12px 14px;border-top:1px solid #eef2f4}
+.mlines div:first-child{border-top:0}
+.mlines small{display:block;color:#5d6d76;font-size:12px;font-family:var(--f-num);direction:rtl}
+.mlines b{font-family:var(--f-num);font-weight:700;white-space:nowrap;direction:ltr}
+.why{display:flex;flex-direction:column;gap:14px}
+.why h3{margin:0;font-size:22px;font-weight:600}
+.why p{margin:0;color:var(--muted);font-weight:300}
+.why .list li{font-size:15px}
 /* compare */
 .cmp{border:1px solid var(--line);border-radius:22px;overflow:hidden;background:var(--sheet);box-shadow:var(--shadow)}
 .cmp-wrap{overflow-x:auto}
@@ -262,6 +303,7 @@ footer{padding-block:56px calc(40px + env(safe-area-inset-bottom,0px));color:var
   .row,.row.flip{grid-template-columns:minmax(0,1fr);gap:40px}.row.flip .copy{order:0}
   .bento{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.tile.dark{grid-row:auto;grid-column:1/-1}
   .calc{grid-template-columns:minmax(0,1fr)}
+  .ex{grid-template-columns:minmax(0,1fr)}
   .plans{grid-template-columns:minmax(0,1fr);max-width:480px;margin-inline:auto}
   .inst{grid-template-columns:minmax(0,1fr);padding:36px 24px}
   .facts{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -272,6 +314,9 @@ footer{padding-block:56px calc(40px + env(safe-area-inset-bottom,0px));color:var
   section{padding-block:72px}
   .bento{grid-template-columns:minmax(0,1fr)}
   .calc-in,.paper{padding:22px}
+  .sheet{padding:20px}
+  .sheet-t{display:none}.mlines{display:block}
+  .sheet .tot{grid-template-columns:1fr auto;justify-content:stretch}
   .stack .frame:nth-child(2){position:relative;width:88%;left:auto;bottom:auto;margin:-18% auto 0}
   .chip{font-size:12px;padding:8px 12px}.chip b{font-size:14px}.chip .dot{width:28px;height:28px}
   .c2{display:none}
@@ -293,7 +338,7 @@ footer{padding-block:56px calc(40px + env(safe-area-inset-bottom,0px));color:var
 
 <header id="hdr"><div class="in nav">
   <a class="logo" href="#top"><img src="icons/icon-192.png" alt="">الفكتيرة</a>
-  <nav><a href="#features">المزايا</a><a href="#try">جرّب</a><a href="#pricing">الأسعار</a><a href="#install">التثبيت</a><a href="#faq">الأسئلة</a></nav>
+  <nav><a href="#features">المزايا</a><a href="#examples">أمثلة</a><a href="#try">جرّب</a><a href="#pricing">الأسعار</a><a href="#install">التثبيت</a><a href="#faq">الأسئلة</a></nav>
   <a class="btn primary sm" href="app/">افتح التطبيق</a>
 </div></header>
 
@@ -414,6 +459,12 @@ footer{padding-block:56px calc(40px + env(safe-area-inset-bottom,0px));color:var
   </div>
 </div></section>
 
+<section id="examples" style="padding-top:0"><div class="in">
+  <div class="sh center"><span class="kicker">أمثلة</span><h2>فاتورة تناسب نشاطك، أياً كان</h2><p>نماذج توضيحية بأسماء وأسعار افتراضية، تُظهر كيف تبدو الفكتيرة في مجالات مختلفة.</p></div>
+  <div class="ex-tabs" role="tablist" id="exTabs"></div>
+  <div class="ex"><div id="exSheet"></div><div class="why" id="exWhy"></div></div>
+</div></section>
+
 <section style="padding-top:0"><div class="in">
   <div class="sh center"><span class="kicker">المقارنة</span><h2>لماذا تترك الدفتر والـ Excel؟</h2></div>
   <div class="cmp"><div class="cmp-wrap"><table>
@@ -506,6 +557,63 @@ function calc() {
   $("oNet").textContent = money(net); $("oTax").textContent = money(tax); $("oTotal").textContent = money(net + tax);
 }
 ["cQty", "cPrice", "cDisc", "cVat", "cDesc"].forEach(id => $(id).addEventListener("input", calc)); calc();
+
+/* sector examples: illustrative data only, computed with the app's rules */
+const EX = [
+  { id: "school", label: "مدرسة خاصة", icon: '<path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2 9 2 12 0v-5"/>',
+    co: "مدرسة الرواد الخاصة", city: "تفرغ زينة، نواكشوط", no: "FAC-2026-0142", date: "05/10/2026", due: "15/10/2026",
+    to: "وليّ أمر التلميذة مريم – القسم الخامس", toSub: "رقم التسجيل 2026-217",
+    lines: [["رسوم التسجيل للعام الدراسي 2026–2027", "", 1, 5000, 0, 0], ["رسوم الدراسة – الفصل الأول", "أكتوبر إلى ديسمبر", 3, 4000, 10, 0], ["النقل المدرسي – الفصل الأول", "خط تفرغ زينة", 3, 1500, 0, 0], ["الكتب والأدوات المدرسية", "", 1, 2500, 0, 0]],
+    note: "خصم 10% على رسوم الدراسة للإخوة المسجلين. الخدمات التعليمية بنسبة 0% في هذا المثال: تحقق من وضعها الضريبي مع محاسبك.",
+    why: "تصدر المدرسة فاتورة لكل تلميذ في بداية الفصل، وتسجّل الأقساط عند دفعها، فتعرف من أكمل الدفع ومن تأخر.",
+    points: ["خصم الإخوة على سطر الرسوم وحده", "دفعات جزئية على أقساط", "كشف حساب لكل وليّ أمر", "أعمار الديون في نهاية كل شهر"] },
+  { id: "shop", label: "محل تجاري", icon: '<path d="M3 9l1.5-5h15L21 9M3 9h18v11H3zM9 20v-6h6v6"/>',
+    co: "متجر البركة للمواد الغذائية بالجملة", city: "سوق العاصمة، نواكشوط", no: "FAC-2026-0388", date: "28/10/2026", due: "28/10/2026",
+    to: "بقالة النور – لكصر", toSub: "الرقم الضريبي 00112233",
+    lines: [["أرز – كيس 25 كغ", "", 10, 1150, 0, 16], ["سكر – كيس 50 كغ", "", 5, 1600, 0, 16], ["زيت نباتي – 20 لتر", "", 4, 1900, 0, 16], ["حليب مجفف – كرتونة", "", 6, 2300, 5, 16]],
+    note: "تسليم فوري، الدفع نقداً أو عبر بنكيلي. خصم 5% على الحليب لطلب أكثر من 5 كراتين.",
+    why: "يصدر المحل الفاتورة عند البيع بالجملة أو بالآجل، ويتابع ديون الزبائن الدائمين دون دفتر ورقي.",
+    points: ["قائمة منتجات بأسعارها تُختار بنقرة", "ضريبة 16% تُحسب لكل سطر", "البيع بالآجل مع تنبيه عند التأخر", "إقرار الضريبة جاهز آخر الشهر"] },
+  { id: "project", label: "مشروع ومقاولات", icon: '<path d="M2 20h20M4 20V10l8-6 8 6v10M9 20v-6h6v6"/>',
+    co: "مؤسسة الإتقان للبناء والتجديد", city: "عرفات، نواكشوط", no: "FAC-2026-0057", date: "20/10/2026", due: "19/11/2026",
+    to: "مكتب الواحة للاستشارات", toSub: "مشروع تجديد المكتب – عقد رقم 2026/14",
+    lines: [["أعمال الهدم والتجهيز", "مقطوعية", 1, 85000, 0, 16], ["تركيب بلاط أرضي", "م²", 120, 650, 0, 16], ["طلاء الجدران والأسقف", "م²", 300, 180, 0, 16], ["التمديدات الكهربائية والإنارة", "مقطوعية", 1, 140000, 0, 16]],
+    note: "الدفعة الأولى من اثنتين حسب العقد، عند إنجاز 50% من الأعمال. الدفع بالتحويل البنكي خلال 30 يوماً.",
+    why: "تقسّم المؤسسة المشروع إلى دفعات مرحلية، كل دفعة فاتورة مستقلة، وتتابع ما حصّلته من كل عقد.",
+    points: ["وحدات قياس: م²، مقطوعية، يوم، طن", "رقم العقد ومرجع المشروع على الفاتورة", "مهلة استحقاق 30 يوماً", "ربح كل مشروع بعد المصروفات"] },
+  { id: "service", label: "خدمات واستشارات", icon: '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>',
+    co: "وكالة إبداع للتسويق الرقمي", city: "تفرغ زينة، نواكشوط", no: "FAC-2026-0219", date: "01/11/2026", due: "15/11/2026",
+    to: "مطعم الضيافة", toSub: "اشتراك شهري – نوفمبر 2026",
+    lines: [["إدارة حسابات التواصل الاجتماعي", "3 منصات، 12 منشوراً", 1, 45000, 0, 16], ["تصوير فوتوغرافي للأطباق", "جلسة نصف يوم", 1, 25000, 0, 16], ["إعلانات ممولة – إدارة الحملة", "دون ميزانية الإعلان", 1, 15000, 10, 16]],
+    note: "تتجدد الفاتورة كل شهر. خصم 10% على إدارة الإعلانات للعملاء المشتركين لأكثر من 6 أشهر.",
+    why: "تصدر الوكالة فاتورة شهرية لكل عميل بنسخها من فاتورة الشهر الماضي، وتعرف إيرادها الثابت كل شهر.",
+    points: ["نسخ فاتورة الشهر الماضي بنقرة", "وصف تفصيلي تحت كل خدمة", "تتبّع العملاء المتأخرين عن الدفع", "قائمة الدخل الشهرية"] }
+];
+let exCur = "school";
+function renderEx() {
+  const e = EX.find(x => x.id === exCur);
+  let gross = 0, disc = 0, tax = 0;
+  const fx = v => v.toLocaleString("en-US", { minimumFractionDigits: 2 });
+  let mrows = "";
+  const rows = e.lines.map(([d, sub, q, price, dp, vp], i) => {
+    const g = rnd(q * price * 100), ds = rnd(g * dp / 100), n = g - ds, t = rnd(n * vp / 100); gross += g; disc += ds; tax += t;
+    mrows += `<div><span>${esc(d)}<small><span class="num">${q} × ${fx(price)}</span>${dp ? ` · خصم <span class="num">${dp}%</span>` : ""} · ض.ق.م <span class="num">${vp}%</span></small></span><b>${fx((n + t) / 100)}</b></div>`;
+    return `<tr><td class="n">${i + 1}</td><td>${esc(d)}${sub ? `<small>${esc(sub)}</small>` : ""}</td><td class="n">${q}</td><td class="n">${(price).toLocaleString("en-US", { minimumFractionDigits: 2 })}</td><td class="n">${dp ? dp + "%" : "—"}</td><td class="n">${vp}%</td><td class="n">${((n + t) / 100).toLocaleString("en-US", { minimumFractionDigits: 2 })}</td></tr>`;
+  }).join("");
+  const net = gross - disc;
+  $("exTabs").innerHTML = EX.map(x => `<button type="button" role="tab" aria-selected="${x.id === exCur}" class="${x.id === exCur ? "on" : ""}" data-ex="${x.id}"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${x.icon}</svg>${x.label}</button>`).join("");
+  $("exSheet").innerHTML = `<div class="sheet" key="${e.id}"><span class="ribbon">مثال توضيحي</span>
+    <div class="sheet-h"><div class="co"><b>${esc(e.co)}</b><span>${esc(e.city)}</span><span>الرقم الضريبي: <span class="num">00000000</span></span></div>
+      <div><h4>فاتورة</h4><div class="meta2"><span>الرقم</span><span class="v">${e.no}</span><span>التاريخ</span><span class="v">${e.date}</span><span>الاستحقاق</span><span class="v">${e.due}</span></div></div></div>
+    <div class="to"><div><small>فاتورة إلى</small><b>${esc(e.to)}</b></div><div><small>المرجع</small>${esc(e.toSub)}</div></div>
+    <div class="sheet-t"><table><thead><tr><th class="n">#</th><th>البيان</th><th class="n">الكمية</th><th class="n">سعر الوحدة</th><th class="n">خصم</th><th class="n">ض.ق.م</th><th class="n">المجموع</th></tr></thead><tbody>${rows}</tbody></table></div><div class="mlines">${mrows}</div>
+    <div class="tot"><span>المجموع قبل الخصم</span><span>${money(gross)}</span>${disc ? `<span>الخصم</span><span>−${money(disc)}</span>` : ""}<span>الخاضع للضريبة</span><span>${money(net)}</span><span>ضريبة القيمة المضافة</span><span>${money(tax)}</span><span class="g">الإجمالي المستحق</span><span class="g n">${money(net + tax)}</span></div>
+    <div class="note">${esc(e.note)}</div></div>`;
+  $("exWhy").innerHTML = `<h3>${esc(e.label)}</h3><p>${esc(e.why)}</p><ul class="list">${e.points.map(p => `<li>${esc(p)}</li>`).join("")}</ul>
+    <div class="cta" style="margin-top:8px"><a class="btn primary" href="app/">أصدر فاتورة مثلها</a></div>`;
+}
+document.addEventListener("click", ev => { const b = ev.target.closest("[data-ex]"); if (b) { exCur = b.dataset.ex; renderEx(); } });
+renderEx();
 
 /* pricing */
 let period = "m";
