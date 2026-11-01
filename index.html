@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>الفكتيرة</title>
+<meta name="description" content="الفكتيرة: أصدر فواتيرك وتابع ديونك ومصروفاتك وضريبتك من جوالك، بالعربية وبالأوقية، حتى دون إنترنت.">
+<meta name="theme-color" content="#0e1a21">
+<meta property="og:title" content="الفكتيرة – الفوترة والمحاسبة بالعربية">
+<meta property="og:description" content="أصدر فواتيرك وتابع ديونك ومصروفاتك وضريبتك من جوالك. جرّبه مجاناً.">
+<meta property="og:image" content="shots/desktop.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600;700&family=Manrope:wght@600;700;800&display=swap">
+<style>
+/* Layout: a product page that reads top to bottom — promise and phone in the hero, then proof (features, steps), price, install, questions. One dark ink band carries the hero; the rest is light and quiet. */
+:root{
+  --bg:#f4f6f8; --sheet:#ffffff; --sheet-2:#f7f9fa; --ink:#101c24; --muted:#5f6f78; --line:#e3e8ec;
+  --accent:#0d8a7a; --accent-2:#18b39b; --accent-soft:#e3f4f0; --rail:#0e1a21; --rail-2:#17262f; --rail-ink:#dbe6ea; --rail-muted:#8ea3ac; --gold:#e8b44a;
+  --f-body:"Readex Pro","Segoe UI",Tahoma,sans-serif; --f-num:"Manrope","Segoe UI",system-ui,sans-serif;
+  --shadow:0 1px 1px rgba(16,28,36,.03),0 12px 32px -12px rgba(16,28,36,.12); --ease:cubic-bezier(.2,.8,.2,1);
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#0b1216; --sheet:#121c22; --sheet-2:#16222a; --ink:#e6eef1; --muted:#93a6af; --line:#22323b; --accent:#2fc2aa; --accent-2:#4fd6bf; --accent-soft:#123630; --rail:#070d10; --rail-2:#111c22;
+  --shadow:0 12px 32px -12px rgba(0,0,0,.5); color-scheme:dark}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.75;-webkit-font-smoothing:antialiased}
+img{max-width:100%;height:auto;display:block}
+a{color:inherit}
+.in{max-width:1160px;margin-inline:auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.btn{font:inherit;font-weight:500;font-size:15.5px;display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:13px 24px;border-radius:14px;border:1px solid transparent;cursor:pointer;text-decoration:none;white-space:nowrap;transition:transform .15s var(--ease),box-shadow .2s,background .2s}
+.btn:active{transform:translateY(1px)}
+.btn svg{width:20px;height:20px}
+.btn.primary{background:linear-gradient(180deg,var(--accent-2),var(--accent));color:#fff;box-shadow:0 12px 28px -10px var(--accent-2)}
+.btn.primary:hover{box-shadow:0 16px 34px -10px var(--accent-2)}
+.btn.light{background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.18)}
+.btn.light:hover{background:rgba(255,255,255,.14)}
+.btn.outline{background:var(--sheet);color:var(--ink);border-color:var(--line)}
+.btn.outline:hover{box-shadow:var(--shadow)}
+:focus-visible{outline:2px solid var(--accent-2);outline-offset:3px}
+/* header + hero band */
+.band{background:radial-gradient(90% 120% at 15% 0%,rgba(24,179,155,.28),transparent 60%),var(--rail);color:var(--rail-ink);position:relative;overflow:hidden}
+header{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--rail) 88%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding-top:env(safe-area-inset-top,0px)}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px;color:var(--rail-ink)}
+.logo{display:flex;align-items:center;gap:11px;text-decoration:none;color:#fff;font-weight:600;font-size:20px}
+.logo img{width:38px;height:38px;border-radius:11px}
+.nav nav{display:flex;gap:26px;font-size:14.5px}
+.nav nav a{text-decoration:none;opacity:.8}.nav nav a:hover{opacity:1}
+.nav .btn{padding:9px 18px;font-size:14.5px}
+.hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:48px;align-items:center;padding-block:56px 0}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;color:var(--accent-2);background:rgba(24,179,155,.12);border:1px solid rgba(24,179,155,.3);padding:5px 14px;border-radius:999px}
+.hero h1{font-size:clamp(34px,5.4vw,62px);line-height:1.2;font-weight:700;margin:18px 0 16px;color:#fff;letter-spacing:-.01em;text-wrap:balance}
+.hero h1 em{font-style:normal;color:var(--accent-2)}
+.hero p.lead{font-size:clamp(16px,1.6vw,19px);color:var(--rail-muted);font-weight:300;max-width:34em;margin:0 0 28px}
+.cta{display:flex;gap:12px;flex-wrap:wrap}
+.trust{display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:30px;font-size:14px;color:var(--rail-muted)}
+.trust span{display:flex;align-items:center;gap:7px}
+.trust span::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent-2)}
+.phone-wrap{position:relative;display:flex;justify-content:center;align-self:end}
+.phone{width:min(330px,80vw);border-radius:44px 44px 0 0;padding:12px 12px 0;background:#1d2b33;box-shadow:0 -10px 60px -10px rgba(24,179,155,.35),inset 0 0 0 1px rgba(255,255,255,.08)}
+.phone img{border-radius:34px 34px 0 0;width:100%;height:auto;aspect-ratio:390/600;object-fit:cover;object-position:top}
+.float{position:absolute;background:var(--sheet);color:var(--ink);border-radius:16px;padding:12px 16px;box-shadow:0 20px 50px -15px rgba(0,0,0,.45);font-size:13px;display:flex;flex-direction:column;gap:2px}
+.float b{font-family:var(--f-num);font-size:19px;direction:ltr;text-align:right}
+.float .ok{color:var(--accent);font-weight:500}
+.f1{top:22%;right:-8px}.f2{bottom:16%;left:-12px}
+/* sections */
+section{padding-block:84px}
+.sh{max-width:640px;margin-bottom:40px}
+.sh small{color:var(--accent);font-weight:600;font-size:14px}
+.sh h2{font-size:clamp(26px,3.4vw,38px);line-height:1.3;margin:6px 0 10px;font-weight:600;text-wrap:balance}
+.sh p{color:var(--muted);font-weight:300;margin:0}
+.feats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.feat{background:var(--sheet);border:1px solid var(--line);border-radius:20px;padding:26px;display:flex;flex-direction:column;gap:8px}
+.feat .ic{width:46px;height:46px;border-radius:13px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;margin-bottom:6px}
+.feat .ic svg{width:23px;height:23px;stroke:currentColor}
+.feat h3{margin:0;font-size:18px;font-weight:600}
+.feat p{margin:0;color:var(--muted);font-weight:300;font-size:15px}
+.showcase{margin-top:44px;border-radius:22px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);background:var(--sheet)}
+.showcase .bar{display:flex;gap:7px;padding:12px 16px;border-bottom:1px solid var(--line);direction:ltr}
+.showcase .bar i{width:11px;height:11px;border-radius:50%;background:var(--line)}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;counter-reset:s}
+.step{padding:26px;border-radius:20px;background:var(--sheet);border:1px solid var(--line);position:relative}
+.step::before{counter-increment:s;content:counter(s);font-family:var(--f-num);font-weight:800;font-size:15px;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--rail);color:var(--accent-2);margin-bottom:14px}
+.step h3{margin:0 0 6px;font-size:18px;font-weight:600}.step p{margin:0;color:var(--muted);font-weight:300;font-size:15px}
+.alt{background:var(--sheet-2);border-block:1px solid var(--line)}
+.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;align-items:stretch}
+.plan{background:var(--sheet);border:1px solid var(--line);border-radius:22px;padding:28px;display:flex;flex-direction:column;gap:12px}
+.plan.featured{background:var(--rail);color:var(--rail-ink);border-color:transparent;box-shadow:0 30px 60px -25px rgba(14,26,33,.6);position:relative}
+.plan .tag{align-self:flex-start;font-size:12.5px;padding:3px 12px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-weight:500}
+.plan.featured .tag{background:var(--gold);color:#2b1f05}
+.plan h3{margin:0;font-size:20px;font-weight:600}
+.plan.featured h3{color:#fff}
+.price{display:flex;align-items:baseline;gap:8px;direction:rtl}
+.price b{font-family:var(--f-num);font-size:44px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.price span{color:var(--muted);font-size:14px}
+.plan.featured .price span{color:var(--rail-muted)}
+.plan ul{list-style:none;margin:6px 0 10px;padding:0;display:flex;flex-direction:column;gap:9px;font-size:15px;flex:1}
+.plan li{display:flex;gap:10px;align-items:flex-start}
+.plan li::before{content:"✓";flex:none;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:11px;background:var(--accent-soft);color:var(--accent);margin-top:4px}
+.plan.featured li::before{background:rgba(24,179,155,.2);color:var(--accent-2)}
+.paynote{margin-top:22px;text-align:center;color:var(--muted);font-size:14.5px}
+.paynote b{color:var(--ink);font-weight:500}
+.install{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:40px;align-items:center}
+.os{display:grid;gap:12px}
+.os details{background:var(--sheet);border:1px solid var(--line);border-radius:16px;padding:4px 20px}
+.os summary{cursor:pointer;font-weight:500;padding-block:14px;list-style:none;display:flex;justify-content:space-between;align-items:center}
+.os summary::after{content:"+";font-size:22px;color:var(--muted);font-weight:300}
+.os details[open] summary::after{content:"−"}
+.os ol{margin:0 0 16px;padding-inline-start:22px;color:var(--muted);font-weight:300}
+.os ol b{color:var(--ink);font-weight:500}
+.faq{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.faq details{background:var(--sheet);border:1px solid var(--line);border-radius:16px;padding:4px 20px}
+.faq summary{cursor:pointer;font-weight:500;padding-block:15px}
+.faq p{margin:0 0 16px;color:var(--muted);font-weight:300}
+.final{background:radial-gradient(80% 140% at 85% 0%,rgba(24,179,155,.3),transparent 60%),var(--rail);color:var(--rail-ink);border-radius:28px;padding:56px 40px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+.final h2{color:#fff;margin:0 0 6px;font-size:clamp(24px,3vw,34px);font-weight:600;text-wrap:balance}
+.final p{margin:0;color:var(--rail-muted);font-weight:300}
+footer{padding-block:36px calc(36px + env(safe-area-inset-bottom,0px));color:var(--muted);font-size:14px}
+footer .in{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
+.modal{position:fixed;inset:0;background:rgba(6,12,15,.55);backdrop-filter:blur(4px);display:grid;place-items:center;z-index:60;padding:20px}
+.modal>div{background:var(--sheet);border-radius:22px;max-width:440px;width:100%;padding:26px;box-shadow:0 30px 80px -20px rgba(0,0,0,.5)}
+.modal h3{margin:0 0 8px}
+.modal ol{padding-inline-start:20px;color:var(--muted)}
+[hidden]{display:none!important}
+@media (max-width:920px){
+  .hero{grid-template-columns:minmax(0,1fr);padding-top:36px;gap:36px;text-align:center}
+  .hero p.lead{margin-inline:auto}.cta,.trust{justify-content:center}
+  .feats,.steps,.plans{grid-template-columns:minmax(0,1fr)}
+  .install,.faq{grid-template-columns:minmax(0,1fr)}
+  .nav nav{display:none}
+  .f1{right:0}.f2{left:0}
+  section{padding-block:64px}
+  .final{padding:36px 24px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<div class="band">
+  <header><div class="in nav">
+    <a class="logo" href="#"><img src="icons/icon-192.png" alt="">الفكتيرة</a>
+    <nav><a href="#features">المزايا</a><a href="#pricing">الأسعار</a><a href="#install">التثبيت</a><a href="#faq">الأسئلة</a></nav>
+    <a class="btn primary" href="app/">افتح التطبيق</a>
+  </div></header>
+
+  <div class="in hero">
+    <div>
+      <span class="eyebrow">بالعربية · بالأوقية · يعمل دون إنترنت</span>
+      <h1>فكتيرتك جاهزة <em>في ثلاثين ثانية</em>، وحساباتك مرتّبة دون محاسب.</h1>
+      <p class="lead">أصدر الفواتير من جوالك، وسجّل ما يدفعه لك عملاؤك، وتابع مصروفاتك وضريبة القيمة المضافة. الفكتيرة تحوّل كل عملية إلى قيد محاسبي صحيح، وتعطيك قائمة الدخل وميزان المراجعة بنقرة.</p>
+      <div class="cta">
+        <button class="btn primary" id="installBtn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>حمّل التطبيق مجاناً</button>
+        <a class="btn light" href="app/">جرّبه في المتصفح</a>
+      </div>
+      <div class="trust"><span>بلا بطاقة بنكية</span><span>بياناتك على جهازك</span><span>أندرويد وآيفون والحاسوب</span></div>
+    </div>
+    <div class="phone-wrap">
+      <div class="phone"><img src="shots/mobile.png" alt="لوحة القيادة في تطبيق الفكتيرة على الجوال" width="390" height="600"></div>
+      <div class="float f1"><span class="ok">● دُفعت الفاتورة</span><b>174,000.00 MRU</b><span style="color:var(--muted)">FAC-2026-0001</span></div>
+      <div class="float f2"><span style="color:var(--muted)">ميزان المراجعة</span><span class="ok">✓ متوازن</span></div>
+    </div>
+  </div>
+</div>
+
+<section id="features"><div class="in">
+  <div class="sh"><small>المزايا</small><h2>كل ما تحتاجه منشأة صغيرة لتعرف أين تذهب أموالها</h2><p>صُمّمت للمحلات والمؤسسات ومقدّمي الخدمات والمدارس الخاصة الذين ما زالوا يكتبون فواتيرهم بخط اليد أو في Excel.</p></div>
+  <div class="feats">
+    <div class="feat"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6M9 13h8M9 17h6"/></svg></div><h3>فواتير احترافية</h3><p>ترقيم متسلسل لا يتكرر، خصم وضريبة لكل سطر، رقمك الضريبي وسجلك التجاري وبيانات بنكيلي في رأس الفاتورة.</p></div>
+    <div class="feat"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><h3>متابعة الديون</h3><p>اعرف من تأخر عن الدفع وبكم يوماً، وسجّل الدفعات نقداً أو بالتحويل أو بالمحفظة، واطبع كشف حساب لكل عميل.</p></div>
+    <div class="feat"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M2 10h20M6 15h4"/></svg></div><h3>المصروفات</h3><p>الإيجار والرواتب والكهرباء والنقل، كلٌّ في تصنيفه، مع فصل الضريبة القابلة للخصم تلقائياً.</p></div>
+    <div class="feat"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></div><h3>تقارير المحاسب</h3><p>قائمة الدخل، إقرار ضريبة القيمة المضافة، أعمار الديون، ميزان المراجعة ودفتر اليومية، كلها بالقيد المزدوج.</p></div>
+    <div class="feat"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0M2 9a15 15 0 0 1 20 0M12 20h.01"/><path d="M3 3l18 18"/></svg></div><h3>يعمل دون إنترنت</h3><p>ثبّته مرة واحدة واستعمله في المحل أو في الطريق. بياناتك محفوظة على جهازك، ونسخة احتياطية بنقرة.</p></div>
+    <div class="feat"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/><path d="M15 9.5c-.5-1-1.6-1.5-3-1.5-1.7 0-3 .9-3 2.2 0 3 6 1.6 6 4.6 0 1.3-1.3 2.2-3 2.2-1.4 0-2.6-.6-3-1.6M12 6v2M12 16v2"/></svg></div><h3>حسابات دقيقة</h3><p>كل المبالغ تُحسب بدقة حتى أجزاء الأوقية دون أخطاء تقريب، والميزان يتحقق من توازنه بنفسه.</p></div>
+  </div>
+  <div class="showcase"><div class="bar"><i></i><i></i><i></i></div><img src="shots/desktop.png" alt="لوحة القيادة في الفكتيرة على الحاسوب: المبيعات والمحصّل والمستحقات والمصروفات وصافي الربح" width="1440" height="900" loading="lazy"></div>
+</div></section>
+
+<section class="alt"><div class="in">
+  <div class="sh"><small>كيف تبدأ</small><h2>ثلاث خطوات وتصدر أول فكتيرة</h2></div>
+  <div class="steps">
+    <div class="step"><h3>ثبّت التطبيق</h3><p>من هذه الصفحة على جوالك أو حاسوبك. لا متجر ولا حساب ولا بطاقة بنكية.</p></div>
+    <div class="step"><h3>أدخل بيانات منشأتك</h3><p>الاسم والرقم الضريبي والسجل التجاري وطريقة الدفع. تظهر تلقائياً في كل فاتورة.</p></div>
+    <div class="step"><h3>أصدر وأرسل</h3><p>اختر العميل والبنود، أصدر الفاتورة ونزّلها لترسلها عبر واتساب أو تطبعها.</p></div>
+  </div>
+</div></section>
+
+<section id="pricing"><div class="in">
+  <div class="sh"><small>الأسعار</small><h2>ابدأ مجاناً، واشترك عندما تكبر فواتيرك</h2><p id="yearly"></p></div>
+  <div class="plans" id="plans"></div>
+  <p class="paynote" id="paynote"></p>
+</div></section>
+
+<section id="install" class="alt"><div class="in install">
+  <div class="sh" style="margin:0"><small>التثبيت</small><h2>تطبيق على شاشتك الرئيسية، دون متجر</h2><p>الفكتيرة تطبيق ويب يُثبَّت من المتصفح مباشرة: أيقونة على الشاشة، يفتح بملء الشاشة، ويعمل دون إنترنت. حجمه أقل من 1 ميغابايت.</p>
+    <div class="cta" style="margin-top:22px"><button class="btn primary" type="button" data-install>حمّل التطبيق</button></div></div>
+  <div class="os">
+    <details open><summary>أندرويد (Chrome)</summary><ol><li>افتح هذه الصفحة في <b>Chrome</b>.</li><li>اضغط <b>حمّل التطبيق</b> ثم <b>تثبيت</b>.</li><li>إن لم تظهر النافذة: القائمة ⋮ ثم <b>تثبيت التطبيق</b> أو <b>إضافة إلى الشاشة الرئيسية</b>.</li></ol></details>
+    <details><summary>آيفون وآيباد (Safari)</summary><ol><li>افتح هذه الصفحة في <b>Safari</b>.</li><li>اضغط زر <b>المشاركة</b> (المربع والسهم).</li><li>اختر <b>إضافة إلى الشاشة الرئيسية</b> ثم <b>إضافة</b>.</li></ol></details>
+    <details><summary>الحاسوب (Chrome أو Edge)</summary><ol><li>افتح هذه الصفحة في <b>Chrome</b> أو <b>Edge</b>.</li><li>اضغط <b>حمّل التطبيق</b>، أو أيقونة التثبيت في شريط العنوان.</li><li>يظهر الفكتيرة في قائمة البرامج كأي تطبيق آخر.</li></ol></details>
+  </div>
+</div></section>
+
+<section id="faq"><div class="in">
+  <div class="sh"><small>أسئلة شائعة</small><h2>قبل أن تبدأ</h2></div>
+  <div class="faq">
+    <details><summary>أين تُحفظ بياناتي؟</summary><p>على جهازك أنت، داخل التطبيق. لا نرى فواتيرك ولا عملاءك. صدّر نسخة احتياطية من الإعدادات بانتظام واحتفظ بها، فهي ما يحميك إن ضاع الجهاز.</p></details>
+    <details><summary>هل يعمل دون إنترنت؟</summary><p>نعم. بعد أول فتح يعمل التطبيق كاملاً دون اتصال، وتحتاج الإنترنت فقط لإرسال الفاتورة أو تحديث التطبيق.</p></details>
+    <details><summary>هل يناسب ضريبة القيمة المضافة في موريتانيا؟</summary><p>النسبة الافتراضية 16% ويمكنك تغييرها لكل بند. التطبيق يحسب الضريبة المحصّلة والمدفوعة والصافي المستحق، وراجع الإقرار مع محاسبك قبل إيداعه.</p></details>
+    <details><summary>هل أستطيع استعماله بعملة أخرى؟</summary><p>نعم: الأوقية، الدرهم، الدينار، الريال، الدولار، اليورو وغيرها، من صفحة الإعدادات.</p></details>
+    <details><summary>كيف أدفع الاشتراك؟</summary><p id="faqPay">ببنكيلي أو مصرفي أو سداد أو بالتحويل البنكي، ثم ترسل رقم العملية ليُفعَّل اشتراكك.</p></details>
+    <details><summary>هل يدعم الفرنسية؟</summary><p>الواجهة والفاتورة بالعربية الآن، والنسخة الفرنسية والفاتورة باللغتين قادمتان قريباً.</p></details>
+  </div>
+</div></section>
+
+<div class="in" style="padding-bottom:40px">
+  <div class="final"><div><h2>جرّب الفكتيرة اليوم، مجاناً.</h2><p>أصدر أول فاتورة قبل أن تبرد قهوتك.</p></div>
+    <div class="cta"><button class="btn primary" type="button" data-install>حمّل التطبيق</button><a class="btn light" href="app/">افتحه في المتصفح</a></div></div>
+</div>
+
+<footer><div class="in"><span>© <span id="yr"></span> الفكتيرة</span><span id="contact"></span></div></footer>
+
+<div class="modal" id="howto" hidden><div role="dialog" aria-modal="true" aria-labelledby="howtoT">
+  <h3 id="howtoT">ثبّت الفكتيرة</h3><div id="howtoBody"></div>
+  <div class="cta" style="margin-top:14px"><a class="btn primary" href="app/">افتح التطبيق الآن</a><button class="btn outline" type="button" id="howtoClose">إغلاق</button></div>
+</div></div>
+
+<script src="config.js"></script>
+<script>
+"use strict";
+const C = window.FAKTIRA || {}, cur = C.currency || "MRU";
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const wa = text => C.whatsapp ? "https://wa.me/" + C.whatsapp + "?text=" + encodeURIComponent(text) : "";
+document.getElementById("yr").textContent = new Date().getFullYear();
+document.getElementById("yearly").textContent = (C.yearlyNote || "") + ". كل الأسعار بالأوقية الجديدة.";
+document.getElementById("plans").innerHTML = (C.plans || []).map(p => {
+  const link = p.price ? wa("السلام عليكم، أريد الاشتراك في باقة " + p.name + " في الفكتيرة.") : "";
+  return `<div class="plan ${p.featured ? "featured" : ""}"><span class="tag">${esc(p.tag)}</span><h3>${esc(p.name)}</h3>
+    <div class="price"><b>${p.price.toLocaleString("en-US")}</b><span>${esc(cur)} · ${esc(p.period)}</span></div>
+    <ul>${p.features.map(f => `<li>${esc(f)}</li>`).join("")}</ul>
+    ${p.price ? (link ? `<a class="btn ${p.featured ? "primary" : "outline"}" href="${link}" target="_blank" rel="noopener">اشترك عبر واتساب</a>` : `<a class="btn ${p.featured ? "primary" : "outline"}" href="app/#plan">اشترك</a>`)
+      : `<button class="btn outline" type="button" data-install>ابدأ مجاناً</button>`}</div>`;
+}).join("");
+const pays = (C.payments || []).join(" · ");
+document.getElementById("paynote").innerHTML = "طرق الدفع: <b>" + esc(pays) + "</b>. بعد الدفع أرسل رقم العملية ليُفعَّل اشتراكك.";
+const contact = [C.whatsapp ? `<a href="${wa("السلام عليكم، لدي سؤال عن الفكتيرة.")}" target="_blank" rel="noopener">واتساب: <span dir="ltr">+${esc(C.whatsapp)}</span></a>` : "", C.email ? `<span dir="ltr">${esc(C.email)}</span>` : ""].filter(Boolean).join(" · ");
+document.getElementById("contact").innerHTML = contact;
+
+/* Install: native prompt where the browser offers it, otherwise step-by-step instructions for this device. */
+let deferred = null;
+const standalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone;
+addEventListener("beforeinstallprompt", e => { e.preventDefault(); deferred = e; });
+addEventListener("appinstalled", () => { deferred = null; showHowto("installed"); });
+function device() { const u = navigator.userAgent; return /iPhone|iPad|iPod/.test(u) || (/Macintosh/.test(u) && "ontouchend" in document) ? "ios" : /Android/.test(u) ? "android" : "desktop"; }
+function showHowto(kind) {
+  const steps = {
+    installed: "<p>الفكتيرة مثبّت على جهازك. افتحه من الشاشة الرئيسية أو قائمة البرامج.</p>",
+    ios: "<ol><li>تأكد أنك في متصفح <b>Safari</b>.</li><li>اضغط زر <b>المشاركة</b> أسفل الشاشة.</li><li>اختر <b>إضافة إلى الشاشة الرئيسية</b> ثم <b>إضافة</b>.</li></ol>",
+    android: "<ol><li>افتح هذه الصفحة في <b>Chrome</b>.</li><li>اضغط القائمة ⋮ أعلى الشاشة.</li><li>اختر <b>تثبيت التطبيق</b> أو <b>إضافة إلى الشاشة الرئيسية</b>.</li></ol>",
+    desktop: "<ol><li>افتح هذه الصفحة في <b>Chrome</b> أو <b>Edge</b>.</li><li>اضغط أيقونة التثبيت في يسار شريط العنوان، أو القائمة ثم <b>تثبيت الفكتيرة</b>.</li></ol>"
+  };
+  document.getElementById("howtoBody").innerHTML = steps[kind];
+  document.getElementById("howto").hidden = false;
+}
+async function install() {
+  if (standalone) return showHowto("installed");
+  if (deferred) { deferred.prompt(); const r = await deferred.userChoice; deferred = null; if (r.outcome === "accepted") return; }
+  showHowto(device());
+}
+document.addEventListener("click", e => {
+  if (e.target.closest("#installBtn,[data-install]")) install();
+  if (e.target.id === "howto" || e.target.id === "howtoClose") document.getElementById("howto").hidden = true;
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape") document.getElementById("howto").hidden = true; });
+if ("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js").catch(() => {});
+</script>
+</body>
+</html>
