@@ -1,5 +1,5 @@
 /* الفكتيرة: يحفظ ملفات الموقع والتطبيق ليعمل دون إنترنت. غيّر VERSION عند كل نشر جديد. */
-const VERSION = "faktira-v1";
+const VERSION = "faktira-v2";
 const FILES = ["./", "./index.html", "./config.js", "./manifest.webmanifest", "./app/", "./app/index.html",
   "./icons/icon-192.png", "./icons/icon-512.png", "./icons/maskable-512.png", "./icons/apple-touch-icon.png", "./icons/icon.svg"];
 
