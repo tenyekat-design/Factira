@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="البياع: بائع موريتاني في السوق">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f9cf63"/><stop offset="1" stop-color="#ef9f3a"/>
+    </linearGradient>
+    <linearGradient id="robe" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4b8fe6"/><stop offset="1" stop-color="#2f6fc8"/>
+    </linearGradient>
+    <linearGradient id="wood" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#a8642d"/><stop offset="1" stop-color="#7d4520"/>
+    </linearGradient>
+    <clipPath id="tile"><rect width="512" height="512" rx="112"/></clipPath>
+  </defs>
+  <g clip-path="url(#tile)">
+    <rect width="512" height="512" fill="url(#sky)"/>
+    <circle cx="420" cy="250" r="70" fill="#fde39a" opacity=".55"/>
+    <!-- dunes -->
+    <path d="M0 330 Q120 290 250 325 T512 315 V512 H0Z" fill="#e88d2f" opacity=".55"/>
+    <!-- stall poles -->
+    <rect x="62" y="120" width="16" height="300" rx="6" fill="#6e3b18"/>
+    <rect x="434" y="120" width="16" height="300" rx="6" fill="#6e3b18"/>
+    <!-- seller -->
+    <g>
+      <!-- robe (daraa) -->
+      <path d="M200 262 Q256 248 312 262 L392 400 H120 Z" fill="url(#robe)"/>
+      <!-- raised arm (sleeve) -->
+      <path d="M300 268 Q350 250 372 200 L400 214 Q384 280 318 306 Z" fill="#3a7ed8"/>
+      <!-- open hand -->
+      <ellipse cx="388" cy="198" rx="18" ry="20" fill="#8a5636"/>
+      <rect x="367" y="170" width="8" height="24" rx="4" fill="#8a5636"/>
+      <rect x="377" y="160" width="8" height="28" rx="4" fill="#8a5636"/>
+      <rect x="387" y="158" width="8" height="30" rx="4" fill="#8a5636"/>
+      <rect x="397" y="163" width="8" height="26" rx="4" fill="#8a5636"/>
+      <rect x="404" y="188" width="8" height="20" rx="4" transform="rotate(-35 408 198)" fill="#8a5636"/>
+      <!-- embroidered chest pocket -->
+      <path d="M232 292 H280 V330 Q256 344 232 330 Z" fill="none" stroke="#ffd45a" stroke-width="5" stroke-linejoin="round"/>
+      <path d="M244 306 H268 M244 318 H268" stroke="#ffd45a" stroke-width="4" stroke-linecap="round"/>
+      <!-- neck opening -->
+      <path d="M238 258 Q256 280 274 258" fill="#f4f6fb"/>
+      <!-- head -->
+      <circle cx="256" cy="212" r="42" fill="#8a5636"/>
+      <!-- beard -->
+      <path d="M216 214 Q218 262 256 264 Q294 262 296 214 Q290 240 272 242 Q256 234 240 242 Q222 240 216 214Z" fill="#2a1a10"/>
+      <!-- face -->
+      <circle cx="241" cy="208" r="5" fill="#2a1a10"/>
+      <circle cx="271" cy="208" r="5" fill="#2a1a10"/>
+      <path d="M244 226 Q256 220 268 226" fill="none" stroke="#2a1a10" stroke-width="5" stroke-linecap="round"/>
+      <path d="M246 238 Q256 244 266 238" fill="none" stroke="#e7b48f" stroke-width="3.5" stroke-linecap="round"/>
+      <!-- turban (wrapped hawli) with tail over the shoulder -->
+      <path d="M214 196 Q202 236 194 266 Q192 300 212 318 L230 304 Q214 286 216 262 Q218 232 224 200Z" fill="#1d2552"/>
+      <path d="M208 198 Q204 146 256 140 Q308 146 304 198 Q284 184 256 186 Q228 184 208 198Z" fill="#1d2552"/>
+      <path d="M212 184 Q250 160 300 176" fill="none" stroke="#33408a" stroke-width="6" stroke-linecap="round"/>
+      <path d="M214 170 Q256 146 294 160" fill="none" stroke="#33408a" stroke-width="6" stroke-linecap="round"/>
+      <path d="M210 194 Q256 178 302 194" fill="none" stroke="#141a3d" stroke-width="5" stroke-linecap="round"/>
+    </g>
+    <!-- awning -->
+    <path d="M40 92 H472 V150 Q445 176 418 150 Q391 176 364 150 Q337 176 310 150 Q283 176 256 150 Q229 176 202 150 Q175 176 148 150 Q121 176 94 150 Q67 176 40 150 Z" fill="#fff3d6"/>
+    <path d="M94 92 H148 V150 Q121 176 94 150Z M202 92 H256 V150 Q229 176 202 150Z M310 92 H364 V150 Q337 176 310 150Z M418 92 H472 V150 Q445 176 418 150Z" fill="#0b8a4f"/>
+    <rect x="34" y="80" width="444" height="18" rx="9" fill="#c8323a"/>
+    <!-- goods on counter -->
+    <ellipse cx="128" cy="374" rx="46" ry="34" fill="#2f8f3a"/>
+    <path d="M90 360 Q128 340 166 360" fill="none" stroke="#1d6b26" stroke-width="6"/>
+    <path d="M86 382 Q128 362 170 382" fill="none" stroke="#1d6b26" stroke-width="6"/>
+    <circle cx="198" cy="384" r="18" fill="#f28a1c"/>
+    <circle cx="226" cy="380" r="18" fill="#f59a26"/>
+    <circle cx="212" cy="360" r="17" fill="#f7a836"/>
+    <!-- teapot -->
+    <path d="M298 392 Q294 352 324 348 Q354 352 350 392Z" fill="#cfd6df"/>
+    <path d="M350 372 Q376 360 384 340" fill="none" stroke="#cfd6df" stroke-width="9" stroke-linecap="round"/>
+    <path d="M300 360 Q284 366 290 384" fill="none" stroke="#aab4c0" stroke-width="7" stroke-linecap="round"/>
+    <path d="M310 350 Q324 330 338 350Z" fill="#aab4c0"/>
+    <circle cx="324" cy="332" r="6" fill="#aab4c0"/>
+    <!-- dates basket -->
+    <path d="M370 374 H440 L430 398 H380Z" fill="#c9893d"/>
+    <ellipse cx="389" cy="370" rx="9" ry="7" fill="#6b2e14"/>
+    <ellipse cx="405" cy="366" rx="9" ry="7" fill="#7a3518"/>
+    <ellipse cx="421" cy="370" rx="9" ry="7" fill="#6b2e14"/>
+    <!-- counter -->
+    <rect x="46" y="394" width="420" height="30" rx="8" fill="#b9733a"/>
+    <rect x="62" y="420" width="388" height="120" fill="url(#wood)"/>
+    <path d="M62 452 H450 M62 486 H450" stroke="#6e3b18" stroke-width="5"/>
+  </g>
+</svg>
