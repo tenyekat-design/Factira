@@ -20,318 +20,756 @@
 <script src="ads.js"></script>
 <style>
 :root {
-  --bg: #fbf6ec; --surface: #ffffff; --ink: #1b1f33; --muted: #6b6a75; --line: #ece3d2;
-  --navy: #1d2552; --navy-2: #2d387a; --green: #0b8a4f; --green-soft: #e3f4ea; --sand: #f4b44a; --sand-soft: #fdf0d6; --red: #c8323a;
-  --radius: 16px; --shadow: 0 1px 2px rgba(29,37,82,.06), 0 6px 20px rgba(29,37,82,.07);
+  --bg: #f5f3ee; --surface: #fff; --ink: #161a2e; --ink-2: #3c4057; --muted: #757887; --line: #e8e4da; --line-2: #f0ede6;
+  --navy: #1d2552; --navy-2: #2b3570; --green: #0a8a4e; --green-2: #087a44; --green-soft: #e4f4ec;
+  --sand: #f2ac3c; --sand-soft: #fdf2dd; --red: #d23b44;
+  --r: 14px; --sh: 0 1px 2px rgba(22,26,46,.05), 0 4px 16px rgba(22,26,46,.06); --sh-2: 0 10px 30px rgba(22,26,46,.12);
 }
 * { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; }
-body { margin: 0; background: var(--bg); color: var(--ink); font: 400 15px/1.6 "Readex Pro", system-ui, sans-serif; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 15px/1.65 "Readex Pro", system-ui, sans-serif; }
 button, input, select, textarea { font: inherit; color: inherit; }
-a { color: inherit; }
+a { color: inherit; text-decoration: none; }
 img { max-width: 100%; display: block; }
-.wrap { max-width: 1180px; margin: 0 auto; padding: 0 16px; }
+svg { flex: none; }
+.wrap { max-width: 1240px; margin: 0 auto; padding: 0 16px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+:focus-visible { outline: 3px solid var(--sand); outline-offset: 2px; }
+
+/* buttons */
+.btn { border: 0; border-radius: 11px; padding: 0 18px; height: 44px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; justify-content: center; white-space: nowrap; transition: background .15s, transform .1s; }
+.btn:active { transform: translateY(1px); }
+.btn svg { width: 19px; height: 19px; }
+.btn-green { background: var(--green); color: #fff; } .btn-green:hover { background: var(--green-2); }
+.btn-navy { background: var(--navy); color: #fff; } .btn-navy:hover { background: var(--navy-2); }
+.btn-sand { background: var(--sand); color: var(--navy); } .btn-sand:hover { background: #f5b955; }
+.btn-out { background: var(--surface); color: var(--ink); border: 1px solid var(--line); } .btn-out:hover { border-color: #cfc8b8; }
+.btn-ghost { background: transparent; color: var(--ink-2); } .btn-ghost:hover { background: var(--line-2); }
+.btn-sm { height: 36px; padding: 0 12px; font-size: 14px; border-radius: 9px; }
+.icon-btn { width: 40px; height: 40px; padding: 0; border-radius: 50%; }
+
+/* utility strip */
+.strip { background: var(--navy); color: #c8cce4; font-size: 13px; }
+.strip .wrap { display: flex; gap: 20px; height: 34px; align-items: center; }
+.strip a:hover { color: #fff; }
+.strip .sp { flex: 1; }
 
 /* header */
-header.top { background: var(--navy); color: #fff; position: sticky; top: 0; z-index: 20; box-shadow: 0 2px 12px rgba(0,0,0,.15); }
-.bar { display: flex; align-items: center; gap: 12px; height: 64px; }
-.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-.brand img { width: 42px; height: 42px; border-radius: 11px; }
-.brand b { font-size: 22px; font-weight: 700; letter-spacing: 0; }
-.brand small { display: block; font-size: 11px; opacity: .7; font-weight: 300; margin-top: -4px; }
-.spacer { flex: 1; }
-.btn { border: 0; border-radius: 12px; padding: 10px 16px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; text-decoration: none; justify-content: center; }
-.btn svg { width: 18px; height: 18px; flex: none; }
-.btn.post { background: var(--sand); color: var(--navy); }
-.btn.post:hover { background: #f7c25f; }
-.btn.ghost { background: rgba(255,255,255,.1); color: #fff; }
-.btn.green { background: var(--green); color: #fff; }
-.btn.navy { background: var(--navy); color: #fff; }
-.btn.line { background: var(--surface); border: 1px solid var(--line); color: var(--ink); }
-.btn:focus-visible, .chip:focus-visible, .card:focus-visible { outline: 3px solid var(--sand); outline-offset: 2px; }
+.hdr { background: var(--surface); border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 30; }
+.hdr .wrap { display: flex; align-items: center; gap: 18px; height: 72px; }
+.logo { display: flex; align-items: center; gap: 10px; }
+.logo img { width: 46px; height: 46px; border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,.12); }
+.logo b { font-size: 25px; font-weight: 700; color: var(--navy); line-height: 1; display: block; }
+.logo small { font-size: 11.5px; color: var(--muted); display: block; margin-top: 3px; }
+.hsearch { flex: 1; display: flex; border: 2px solid var(--navy); border-radius: 12px; overflow: hidden; height: 48px; max-width: 640px; background: var(--surface); }
+.hsearch .q { flex: 1; display: flex; align-items: center; gap: 8px; padding: 0 12px; min-width: 0; }
+.hsearch .q svg { width: 20px; height: 20px; color: var(--muted); }
+.hsearch input { border: 0; outline: 0; width: 100%; height: 100%; background: transparent; min-width: 0; }
+.hsearch select { border: 0; border-inline-start: 1px solid var(--line); background: var(--line-2); padding: 0 10px; outline: 0; max-width: 150px; cursor: pointer; }
+.hsearch button { border: 0; background: var(--navy); color: #fff; padding: 0 20px; font-weight: 600; cursor: pointer; }
+.hdr .acts { display: flex; gap: 6px; align-items: center; margin-inline-start: auto; }
+.badge-n { background: var(--red); color: #fff; font-size: 11px; border-radius: 9px; padding: 0 6px; line-height: 18px; margin-inline-start: -4px; }
+
+/* category nav */
+.cnav { background: var(--surface); border-bottom: 1px solid var(--line); }
+.cnav .wrap { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; }
+.cnav .wrap::-webkit-scrollbar { display: none; }
+.cnav button { border: 0; background: none; padding: 11px 12px; display: flex; gap: 7px; align-items: center; cursor: pointer; color: var(--ink-2); white-space: nowrap; border-bottom: 3px solid transparent; font-size: 14px; }
+.cnav button svg { width: 18px; height: 18px; color: var(--navy); }
+.cnav button:hover { color: var(--navy); }
+.cnav button[aria-current="true"] { border-color: var(--green); color: var(--navy); font-weight: 600; }
 
 /* hero */
-.hero { background: linear-gradient(180deg, var(--navy) 0, var(--navy) 55%, var(--bg) 55%); padding: 22px 0 6px; }
-.hero h1 { color: #fff; margin: 0 0 4px; font-size: clamp(22px, 4vw, 32px); font-weight: 700; }
-.hero p { color: #c9cde6; margin: 0 0 18px; }
-.search { background: var(--surface); border-radius: 18px; box-shadow: var(--shadow); padding: 10px; display: grid; grid-template-columns: 1fr 190px auto; gap: 8px; }
-.search .f { display: flex; align-items: center; gap: 8px; background: var(--bg); border-radius: 12px; padding: 0 12px; min-width: 0; }
-.search .f svg { width: 20px; height: 20px; color: var(--muted); flex: none; }
-.search input, .search select { border: 0; background: transparent; height: 46px; width: 100%; outline: none; min-width: 0; }
-.demo { margin: 14px 0 0; background: var(--sand-soft); border: 1px dashed #e7c27a; color: #7a5410; border-radius: 12px; padding: 8px 12px; font-size: 13px; }
+.hero { background: var(--navy); color: #fff; position: relative; overflow: hidden; }
+.hero::before { content: ""; position: absolute; inset: 0; opacity: .07; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cpath d='M28 4 52 28 28 52 4 28Z M28 16 40 28 28 40 16 28Z' fill='none' stroke='%23fff' stroke-width='2'/%3E%3C/svg%3E"); }
+.hero .wrap { position: relative; display: grid; grid-template-columns: 1.25fr .75fr; gap: 40px; align-items: center; padding-top: 44px; padding-bottom: 44px; }
+.hero .eyebrow { display: inline-flex; gap: 8px; align-items: center; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.16); border-radius: 99px; padding: 4px 12px; font-size: 13px; color: #dfe2f3; }
+.hero .eyebrow i { width: 8px; height: 8px; border-radius: 50%; background: #3ddc84; }
+.hero h1 { font-size: clamp(28px, 4.4vw, 46px); line-height: 1.25; margin: 16px 0 12px; font-weight: 700; }
+.hero h1 em { font-style: normal; color: var(--sand); }
+.hero p.lead { color: #c8cce4; font-size: 17px; margin: 0 0 24px; max-width: 560px; }
+.hero .ctas { display: flex; gap: 10px; flex-wrap: wrap; }
+.hero .ctas .btn { height: 50px; padding: 0 24px; font-size: 16px; }
+.hero .btn-line { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,.35); }
+.hero .btn-line:hover { background: rgba(255,255,255,.08); }
+.stats { display: flex; gap: 32px; margin-top: 32px; flex-wrap: wrap; }
+.stats div b { display: block; font-size: 26px; font-weight: 700; }
+.stats div span { color: #aab0d2; font-size: 13px; }
+.hero-art { position: relative; justify-self: center; width: min(340px, 100%); }
+.hero-art .frame { border-radius: 34px; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,.35); transform: rotate(-3deg); }
+.hero-art .float { position: absolute; background: var(--surface); color: var(--ink); border-radius: 14px; padding: 10px 14px; box-shadow: var(--sh-2); display: flex; gap: 10px; align-items: center; font-size: 13px; line-height: 1.35; }
+.hero-art .float b { display: block; font-size: 14px; }
+.hero-art .float .ic { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; }
+.hero-art .float .ic svg { width: 20px; height: 20px; }
+.hero-art .f1 { bottom: 30px; inset-inline-end: -36px; }
+.hero-art .f2 { top: 24px; inset-inline-start: -40px; }
 
-/* categories */
-.cats { display: flex; gap: 8px; overflow-x: auto; padding: 16px 0 6px; scrollbar-width: none; }
-.cats::-webkit-scrollbar { display: none; }
-.chip { flex: none; display: flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px 7px 10px; cursor: pointer; white-space: nowrap; }
-.chip .ic { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--sand-soft); color: var(--navy); }
-.chip .ic svg { width: 17px; height: 17px; }
-.chip[aria-pressed="true"] { background: var(--navy); border-color: var(--navy); color: #fff; }
-.chip[aria-pressed="true"] .ic { background: rgba(255,255,255,.15); color: #fff; }
-.chip .n { font-size: 12px; opacity: .6; }
+/* sections */
+section.blk { padding: 40px 0 8px; scroll-margin-top: 130px; }
+.sh { display: flex; align-items: end; gap: 12px; margin-bottom: 18px; }
+.sh h2 { margin: 0; font-size: 23px; font-weight: 700; color: var(--navy); }
+.sh p { margin: 2px 0 0; color: var(--muted); font-size: 14px; }
+.sh .more { margin-inline-start: auto; color: var(--green); font-weight: 600; font-size: 14px; background: none; border: 0; cursor: pointer; display: flex; align-items: center; gap: 4px; }
+.sh .more svg { width: 16px; height: 16px; }
 
-/* listings */
-.head { display: flex; align-items: baseline; gap: 10px; margin: 14px 0 12px; flex-wrap: wrap; }
-.head h2 { margin: 0; font-size: 19px; }
-.head .count { color: var(--muted); font-size: 14px; }
-.head select { margin-inline-start: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); padding: 6px 10px; }
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px; padding-bottom: 40px; }
-.card { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; cursor: pointer; text-align: start; border: 0; padding: 0; display: flex; flex-direction: column; transition: transform .15s; }
-.card:hover { transform: translateY(-2px); }
-.thumb { aspect-ratio: 4/3; position: relative; display: grid; place-items: center; overflow: hidden; }
-.thumb img { width: 100%; height: 100%; object-fit: cover; }
-.thumb .ph { width: 64px; height: 64px; opacity: .85; }
-.thumb .tag { position: absolute; top: 10px; inset-inline-start: 10px; background: rgba(255,255,255,.92); color: var(--navy); font-size: 12px; font-weight: 600; border-radius: 8px; padding: 2px 8px; }
-.thumb .mine { inset-inline-start: auto; inset-inline-end: 10px; background: var(--green); color: #fff; }
-.body { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 4px; flex: 1; }
-.price { font-weight: 700; font-size: 18px; color: var(--green); }
-.price small { font-weight: 400; font-size: 12px; color: var(--muted); }
-.ttl { font-weight: 500; line-height: 1.45; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.meta { margin-top: auto; padding-top: 6px; display: flex; justify-content: space-between; color: var(--muted); font-size: 13px; gap: 8px; }
-.meta span { display: inline-flex; align-items: center; gap: 4px; }
-.meta svg { width: 14px; height: 14px; }
-.empty { grid-column: 1 / -1; text-align: center; padding: 50px 16px; color: var(--muted); }
-.empty img { width: 110px; margin: 0 auto 12px; border-radius: 24px; opacity: .9; }
+.cgrid { display: grid; grid-template-columns: repeat(9, 1fr); gap: 12px; }
+.ctile { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 18px 8px 14px; text-align: center; cursor: pointer; transition: transform .15s, box-shadow .15s, border-color .15s; }
+.ctile:hover { transform: translateY(-3px); box-shadow: var(--sh); border-color: transparent; }
+.ctile .ci { width: 56px; height: 56px; border-radius: 16px; display: grid; place-items: center; margin: 0 auto 10px; }
+.ctile .ci svg { width: 28px; height: 28px; }
+.ctile b { display: block; font-size: 14px; font-weight: 600; line-height: 1.35; }
+.ctile span { color: var(--muted); font-size: 12px; }
 
-/* palette for placeholders */
-.c-cars { background: #e4ecfb; color: #2f6fc8; } .c-realestate { background: #fdecd3; color: #c26a12; }
-.c-phones { background: #e8e4fb; color: #5a45c2; } .c-electronics { background: #dff3f4; color: #127c84; }
-.c-home { background: #f7e6dc; color: #9b4f25; } .c-livestock { background: #e7f2dc; color: #4c7d1e; }
-.c-fashion { background: #fbe3ea; color: #b23560; } .c-jobs { background: #e3eef0; color: #2e5d6b; }
-.c-services { background: #fff1c9; color: #8f6a00; }
+/* featured carousel */
+.rail { display: grid; grid-auto-flow: column; grid-auto-columns: calc((100% - 3 * 16px) / 4); gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 8px; scrollbar-width: thin; }
+.rail > * { scroll-snap-align: start; }
+
+/* browse layout */
+.browse { display: grid; grid-template-columns: 260px 1fr; gap: 24px; align-items: start; }
+.filters { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 6px 18px 18px; position: sticky; top: 140px; }
+.filters h3 { font-size: 15px; margin: 14px 0 8px; color: var(--navy); }
+.filters .opt { display: flex; align-items: center; gap: 8px; padding: 5px 0; cursor: pointer; font-size: 14px; color: var(--ink-2); }
+.filters .opt input { accent-color: var(--green); width: 16px; height: 16px; }
+.filters .opt span.c { margin-inline-start: auto; color: var(--muted); font-size: 12px; }
+.filters select, .filters input[type=number] { width: 100%; border: 1px solid var(--line); border-radius: 10px; height: 40px; padding: 0 10px; background: var(--surface); }
+.filters .pr { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.filters .seg { display: grid; grid-template-columns: repeat(3, 1fr); background: var(--line-2); border-radius: 10px; padding: 3px; }
+.filters .seg button { border: 0; background: none; border-radius: 8px; padding: 6px 0; cursor: pointer; font-size: 13px; color: var(--ink-2); }
+.filters .seg button[aria-pressed="true"] { background: var(--surface); box-shadow: 0 1px 3px rgba(0,0,0,.1); color: var(--navy); font-weight: 600; }
+.filters .reset { margin-top: 16px; width: 100%; }
+.toolbar { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+.toolbar h2 { margin: 0; font-size: 21px; color: var(--navy); }
+.toolbar .cnt { color: var(--muted); font-size: 14px; }
+.toolbar .sp { flex: 1; }
+.toolbar select { height: 38px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); padding: 0 10px; }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; margin: -4px 0 14px; }
+.chips button { border: 1px solid var(--line); background: var(--surface); border-radius: 99px; padding: 3px 10px 3px 8px; font-size: 13px; display: flex; align-items: center; gap: 4px; cursor: pointer; }
+.chips button svg { width: 14px; height: 14px; }
+.ffab { display: none; }
+
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.card { background: var(--surface); border-radius: var(--r); border: 1px solid var(--line); overflow: hidden; display: flex; flex-direction: column; position: relative; transition: box-shadow .18s, transform .18s; cursor: pointer; }
+.card:hover { box-shadow: var(--sh-2); transform: translateY(-2px); }
+.card .media { aspect-ratio: 4 / 3; position: relative; overflow: hidden; background: var(--line-2); }
+.card .media img, .card .media svg.art { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pill { position: absolute; top: 10px; font-size: 11.5px; font-weight: 600; border-radius: 7px; padding: 2px 8px; }
+.pill.feat { inset-inline-start: 10px; background: var(--sand); color: var(--navy); display: flex; gap: 4px; align-items: center; }
+.pill.feat svg { width: 12px; height: 12px; }
+.pill.mine { inset-inline-start: 10px; background: var(--green); color: #fff; }
+.card .fav { position: absolute; top: 8px; inset-inline-end: 8px; width: 36px; height: 36px; border-radius: 50%; border: 0; background: rgba(255,255,255,.92); display: grid; place-items: center; cursor: pointer; color: var(--ink-2); box-shadow: 0 1px 4px rgba(0,0,0,.12); }
+.card .fav svg { width: 19px; height: 19px; }
+.fav[aria-pressed="true"] { color: var(--red); }
+.fav[aria-pressed="true"] svg { fill: currentColor; }
+.card .nimg { position: absolute; bottom: 8px; inset-inline-start: 8px; background: rgba(0,0,0,.55); color: #fff; font-size: 12px; border-radius: 6px; padding: 0 6px; display: flex; gap: 4px; align-items: center; }
+.card .nimg svg { width: 13px; height: 13px; }
+.card .bd { padding: 12px 14px 12px; display: flex; flex-direction: column; gap: 3px; flex: 1; }
+.card .cat { font-size: 12px; color: var(--muted); }
+.card h3 { margin: 0; font-size: 15px; font-weight: 500; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 45px; }
+.card .pr { font-size: 18px; font-weight: 700; color: var(--green); margin-top: 2px; }
+.card .pr small, .dprice small { font-size: 12.5px; font-weight: 500; color: var(--muted); }
+.card .pr.ask { font-size: 14px; color: var(--navy); font-weight: 600; }
+.card .ft { display: flex; justify-content: space-between; gap: 8px; color: var(--muted); font-size: 12.5px; border-top: 1px solid var(--line-2); margin-top: 8px; padding-top: 8px; }
+.card .ft span { display: inline-flex; align-items: center; gap: 4px; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card .ft svg { width: 14px; height: 14px; }
+.cond { display: inline-block; font-size: 11.5px; border-radius: 6px; padding: 0 7px; background: var(--line-2); color: var(--ink-2); margin-inline-start: 6px; vertical-align: 2px; font-weight: 500; }
+.cond.new { background: var(--green-soft); color: var(--green); }
+.empty { grid-column: 1 / -1; text-align: center; padding: 56px 16px; background: var(--surface); border: 1px dashed var(--line); border-radius: var(--r); color: var(--muted); }
+.empty img { width: 96px; margin: 0 auto 14px; border-radius: 24px; }
+.empty b { color: var(--ink); font-size: 17px; display: block; margin-bottom: 4px; }
+.more-wrap { text-align: center; margin: 22px 0 0; }
+
+/* how + trust */
+.how { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.step { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 22px; position: relative; }
+.step .num { position: absolute; top: 18px; inset-inline-end: 20px; font-size: 44px; font-weight: 700; color: var(--line-2); line-height: 1; }
+.step .si { width: 48px; height: 48px; border-radius: 14px; background: var(--green-soft); color: var(--green); display: grid; place-items: center; margin-bottom: 12px; }
+.step .si svg { width: 24px; height: 24px; }
+.step h3 { margin: 0 0 4px; font-size: 17px; color: var(--navy); }
+.step p { margin: 0; color: var(--muted); font-size: 14px; }
+.band { margin-top: 40px; background: linear-gradient(110deg, var(--green) 0%, #0b6e41 100%); color: #fff; border-radius: 20px; padding: 30px 32px; display: grid; grid-template-columns: auto 1fr auto; gap: 24px; align-items: center; position: relative; overflow: hidden; }
+.band img { width: 84px; height: 84px; border-radius: 22px; box-shadow: 0 8px 20px rgba(0,0,0,.25); }
+.band h3 { margin: 0 0 4px; font-size: 21px; }
+.band p { margin: 0; color: #d3f0e1; }
+.band .btn { background: #fff; color: var(--green); height: 50px; padding: 0 24px; }
+.safety { margin-top: 16px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.safety div { display: flex; gap: 10px; align-items: flex-start; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px; font-size: 13.5px; color: var(--ink-2); }
+.safety svg { width: 22px; height: 22px; color: var(--sand); margin-top: 1px; }
+.safety b { display: block; color: var(--ink); font-size: 14px; }
+
+/* footer */
+footer { background: #12173a; color: #aeb3d3; margin-top: 56px; font-size: 14px; }
+footer .cols { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 32px; padding: 44px 16px 30px; }
+footer h4 { color: #fff; margin: 0 0 12px; font-size: 15px; }
+footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; }
+footer button.lnk { background: none; border: 0; padding: 0; color: inherit; cursor: pointer; text-align: start; }
+footer a:hover, footer button.lnk:hover { color: #fff; }
+footer .about p { margin: 12px 0 0; max-width: 340px; }
+footer .logo b { color: #fff; }
+footer .logo small { color: #8d93ba; }
+footer .bottom { border-top: 1px solid rgba(255,255,255,.08); }
+footer .bottom .wrap { display: flex; gap: 12px; justify-content: space-between; padding-top: 16px; padding-bottom: 20px; flex-wrap: wrap; font-size: 13px; }
 
 /* dialogs */
-dialog { border: 0; border-radius: 20px; padding: 0; width: min(560px, calc(100vw - 24px)); max-height: calc(100dvh - 24px); background: var(--surface); color: var(--ink); box-shadow: 0 20px 60px rgba(0,0,0,.3); }
-dialog::backdrop { background: rgba(20,24,50,.55); }
-.dlg-h { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: var(--surface); z-index: 1; }
-.dlg-h h3 { margin: 0; font-size: 18px; }
-.x { background: var(--bg); border: 0; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 20px; line-height: 1; }
-.dlg-b { padding: 16px 18px 20px; }
-.detail .thumb { border-radius: 14px; aspect-ratio: 16/10; }
-.detail h4 { margin: 14px 0 2px; font-size: 20px; }
-.detail .price { font-size: 24px; }
-.detail .desc { white-space: pre-line; margin: 10px 0 14px; }
-.facts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
-.facts span { background: var(--bg); border-radius: 8px; padding: 3px 10px; font-size: 13px; color: var(--muted); }
-.actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.note { font-size: 13px; color: var(--muted); margin-top: 10px; }
-.field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+dialog { border: 0; border-radius: 20px; padding: 0; width: min(980px, calc(100vw - 24px)); max-height: calc(100dvh - 24px); background: var(--surface); color: var(--ink); box-shadow: 0 30px 80px rgba(0,0,0,.35); }
+dialog.narrow { width: min(620px, calc(100vw - 24px)); }
+dialog::backdrop { background: rgba(14,17,40,.6); backdrop-filter: blur(2px); }
+.dh { display: flex; align-items: center; gap: 10px; padding: 12px 16px 12px 12px; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: var(--surface); z-index: 2; }
+.dh h3 { margin: 0; font-size: 17px; color: var(--navy); flex: 1; }
+.dh .crumb { font-size: 13px; color: var(--muted); flex: 1; }
+.x { background: var(--line-2); border: 0; width: 38px; height: 38px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; }
+.x svg { width: 20px; height: 20px; }
+.db { padding: 20px; }
+.ad { display: grid; grid-template-columns: 1.15fr .85fr; grid-template-areas: "gal info" "det info"; gap: 0 24px; align-items: start; }
+.ad .a-gal { grid-area: gal; } .ad .a-info { grid-area: info; } .ad .a-det { grid-area: det; }
+.gal .main { border-radius: 14px; overflow: hidden; aspect-ratio: 4 / 3; background: var(--line-2); }
+.gal .main img, .gal .main svg.art { width: 100%; height: 100%; object-fit: cover; }
+.gal .th { display: flex; gap: 8px; margin-top: 8px; }
+.gal .th button { width: 76px; height: 58px; border-radius: 9px; overflow: hidden; border: 2px solid transparent; padding: 0; cursor: pointer; }
+.gal .th button[aria-current="true"] { border-color: var(--green); }
+.gal .th img { width: 100%; height: 100%; object-fit: cover; }
+.ad h2 { margin: 0; font-size: 22px; line-height: 1.4; }
+.dprice { font-size: 28px; font-weight: 700; color: var(--green); margin: 6px 0 2px; }
+.dmeta { display: flex; gap: 14px; flex-wrap: wrap; color: var(--muted); font-size: 13px; margin-bottom: 14px; }
+.dmeta span { display: inline-flex; align-items: center; gap: 4px; }
+.dmeta svg { width: 15px; height: 15px; }
+.seller { border: 1px solid var(--line); border-radius: 14px; padding: 14px; display: grid; gap: 12px; }
+.seller .who { display: flex; gap: 10px; align-items: center; }
+.seller .av { width: 46px; height: 46px; border-radius: 50%; background: var(--navy); color: #fff; display: grid; place-items: center; font-weight: 700; font-size: 18px; }
+.seller .who b { display: block; }
+.seller .who span { font-size: 12.5px; color: var(--muted); }
+.seller .cta { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.seller .cta .btn { height: 48px; }
+.share { display: flex; gap: 8px; margin-top: 10px; }
+.share .btn { flex: 1; }
+.specs { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; margin-top: 18px; }
+.specs div { padding: 9px 14px; border-bottom: 1px solid var(--line-2); font-size: 14px; display: flex; justify-content: space-between; gap: 8px; }
+.specs div:nth-child(odd) { border-inline-end: 1px solid var(--line-2); }
+.specs div span { color: var(--muted); }
+.specs div b { font-weight: 500; text-align: end; }
+.desc h4, .similar h4 { margin: 20px 0 6px; font-size: 16px; color: var(--navy); }
+.desc p { margin: 0; white-space: pre-line; color: var(--ink-2); }
+.tip { background: var(--sand-soft); border-radius: 12px; padding: 12px 14px; font-size: 13.5px; color: #7a520d; display: flex; gap: 10px; margin-top: 12px; }
+.tip svg { width: 20px; height: 20px; margin-top: 2px; }
+.similar .grid { grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.similar .card h3 { font-size: 13.5px; min-height: 40px; }
+.similar .card .pr { font-size: 15px; }
+.similar .card .ft, .similar .card .cat { display: none; }
+
+/* post form */
+.steps { display: flex; gap: 6px; margin-bottom: 18px; }
+.steps span { flex: 1; height: 4px; border-radius: 2px; background: var(--line); }
+.steps span.on { background: var(--green); }
+.fs { border: 0; padding: 0; margin: 0 0 6px; }
+.fs legend { font-weight: 700; color: var(--navy); margin-bottom: 10px; font-size: 15px; }
+.field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
 .field label { font-weight: 500; font-size: 14px; }
-.field input, .field select, .field textarea { border: 1px solid var(--line); background: var(--bg); border-radius: 12px; padding: 10px 12px; width: 100%; }
-.field input:focus, .field select:focus, .field textarea:focus { outline: 2px solid var(--sand); border-color: transparent; }
-.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.photos { display: flex; gap: 8px; flex-wrap: wrap; }
-.photos img { width: 72px; height: 72px; object-fit: cover; border-radius: 10px; }
-.toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(120px); background: var(--navy); color: #fff; padding: 10px 18px; border-radius: 12px; transition: transform .25s; z-index: 50; max-width: calc(100vw - 32px); }
-.toast.on { transform: translateX(-50%) translateY(0); }
+.field label i { color: var(--red); font-style: normal; }
+.field .hint { font-size: 12.5px; color: var(--muted); }
+.field input, .field select, .field textarea { border: 1px solid var(--line); background: var(--surface); border-radius: 11px; padding: 0 12px; height: 46px; width: 100%; }
+.field textarea { padding: 10px 12px; height: auto; resize: vertical; }
+.field input:focus, .field select:focus, .field textarea:focus { outline: 2px solid var(--green); border-color: transparent; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.catpick { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.catpick label { border: 1px solid var(--line); border-radius: 12px; padding: 10px 8px; text-align: center; cursor: pointer; font-size: 13px; display: grid; gap: 4px; justify-items: center; }
+.catpick input { position: absolute; opacity: 0; pointer-events: none; }
+.catpick svg { width: 24px; height: 24px; color: var(--navy); }
+.catpick label:has(input:checked) { border-color: var(--green); background: var(--green-soft); box-shadow: inset 0 0 0 1px var(--green); }
+.catpick label:has(input:focus-visible) { outline: 3px solid var(--sand); }
+.drop { border: 2px dashed var(--line); border-radius: 14px; padding: 18px; text-align: center; color: var(--muted); cursor: pointer; display: block; }
+.drop:hover { border-color: var(--green); }
+.drop svg { width: 30px; height: 30px; color: var(--green); margin: 0 auto 4px; display: block; }
+.drop input { position: absolute; opacity: 0; width: 1px; }
+.photos { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.photos img { width: 78px; height: 78px; object-fit: cover; border-radius: 10px; }
+.formnote { font-size: 13px; color: var(--muted); margin: 10px 0 0; text-align: center; }
 
-footer { background: var(--navy); color: #c9cde6; padding: 26px 0; font-size: 14px; }
-footer .wrap { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
-footer img { width: 36px; border-radius: 9px; }
+.toast { position: fixed; bottom: 24px; left: 50%; transform: translate(-50%, 140px); background: var(--ink); color: #fff; padding: 11px 18px; border-radius: 12px; transition: transform .25s, visibility .25s; visibility: hidden; z-index: 60; max-width: calc(100vw - 32px); display: flex; gap: 8px; align-items: center; box-shadow: var(--sh-2); }
+.toast svg { width: 18px; height: 18px; color: #3ddc84; }
+.toast.on { transform: translate(-50%, 0); visibility: visible; }
+.demo { background: var(--sand-soft); color: #7a520d; font-size: 13px; text-align: center; padding: 6px 16px; border-bottom: 1px solid #f1dcb1; }
 
-@media (max-width: 720px) {
-  .search { grid-template-columns: 1fr 1fr; }
-  .search .f:first-child { grid-column: 1 / -1; }
-  .brand small, .btn.ghost .lbl { display: none; }
-  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-  .body { padding: 10px 11px 12px; }
-  .price { font-size: 16px; }
-  .ttl { font-size: 14px; }
-  .meta { font-size: 12px; flex-direction: column; gap: 0; }
-  .row2 { grid-template-columns: 1fr; gap: 0; }
+/* mobile bottom nav */
+.bnav { display: none; }
+
+@media (max-width: 1100px) {
+  .cgrid { grid-template-columns: repeat(5, 1fr); }
+  .rail { grid-auto-columns: calc((100% - 2 * 16px) / 3); }
+  .grid { grid-template-columns: repeat(2, 1fr); }
+  .safety { grid-template-columns: 1fr 1fr; }
 }
+@media (max-width: 860px) {
+  .strip, .hdr .hsearch, .hdr .acts .hide-m { display: none; }
+  .hdr .wrap { height: 62px; }
+  .msearch { display: flex !important; }
+  .hero .wrap { grid-template-columns: 1fr; padding-top: 28px; padding-bottom: 30px; }
+  .hero-art { display: none; }
+  .stats { gap: 22px; margin-top: 24px; }
+  .browse { grid-template-columns: 1fr; }
+  .filters { display: none; position: fixed; inset: auto 0 0 0; top: auto; z-index: 70; border-radius: 20px 20px 0 0; max-height: 80dvh; overflow: auto; box-shadow: 0 -10px 40px rgba(0,0,0,.25); padding-bottom: 24px; }
+  .filters.open { display: block; }
+  .ffab { display: inline-flex; }
+  .ad { grid-template-columns: 1fr; grid-template-areas: "gal" "info" "det"; }
+  .ad .a-info { margin-top: 16px; }
+  .similar .grid { grid-template-columns: repeat(2, 1fr); }
+  .how { grid-template-columns: 1fr; }
+  .band { grid-template-columns: 1fr; text-align: center; justify-items: center; padding: 26px 20px; }
+  footer .cols { grid-template-columns: 1fr 1fr; }
+  footer .about { grid-column: 1 / -1; }
+  body { padding-bottom: 64px; }
+  .bnav { display: grid; grid-template-columns: repeat(4, 1fr); position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); border-top: 1px solid var(--line); z-index: 40; padding-bottom: env(safe-area-inset-bottom); }
+  .bnav button { border: 0; background: none; display: grid; justify-items: center; gap: 1px; padding: 8px 0 7px; font-size: 11.5px; color: var(--muted); cursor: pointer; }
+  .bnav button svg { width: 22px; height: 22px; }
+  .bnav button.on { color: var(--navy); font-weight: 600; }
+  .bnav .postb span.pb { width: 44px; height: 44px; margin-top: -24px; border-radius: 50%; background: var(--green); color: #fff; display: grid; place-items: center; box-shadow: 0 4px 12px rgba(10,138,78,.4); }
+  .toast { bottom: 80px; }
+}
+@media (max-width: 600px) {
+  .cgrid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .ctile { padding: 14px 4px 10px; }
+  .ctile .ci { width: 48px; height: 48px; }
+  .rail { grid-auto-columns: 62%; gap: 12px; }
+  .grid { gap: 10px; }
+  .card .bd { padding: 10px 11px; }
+  .card h3 { font-size: 14px; min-height: 42px; }
+  .card .pr { font-size: 16px; }
+  .card .ft { flex-direction: column; gap: 0; }
+  .card .fav { width: 32px; height: 32px; }
+  .safety { grid-template-columns: 1fr; }
+  .specs { grid-template-columns: 1fr; }
+  .specs div:nth-child(odd) { border-inline-end: 0; }
+  .row2 { grid-template-columns: 1fr; gap: 0; }
+  .db { padding: 16px; }
+  .logo small { display: none; }
+  .sh h2 { font-size: 20px; }
+}
+.msearch { display: none; padding: 0 16px 12px; background: var(--surface); gap: 8px; border-bottom: 1px solid var(--line); }
+.msearch .q { flex: 1; display: flex; align-items: center; gap: 8px; background: var(--line-2); border-radius: 11px; padding: 0 12px; height: 44px; }
+.msearch .q svg { width: 19px; height: 19px; color: var(--muted); }
+.msearch input { border: 0; background: transparent; outline: 0; width: 100%; height: 100%; }
+.msearch select { border: 0; background: var(--line-2); border-radius: 11px; height: 44px; padding: 0 8px; max-width: 120px; }
 </style>
 </head>
 <body>
-<header class="top">
-  <div class="wrap bar">
-    <a class="brand" href="./"><img src="icons/icon-192.png" alt=""><span><b>البياع</b><small>بيع واشترِ في موريتانيا</small></span></a>
-    <span class="spacer"></span>
-    <button class="btn ghost" id="mineBtn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg><span class="lbl">إعلاناتي</span></button>
-    <button class="btn post" id="postBtn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>أضف إعلان</button>
-  </div>
-</header>
+<div class="demo" id="demo" hidden>نسخة تجريبية: الإعلانات المعروضة أمثلة للتوضيح.</div>
+<div class="strip"><div class="wrap">
+  <a href="#how">كيف يعمل البياع</a><a href="#safety">نصائح الأمان</a><span class="sp"></span>
+  <button class="btn-ghost" id="installTop" style="border:0;background:none;color:inherit;cursor:pointer;font-size:13px" hidden>ثبّت التطبيق على هاتفك</button>
+</div></div>
 
+<header class="hdr">
+  <div class="wrap">
+    <a class="logo" href="./" aria-label="البياع - الصفحة الرئيسية"><img src="icons/icon-192.png" alt=""><span><b>البياع</b><small>سوق موريتانيا على الإنترنت</small></span></a>
+    <form class="hsearch" data-search role="search">
+      <label class="q"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span class="sr">ابحث</span><input name="q" type="search" placeholder="ماذا تبحث عنه؟ سيارة، هاتف، منزل..."></label>
+      <select name="city" aria-label="المدينة"></select>
+      <button type="submit">بحث</button>
+    </form>
+    <div class="acts">
+      <button class="btn btn-ghost hide-m" type="button" data-view="favs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z"/></svg>المفضلة<span class="badge-n" data-favn hidden></span></button>
+      <button class="btn btn-ghost hide-m" type="button" data-view="mine"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>إعلاناتي</button>
+      <button class="btn btn-green" type="button" data-post><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>أضف إعلان</button>
+    </div>
+  </div>
+  <form class="msearch" data-search role="search">
+    <label class="q"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span class="sr">ابحث</span><input name="q" type="search" placeholder="ماذا تبحث عنه؟"></label>
+    <select name="city" aria-label="المدينة"></select>
+  </form>
+</header>
+<nav class="cnav" aria-label="الأقسام"><div class="wrap" id="cnav"></div></nav>
+
+<div id="home">
 <section class="hero">
   <div class="wrap">
-    <h1 id="tagline"></h1>
-    <p>سيارات، عقارات، هواتف، مواشي ووظائف في كل المدن. تواصل مع البائع مباشرة.</p>
-    <form class="search" id="searchForm" role="search">
-      <label class="f"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="q" type="search" placeholder="ابحث عن سيارة، هاتف، منزل..." aria-label="بحث"></label>
-      <label class="f"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg><select id="city" aria-label="المدينة"><option value="">كل المدن</option></select></label>
-      <button class="btn navy" type="submit">بحث</button>
-    </form>
-    <div class="demo" id="demo" hidden>الإعلانات المعروضة الآن أمثلة للتوضيح. ستظهر هنا الإعلانات الحقيقية عند نشرها.</div>
-    <nav class="cats" id="cats" aria-label="الأقسام"></nav>
+    <div>
+      <span class="eyebrow"><i></i>مجاني بالكامل للبائع والمشتري</span>
+      <h1>بِع واشترِ كل شيء<br>في <em>موريتانيا</em> بسهولة</h1>
+      <p class="lead">من السيارات والعقارات إلى المواشي والملاحف. انشر إعلانك في دقيقة، وتواصل مع البائع مباشرة بالهاتف أو واتساب.</p>
+      <div class="ctas">
+        <button class="btn btn-sand" type="button" data-post><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>انشر إعلانك مجاناً</button>
+        <a class="btn btn-line" href="#browse">تصفّح الإعلانات</a>
+      </div>
+      <div class="stats"><div><b id="stAds">0</b><span>إعلان منشور</span></div><div><b id="stCities">0</b><span>مدينة</span></div><div><b id="stCats">0</b><span>قسماً</span></div></div>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <div class="frame"><img src="icons/icon-512.png" alt=""></div>
+      <div class="float f1"><span class="ic" style="background:var(--green-soft);color:var(--green)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.7 15l-1.3 5 5.1-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.7 1.2 1.6 1.9 1.1.9 2 1.2 2.3 1.4.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.7-.1l1.9.9c.3.1.5.2.5.3.1.2.1.8-.1 1.4Z"/></svg></span><span><b>تواصل مباشر</b>اتصال أو واتساب</span></div>
+      <div class="float f2"><span class="ic" style="background:var(--sand-soft);color:#b97708"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span><span><b>كل المدن</b>من نواذيبو إلى النعمة</span></div>
+    </div>
   </div>
 </section>
 
-<main class="wrap">
-  <div class="head">
-    <h2 id="listTitle">أحدث الإعلانات</h2><span class="count" id="count"></span>
-    <select id="sort" aria-label="الترتيب"><option value="new">الأحدث</option><option value="low">الأرخص</option><option value="high">الأغلى</option></select>
+<section class="blk"><div class="wrap">
+  <div class="sh"><div><h2>تصفّح الأقسام</h2><p>اختر القسم الذي تبحث فيه</p></div></div>
+  <div class="cgrid" id="cgrid"></div>
+</div></section>
+
+<section class="blk" id="featBlk"><div class="wrap">
+  <div class="sh"><div><h2>إعلانات مميزة</h2><p>مختارة من أحدث العروض</p></div></div>
+  <div class="rail" id="rail"></div>
+</div></section>
+</div>
+
+<section class="blk" id="browse"><div class="wrap">
+  <div class="browse">
+    <aside class="filters" id="filters" aria-label="تصفية النتائج">
+      <div style="display:flex;align-items:center;justify-content:space-between"><h3 style="font-size:17px">تصفية النتائج</h3><button class="x ffab" type="button" data-closefilters aria-label="إغلاق"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+      <h3>القسم</h3><div id="fcats"></div>
+      <h3>المدينة</h3><select id="fcity" aria-label="المدينة"></select>
+      <h3>السعر (أوقية)</h3><div class="pr"><input id="fmin" type="number" min="0" inputmode="numeric" placeholder="من" aria-label="السعر من"><input id="fmax" type="number" min="0" inputmode="numeric" placeholder="إلى" aria-label="السعر إلى"></div>
+      <h3>الحالة</h3><div class="seg" id="fcond"><button type="button" data-c="" aria-pressed="true">الكل</button><button type="button" data-c="جديد" aria-pressed="false">جديد</button><button type="button" data-c="مستعمل" aria-pressed="false">مستعمل</button></div>
+      <label class="opt" style="margin-top:12px"><input type="checkbox" id="fimg"> إعلانات بصور فقط</label>
+      <button class="btn btn-out reset" type="button" id="freset">مسح التصفية</button>
+      <button class="btn btn-green reset ffab" type="button" data-closefilters style="margin-top:8px">عرض النتائج</button>
+    </aside>
+    <div>
+      <div class="toolbar">
+        <h2 id="ltitle">أحدث الإعلانات</h2><span class="cnt" id="count"></span><span class="sp"></span>
+        <button class="btn btn-out btn-sm ffab" type="button" id="openFilters"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg>تصفية</button>
+        <select id="sort" aria-label="الترتيب"><option value="new">الأحدث أولاً</option><option value="low">السعر: من الأقل</option><option value="high">السعر: من الأعلى</option></select>
+      </div>
+      <div class="chips" id="chips"></div>
+      <div class="grid" id="grid"></div>
+      <div class="more-wrap" id="moreWrap" hidden><button class="btn btn-out" type="button" id="moreBtn">عرض المزيد</button></div>
+    </div>
   </div>
-  <div class="grid" id="grid"></div>
-</main>
+</div></section>
+
+<section class="blk" id="how"><div class="wrap">
+  <div class="sh"><div><h2>كيف يعمل البياع؟</h2><p>ثلاث خطوات بين البائع والمشتري</p></div></div>
+  <div class="how">
+    <div class="step"><span class="num">1</span><span class="si"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h3l2-3h6l2 3h3v12H4z"/><circle cx="12" cy="13" r="3.5"/></svg></span><h3>صوّر وانشر</h3><p>التقط صوراً واضحة، اكتب السعر والمدينة، وانشر إعلانك في أقل من دقيقة.</p></div>
+    <div class="step"><span class="num">2</span><span class="si"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"/><path d="M8 9h9M8 13h6"/></svg></span><h3>يتواصل معك المشتري</h3><p>يصلك الاتصال أو رسالة واتساب مباشرة على رقمك، دون وسيط.</p></div>
+    <div class="step"><span class="num">3</span><span class="si"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 12 3 3 5-6"/><circle cx="12" cy="12" r="9"/></svg></span><h3>اتفقا وأتمّا البيع</h3><p>عاين السلعة، اتفقا على السعر، وادفع عند الاستلام.</p></div>
+  </div>
+  <div class="band">
+    <img src="icons/icon-192.png" alt="">
+    <div><h3>البياع في جيبك</h3><p>ثبّت البياع على هاتفك كتطبيق: يفتح بلمسة ويعمل حتى مع إنترنت ضعيف.</p></div>
+    <button class="btn" type="button" id="installBand">ثبّت التطبيق</button>
+  </div>
+  <div class="safety" id="safety">
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3 4 6v6c0 4.5 3.4 8.2 8 9 4.6-.8 8-4.5 8-9V6z"/></svg><span><b>عاين قبل الدفع</b>لا تحوّل أي مبلغ قبل رؤية السلعة.</span></div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span><b>التقِ في مكان عام</b>سوق أو محطة أو مكان مزدحم.</span></div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg><span><b>تحقّق من الأوراق</b>للسيارات والعقارات خاصة.</span></div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span><b>احذر العروض المريبة</b>السعر المنخفض جداً علامة احتيال.</span></div>
+  </div>
+</div></section>
 
 <footer>
-  <div class="wrap"><img src="icons/icon-192.png" alt=""><span><b>البياع</b> · سوق موريتانيا على الإنترنت</span><span class="spacer"></span><span>لا تحوّل المال قبل معاينة السلعة.</span></div>
+  <div class="wrap cols">
+    <div class="about"><a class="logo" href="./"><img src="icons/icon-192.png" alt=""><span><b>البياع</b><small>سوق موريتانيا على الإنترنت</small></span></a><p>موقع إعلانات مجاني يجمع البائعين والمشترين في كل مدن موريتانيا.</p><p id="fcontact"></p></div>
+    <div><h4>الأقسام</h4><ul id="fcatsList"></ul></div>
+    <div><h4>المدن</h4><ul id="fcitiesList"></ul></div>
+    <div><h4>البياع</h4><ul><li><button class="lnk" type="button" data-post>أضف إعلان</button></li><li><button class="lnk" type="button" data-view="mine">إعلاناتي</button></li><li><button class="lnk" type="button" data-view="favs">المفضلة</button></li><li><a href="#how">كيف يعمل</a></li><li><a href="#safety">نصائح الأمان</a></li></ul></div>
+  </div>
+  <div class="bottom"><div class="wrap"><span>© <span id="yr"></span> البياع. جميع الحقوق محفوظة.</span><span>صُنع في موريتانيا</span></div></div>
 </footer>
 
-<dialog id="detail"><div class="dlg-h"><h3>تفاصيل الإعلان</h3><button class="x" data-close aria-label="إغلاق">×</button></div><div class="dlg-b detail" id="detailBody"></div></dialog>
+<nav class="bnav" aria-label="التنقل">
+  <button type="button" class="on" data-nav="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/></svg>الرئيسية</button>
+  <button type="button" data-view="favs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z"/></svg>المفضلة</button>
+  <button type="button" class="postb" data-post><span class="pb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>أضف إعلان</button>
+  <button type="button" data-view="mine"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>إعلاناتي</button>
+</nav>
 
-<dialog id="post">
-  <div class="dlg-h"><h3>أضف إعلانك</h3><button class="x" data-close aria-label="إغلاق">×</button></div>
-  <form class="dlg-b" id="postForm">
-    <div class="field"><label for="p-title">عنوان الإعلان</label><input id="p-title" required maxlength="80" placeholder="مثال: تويوتا كورولا 2012 بحالة جيدة"></div>
-    <div class="row2">
-      <div class="field"><label for="p-cat">القسم</label><select id="p-cat" required></select></div>
-      <div class="field"><label for="p-city">المدينة</label><select id="p-city" required></select></div>
-    </div>
-    <div class="row2">
-      <div class="field"><label for="p-price">السعر بالأوقية</label><input id="p-price" type="number" min="0" inputmode="numeric" placeholder="اتركه فارغاً: السعر عند الاتصال"></div>
-      <div class="field"><label for="p-phone">رقم الهاتف</label><input id="p-phone" type="tel" inputmode="tel" required placeholder="مثال: 22 00 00 00" pattern="[0-9 +]{8,16}"></div>
-    </div>
-    <div class="field"><label for="p-desc">الوصف</label><textarea id="p-desc" rows="4" maxlength="800" placeholder="الحالة، المواصفات، مكان المعاينة..."></textarea></div>
-    <div class="field"><label for="p-img">صور (حتى 3)</label><input id="p-img" type="file" accept="image/*" multiple><div class="photos" id="p-prev"></div></div>
-    <button class="btn green" type="submit" style="width:100%">نشر الإعلان</button>
-    <p class="note" id="postNote"></p>
+<dialog id="dAd"><div class="dh"><button class="x" data-close aria-label="رجوع"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 6 6 6-6 6"/></svg></button><span class="crumb" id="crumb"></span></div><div class="db" id="adBody"></div></dialog>
+
+<dialog id="dPost" class="narrow">
+  <div class="dh"><h3>أضف إعلانك مجاناً</h3><button class="x" data-close aria-label="إغلاق"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+  <form class="db" id="postForm" novalidate>
+    <fieldset class="fs"><legend>1. اختر القسم</legend><div class="catpick" id="pcats"></div></fieldset>
+    <fieldset class="fs" style="margin-top:16px"><legend>2. تفاصيل الإعلان</legend>
+      <div class="field"><label for="p-title">العنوان <i>*</i></label><input id="p-title" required maxlength="80" placeholder="مثال: تويوتا كورولا 2012 بحالة جيدة"></div>
+      <div class="row2">
+        <div class="field"><label for="p-price">السعر بالأوقية</label><input id="p-price" type="number" min="0" inputmode="numeric" placeholder="فارغ = السعر عند الاتصال"></div>
+        <div class="field"><label for="p-cond">الحالة</label><select id="p-cond"><option value="">لا ينطبق</option><option>جديد</option><option>مستعمل</option></select></div>
+      </div>
+      <div class="field"><label for="p-desc">الوصف</label><textarea id="p-desc" rows="4" maxlength="1000" placeholder="الحالة، المواصفات، مكان المعاينة..."></textarea></div>
+      <label class="drop" for="p-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h3l2-3h6l2 3h3v12H4z"/><circle cx="12" cy="13" r="3.5"/></svg><b style="color:var(--ink)">أضف صوراً</b><br><span style="font-size:13px">حتى 4 صور. الإعلانات بالصور تُباع أسرع.</span><input id="p-img" type="file" accept="image/*" multiple></label>
+      <div class="photos" id="p-prev"></div>
+    </fieldset>
+    <fieldset class="fs" style="margin-top:16px"><legend>3. التواصل والمكان</legend>
+      <div class="row2">
+        <div class="field"><label for="p-name">اسمك <i>*</i></label><input id="p-name" required maxlength="40" autocomplete="name"></div>
+        <div class="field"><label for="p-phone">رقم الهاتف <i>*</i></label><input id="p-phone" type="tel" inputmode="tel" required placeholder="22 00 00 00" autocomplete="tel"><span class="hint">يظهر للمشترين للاتصال وواتساب.</span></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label for="p-city">المدينة <i>*</i></label><select id="p-city" required></select></div>
+        <div class="field"><label for="p-area">الحي</label><input id="p-area" maxlength="40" placeholder="مثال: تفرغ زينة"></div>
+      </div>
+    </fieldset>
+    <button class="btn btn-green" type="submit" style="width:100%;height:50px;font-size:16px">نشر الإعلان</button>
+    <p class="formnote" id="postNote"></p>
   </form>
 </dialog>
 
-<div class="toast" id="toast" role="status"></div>
+<div class="toast" id="toast" role="status"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="m5 12 5 5 9-10"/></svg><span></span></div>
 
 <script>
 const C = window.BAYYA, ADS = window.BAYYA_ADS || [];
-const $ = s => document.querySelector(s);
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-const ICONS = {
+const svgI = (p, sw = 1.9) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
+const I = {
   all: '<path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/>',
-  cars: '<path d="M5 16h14M3 16v-3l2-5h14l2 5v3"/><circle cx="7.5" cy="17" r="2"/><circle cx="16.5" cy="17" r="2"/><path d="M4 12h16"/>',
+  cars: '<path d="M5 17H3v-4l2-5h14l2 5v4h-2"/><circle cx="7.5" cy="17" r="2"/><circle cx="16.5" cy="17" r="2"/><path d="M9.5 17h5M4 12h16"/>',
   realestate: '<path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>',
   phones: '<rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/>',
   electronics: '<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/>',
   home: '<path d="M4 18v-6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v6"/><path d="M2 14h20v4H2zM5 18v2M19 18v2M7 10V7a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v3"/>',
-  livestock: '<path d="M6 10c0-3 2.5-5 6-5s6 2 6 5v3c0 3-2.7 6-6 6s-6-3-6-6z"/><path d="M6 9 3 7M18 9l3-2M9.5 12h.01M14.5 12h.01M10 16h4"/>',
+  livestock: '<path d="M7 11a5 5 0 0 1 10 0v2a5 5 0 0 1-10 0z"/><path d="M7 10 4 8M17 10l3-2M10 12h.01M14 12h.01M10.5 15.5h3"/>',
   fashion: '<path d="M8 3 4 6l2 4 2-1v12h8V9l2 1 2-4-4-3c-.5 1.8-2 3-4 3S8.5 4.8 8 3Z"/>',
   jobs: '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M3 13h18"/>',
-  services: '<path d="M14.5 5.5a4 4 0 0 0-5 5L4 16l4 4 5.5-5.5a4 4 0 0 0 5-5L16 12l-4-4z"/>'
+  services: '<path d="M14.5 5.5a4 4 0 0 0-5 5L4 16l4 4 5.5-5.5a4 4 0 0 0 5-5L16 12l-4-4z"/>',
+  pin: '<path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/>',
+  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  heart: '<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z"/>',
+  cam: '<path d="M4 7h3l2-3h6l2 3h3v12H4z"/><circle cx="12" cy="13" r="3.5"/>',
+  x: '<path d="M6 6l12 12M18 6 6 18"/>', star: '<path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/>',
+  tag: '<path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1.5"/>', share: '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/>',
+  phone: '<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>', flag: '<path d="M5 21V4h11l-2 4 2 4H5"/>',
+  shield: '<path d="M12 3 4 6v6c0 4.5 3.4 8.2 8 9 4.6-.8 8-4.5 8-9V6z"/>', chev: '<path d="m15 6-6 6 6 6"/>'
 };
-const ico = (id, cls = "") => `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[id] || ICONS.all}</svg>`;
+const WA = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.7 15l-1.3 5 5.1-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.7 1.2 1.6 1.9 1.1.9 2 1.2 2.3 1.4.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.7-.1l1.9.9c.3.1.5.2.5.3.1.2.1.8-.1 1.4Z"/></svg>';
+const ic = (k, sw) => svgI(I[k] || I.all, sw);
+const PAL = { cars: ["#e3ebfa", "#2f6fc8"], realestate: ["#fcebd3", "#c46a10"], phones: ["#ebe6fb", "#5a45c2"], electronics: ["#dcf1f3", "#11727a"],
+  home: ["#f7e5da", "#9b4f25"], livestock: ["#e5f1da", "#4c7d1e"], fashion: ["#fbe2ea", "#b23560"], jobs: ["#e2ecef", "#2e5d6b"], services: ["#fff0c4", "#8f6a00"] };
+
+/* Flat illustrations shown when an ad has no photo (viewBox 0 0 400 300). */
+const ART = {
+  cars: c => `<rect y="214" width="400" height="86" fill="${c[1]}" opacity=".12"/><path d="M0 250h400" stroke="#fff" stroke-width="6" stroke-dasharray="30 22"/>
+    <path d="M70 200 L96 150 Q104 132 126 130 H262 Q284 130 298 146 L330 178 Q352 182 356 200 V214 H70Z" fill="${c[1]}"/>
+    <path d="M124 146 H196 V180 H108Z M208 146 H262 Q274 146 284 156 L304 180 H208Z" fill="#dfeaf8"/>
+    <circle cx="130" cy="216" r="27" fill="#232838"/><circle cx="130" cy="216" r="11" fill="#c9ced8"/><circle cx="300" cy="216" r="27" fill="#232838"/><circle cx="300" cy="216" r="11" fill="#c9ced8"/>
+    <rect x="336" y="190" width="18" height="9" rx="3" fill="#ffd45a"/>`,
+  realestate: c => `<rect y="236" width="400" height="64" fill="#e9c98f"/><path d="M90 140 L200 66 L310 140Z" fill="${c[1]}"/><rect x="110" y="138" width="180" height="100" fill="#fff8ec"/>
+    <rect x="182" y="178" width="36" height="60" rx="4" fill="${c[1]}" opacity=".85"/><rect x="128" y="160" width="36" height="32" rx="3" fill="#bfdcf4"/><rect x="236" y="160" width="36" height="32" rx="3" fill="#bfdcf4"/>
+    <path d="M330 236 V150" stroke="#7a4a1e" stroke-width="8"/><path d="M330 150 Q300 140 290 160 M330 150 Q360 138 372 158 M330 150 Q316 124 296 128 M330 150 Q346 124 366 130" stroke="#3f8a35" stroke-width="10" fill="none" stroke-linecap="round"/>`,
+  phones: c => `<rect x="146" y="40" width="108" height="220" rx="20" fill="#20243a"/><rect x="154" y="56" width="92" height="188" rx="10" fill="${c[1]}"/>
+    <rect x="166" y="72" width="30" height="30" rx="8" fill="#fff" opacity=".85"/><rect x="204" y="72" width="30" height="30" rx="8" fill="#ffd45a"/><rect x="166" y="110" width="30" height="30" rx="8" fill="#7be0a6"/><rect x="204" y="110" width="30" height="30" rx="8" fill="#fff" opacity=".6"/>
+    <rect x="186" y="46" width="28" height="5" rx="2.5" fill="#444a66"/><circle cx="104" cy="200" r="34" fill="${c[1]}" opacity=".18"/><circle cx="300" cy="96" r="24" fill="${c[1]}" opacity=".18"/>`,
+  electronics: c => `<rect x="150" y="34" width="112" height="226" rx="12" fill="#f2f4f7" stroke="${c[1]}" stroke-width="5"/><path d="M150 112 H262" stroke="${c[1]}" stroke-width="5"/>
+    <rect x="240" y="60" width="8" height="34" rx="4" fill="${c[1]}"/><rect x="240" y="132" width="8" height="50" rx="4" fill="${c[1]}"/><rect x="160" y="258" width="20" height="10" rx="3" fill="#7d8496"/><rect x="232" y="258" width="20" height="10" rx="3" fill="#7d8496"/>
+    <circle cx="100" cy="90" r="30" fill="${c[1]}" opacity=".15"/><circle cx="314" cy="210" r="40" fill="${c[1]}" opacity=".15"/>`,
+  home: c => `<rect y="232" width="400" height="68" fill="${c[1]}" opacity=".14"/><rect x="74" y="168" width="252" height="54" rx="14" fill="${c[1]}"/><rect x="54" y="150" width="40" height="80" rx="14" fill="${c[1]}" opacity=".9"/><rect x="306" y="150" width="40" height="80" rx="14" fill="${c[1]}" opacity=".9"/>
+    <rect x="94" y="116" width="100" height="60" rx="14" fill="#e6b08c"/><rect x="206" y="116" width="100" height="60" rx="14" fill="#e6b08c"/><rect x="120" y="128" width="40" height="34" rx="10" fill="#3a7ed8"/><rect x="240" y="128" width="40" height="34" rx="10" fill="#3a7ed8"/>
+    <rect x="80" y="222" width="10" height="18" fill="#5a2f14"/><rect x="310" y="222" width="10" height="18" fill="#5a2f14"/>`,
+  livestock: c => `<rect y="226" width="400" height="74" fill="#e9c98f"/><g fill="#fffaf0" stroke="#e5dccb" stroke-width="3"><circle cx="160" cy="150" r="34"/><circle cx="200" cy="138" r="36"/><circle cx="240" cy="150" r="34"/><circle cx="180" cy="180" r="34"/><circle cx="226" cy="182" r="32"/></g>
+    <rect x="160" y="200" width="12" height="40" rx="5" fill="#3a2b22"/><rect x="236" y="200" width="12" height="40" rx="5" fill="#3a2b22"/><ellipse cx="282" cy="150" rx="26" ry="32" fill="#3a2b22"/>
+    <path d="M268 126 Q250 112 258 98 Q276 104 274 124 M296 126 Q314 112 306 98 Q288 104 290 124" fill="none" stroke="#c9a46c" stroke-width="7" stroke-linecap="round"/><circle cx="276" cy="146" r="4" fill="#fff"/><circle cx="292" cy="146" r="4" fill="#fff"/>`,
+  fashion: c => `<path d="M200 40 V60 M200 60 L130 100 H270Z" fill="none" stroke="#6b6f80" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M140 98 Q200 84 260 98 L300 262 H100Z" fill="${c[1]}"/><path d="M140 98 Q200 84 260 98 L270 140 Q200 120 130 140Z" fill="#fff" opacity=".2"/>
+    <g fill="#fff" opacity=".55"><circle cx="160" cy="180" r="6"/><circle cx="200" cy="200" r="6"/><circle cx="240" cy="180" r="6"/><circle cx="180" cy="230" r="6"/><circle cx="222" cy="232" r="6"/><circle cx="200" cy="160" r="6"/></g>`,
+  jobs: c => `<rect x="110" y="112" width="180" height="128" rx="16" fill="${c[1]}"/><path d="M168 112 V96 a10 10 0 0 1 10-10 h44 a10 10 0 0 1 10 10 V112" fill="none" stroke="${c[1]}" stroke-width="10"/>
+    <rect x="110" y="160" width="180" height="10" fill="#1d4250"/><rect x="186" y="152" width="28" height="26" rx="5" fill="#ffd45a"/><rect x="300" y="70" width="64" height="84" rx="8" fill="#fff" stroke="${c[1]}" stroke-width="4" transform="rotate(10 332 112)"/>
+    <path d="M314 96 h36 M312 112 h36 M310 128 h24" stroke="${c[1]}" stroke-width="5" stroke-linecap="round" transform="rotate(10 332 112)"/>`,
+  services: c => `<rect y="232" width="400" height="68" fill="${c[1]}" opacity=".14"/><rect x="60" y="100" width="190" height="120" rx="8" fill="${c[1]}"/><path d="M250 136 H306 L340 176 V220 H250Z" fill="#e0b23c"/><path d="M262 148 H300 L322 174 H262Z" fill="#dfeaf8"/>
+    <circle cx="110" cy="224" r="24" fill="#232838"/><circle cx="110" cy="224" r="9" fill="#c9ced8"/><circle cx="296" cy="224" r="24" fill="#232838"/><circle cx="296" cy="224" r="9" fill="#c9ced8"/>
+    <path d="M90 140 h120 M90 166 h90" stroke="#fff" stroke-width="10" stroke-linecap="round" opacity=".5"/>`
+};
+const art = a => { const c = PAL[a.cat] || ["#eee", "#888"]; return `<svg class="art" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="400" height="300" fill="${c[0]}"/>${(ART[a.cat] || ART.services)(c)}</svg>`; };
+
 const catName = id => (C.categories.find(c => c.id === id) || {}).name || "";
-const fmtPrice = a => a.price ? `${Number(a.price).toLocaleString("en-US")} <small>${C.currency}${a.per ? " " + esc(a.per) : ""}</small>` : `<small style="font-size:14px;color:var(--navy)">${a.cat === "jobs" ? "حسب الخبرة" : "السعر عند الاتصال"}</small>`;
+const num = n => Number(n).toLocaleString("en-US");
+const priceHTML = a => a.price ? `${num(a.price)} <small>${C.currency}${a.per ? " " + esc(a.per) : ""}</small>` : "";
+const askText = a => a.cat === "jobs" ? "الراتب حسب الخبرة" : "السعر عند الاتصال";
 const ago = d => {
-  const days = Math.round((new Date().setHours(0,0,0,0) - new Date(d + "T00:00:00")) / 864e5);
+  const days = Math.round((new Date().setHours(0, 0, 0, 0) - new Date(d + "T00:00:00")) / 864e5);
   return days <= 0 ? "اليوم" : days === 1 ? "أمس" : days === 2 ? "قبل يومين" : days <= 10 ? `قبل ${days} أيام` : `قبل ${days} يوماً`;
 };
-const store = { get() { try { return JSON.parse(localStorage.getItem("bayya-mine") || "[]"); } catch { return []; } },
-  set(v) { try { localStorage.setItem("bayya-mine", JSON.stringify(v)); return true; } catch { return false; } } };
-const state = { q: "", city: "", cat: "", sort: "new", mine: false };
-const all = () => [...store.get().map(a => ({ ...a, mine: true })), ...ADS];
+const ls = { get(k, d) { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch { return false; } } };
+const mine = () => ls.get("bayya-mine", []);
+const favs = () => new Set(ls.get("bayya-favs", []).map(String));
+const all = () => [...mine().map(a => ({ ...a, mine: true })), ...ADS];
+const imgsOf = a => a.imgs || (a.img ? [a.img] : []);
+const S = { q: "", city: "", cat: "", cond: "", min: "", max: "", img: false, sort: "new", view: "", limit: 12 };
 
-function toast(t) { const el = $("#toast"); el.textContent = t; el.classList.add("on"); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove("on"), 3200); }
+function toast(t) { const el = $("#toast"); el.querySelector("span").textContent = t; el.classList.add("on"); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove("on"), 3000); }
+
+function card(a, fv = favs()) {
+  const im = imgsOf(a), on = fv.has(String(a.id));
+  return `<article class="card" data-id="${esc(a.id)}" tabindex="0" aria-label="${esc(a.title)}">
+    <div class="media">${im[0] ? `<img src="${esc(im[0])}" alt="" loading="lazy">` : art(a)}
+      ${a.mine ? '<span class="pill mine">إعلاني</span>' : a.featured ? `<span class="pill feat">${ic("star", 2.4)}مميز</span>` : ""}
+      <button class="fav" type="button" data-fav="${esc(a.id)}" aria-pressed="${on}" aria-label="أضف إلى المفضلة">${ic("heart", 2)}</button>
+      ${im.length > 1 ? `<span class="nimg">${ic("cam", 2)}${im.length}</span>` : ""}</div>
+    <div class="bd"><span class="cat">${esc(catName(a.cat))}${a.cond ? `<span class="cond ${a.cond === "جديد" ? "new" : ""}">${esc(a.cond)}</span>` : ""}</span>
+      <h3>${esc(a.title)}</h3>
+      <div class="pr ${a.price ? "" : "ask"}">${a.price ? priceHTML(a) : askText(a)}</div>
+      <div class="ft"><span>${ic("pin", 2)}${esc(a.city)}${a.area ? "، " + esc(a.area) : ""}</span><span>${ic("clock", 2)}${ago(a.date)}</span></div></div></article>`;
+}
 
 function init() {
-  document.title = C.name + " – بيع واشترِ في موريتانيا";
-  $("#tagline").textContent = C.tagline;
   $("#demo").hidden = !C.demo;
+  $("#yr").textContent = new Date().getFullYear();
   const cityOpts = C.cities.map(c => `<option>${esc(c)}</option>`).join("");
-  $("#city").insertAdjacentHTML("beforeend", cityOpts);
-  $("#p-city").innerHTML = cityOpts;
-  $("#p-cat").innerHTML = C.categories.map(c => `<option value="${c.id}">${esc(c.name)}</option>`).join("");
-  $("#postNote").textContent = C.whatsapp ? "يُرسل إعلانك إلى إدارة البياع عبر واتساب للمراجعة، ثم يُنشر للجميع. ويظهر لك فوراً في «إعلاناتي»." : "يُحفظ إعلانك في «إعلاناتي» على هذا الجهاز.";
-  renderCats(); render();
+  $$("select[name=city]").forEach(s => s.innerHTML = `<option value="">كل المدن</option>${cityOpts}`);
+  $("#fcity").innerHTML = `<option value="">كل المدن</option>${cityOpts}`;
+  $("#p-city").innerHTML = `<option value="">اختر المدينة</option>${cityOpts}`;
+  $("#pcats").innerHTML = C.categories.map((c, i) => `<label><input type="radio" name="pcat" value="${c.id}" ${i ? "" : "required"}>${ic(c.id)}${esc(c.name)}</label>`).join("");
+  $("#fcatsList").innerHTML = C.categories.slice(0, 7).map(c => `<li><button class="lnk" type="button" data-cat="${c.id}">${esc(c.name)}</button></li>`).join("");
+  $("#fcitiesList").innerHTML = C.cities.slice(0, 7).map(c => `<li><button class="lnk" type="button" data-city="${esc(c)}">${esc(c)}</button></li>`).join("");
+  $("#fcontact").innerHTML = [C.whatsapp && `واتساب: <a href="https://wa.me/${esc(C.whatsapp)}" dir="ltr">+${esc(C.whatsapp)}</a>`, C.email && `<a href="mailto:${esc(C.email)}">${esc(C.email)}</a>`].filter(Boolean).join(" · ");
+  $("#postNote").textContent = C.whatsapp ? "يُرسل إعلانك إلى إدارة البياع عبر واتساب للمراجعة ثم يُنشر للجميع، ويظهر لك فوراً في «إعلاناتي»." : "يُحفظ إعلانك في «إعلاناتي» على هذا الجهاز.";
+  renderStatic(); render();
 }
 
-function renderCats() {
-  const list = all(), n = id => list.filter(a => !id || a.cat === id).length;
-  $("#cats").innerHTML = [{ id: "", name: "الكل" }, ...C.categories].map(c =>
-    `<button class="chip" type="button" data-cat="${c.id}" aria-pressed="${state.cat === c.id && !state.mine}"><span class="ic">${ico(c.id || "all")}</span>${esc(c.name)} <span class="n">${n(c.id)}</span></button>`).join("");
+function renderStatic() {
+  const list = all(), cnt = id => list.filter(a => a.cat === id).length, fv = favs();
+  $("#stAds").textContent = num(list.length); $("#stCities").textContent = C.cities.length; $("#stCats").textContent = C.categories.length;
+  $("#cgrid").innerHTML = C.categories.map(c => { const p = PAL[c.id] || ["#eee", "#555"];
+    return `<button class="ctile" type="button" data-cat="${c.id}"><span class="ci" style="background:${p[0]};color:${p[1]}">${ic(c.id, 1.8)}</span><b>${esc(c.name)}</b><span>${cnt(c.id)} إعلان</span></button>`; }).join("");
+  const feat = list.filter(a => a.featured).sort((a, b) => b.date.localeCompare(a.date));
+  $("#featBlk").hidden = !feat.length;
+  $("#rail").innerHTML = feat.map(a => card(a, fv)).join("");
+  const n = fv.size; $$("[data-favn]").forEach(b => { b.hidden = !n; b.textContent = n; });
 }
 
-function card(a) {
-  const img = a.imgs?.[0] || a.img;
-  return `<button class="card" type="button" data-id="${esc(a.id)}">
-    <div class="thumb c-${a.cat}">${img ? `<img src="${esc(img)}" alt="" loading="lazy">` : ico(a.cat, "ph")}<span class="tag">${esc(catName(a.cat))}</span>${a.mine ? '<span class="tag mine">إعلاني</span>' : ""}</div>
-    <div class="body"><div class="price">${fmtPrice(a)}</div><div class="ttl">${esc(a.title)}</div>
-    <div class="meta"><span>${ico("pin")}${esc(a.city)}</span><span>${ago(a.date)}</span></div></div></button>`;
+function filtered() {
+  const q = S.q.trim().toLowerCase(), fv = favs();
+  let list = all().filter(a => (S.view !== "mine" || a.mine) && (S.view !== "favs" || fv.has(String(a.id)))
+    && (!S.cat || a.cat === S.cat) && (!S.city || a.city === S.city) && (!S.cond || a.cond === S.cond)
+    && (!S.min || (a.price && a.price >= +S.min)) && (!S.max || (a.price && a.price <= +S.max)) && (!S.img || imgsOf(a).length)
+    && (!q || [a.title, a.desc, a.area, a.city, catName(a.cat), ...Object.values(a.specs || {})].join(" ").toLowerCase().includes(q)));
+  const cmp = { new: (a, b) => b.date.localeCompare(a.date) || (b.mine ? 1 : 0) - (a.mine ? 1 : 0),
+    low: (a, b) => (a.price || Infinity) - (b.price || Infinity), high: (a, b) => (b.price || 0) - (a.price || 0) };
+  return list.sort(cmp[S.sort]);
 }
-ICONS.pin = '<path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/>';
 
 function render() {
-  const q = state.q.trim().toLowerCase();
-  let list = all().filter(a => (!state.mine || a.mine) && (!state.cat || a.cat === state.cat) && (!state.city || a.city === state.city)
-    && (!q || (a.title + " " + a.desc + " " + catName(a.cat)).toLowerCase().includes(q)));
-  list.sort(state.sort === "new" ? (a, b) => b.date.localeCompare(a.date) || (b.mine ? 1 : 0) - (a.mine ? 1 : 0)
-    : state.sort === "low" ? (a, b) => (a.price || 1e15) - (b.price || 1e15) : (a, b) => (b.price || 0) - (a.price || 0));
-  $("#listTitle").textContent = state.mine ? "إعلاناتي" : state.cat ? catName(state.cat) : "أحدث الإعلانات";
-  $("#count").textContent = `${list.length} إعلان${state.city ? " في " + state.city : ""}`;
-  $("#grid").innerHTML = list.length ? list.map(card).join("") :
-    `<div class="empty"><img src="icons/icon-192.png" alt=""><b>${state.mine ? "لم تنشر أي إعلان بعد" : "لا توجد إعلانات مطابقة"}</b><br>${state.mine ? "اضغط «أضف إعلان» لتبدأ البيع." : "جرّب كلمة أخرى أو مدينة أخرى."}</div>`;
-  $("#mineBtn").setAttribute("aria-pressed", state.mine);
+  const list = filtered(), fv = favs();
+  $("#ltitle").textContent = S.view === "mine" ? "إعلاناتي" : S.view === "favs" ? "المفضلة" : S.q ? `نتائج البحث عن «${S.q}»` : S.cat ? catName(S.cat) : "أحدث الإعلانات";
+  $("#count").textContent = `${num(list.length)} إعلان`;
+  $("#grid").innerHTML = list.length ? list.slice(0, S.limit).map(a => card(a, fv)).join("") : `<div class="empty"><img src="icons/icon-192.png" alt="">${
+    S.view === "mine" ? `<b>لم تنشر أي إعلان بعد</b>ابدأ البيع الآن، النشر مجاني.<br><button class="btn btn-green" type="button" data-post style="margin-top:14px">أضف إعلان</button>`
+    : S.view === "favs" ? "<b>لا توجد إعلانات في المفضلة</b>اضغط على القلب في أي إعلان لحفظه هنا."
+    : `<b>لا توجد إعلانات مطابقة</b>جرّب كلمة أخرى أو امسح التصفية.<br><button class="btn btn-out" type="button" data-reset style="margin-top:14px">مسح التصفية</button>`}</div>`;
+  $("#moreWrap").hidden = list.length <= S.limit;
+  // filters UI
+  const base = all();
+  $("#fcats").innerHTML = [{ id: "", name: "كل الأقسام" }, ...C.categories].map(c => `<label class="opt"><input type="radio" name="fcat" value="${c.id}" ${S.cat === c.id ? "checked" : ""}>${esc(c.name)}<span class="c">${c.id ? base.filter(a => a.cat === c.id).length : base.length}</span></label>`).join("");
+  $("#fcity").value = S.city; $$("select[name=city]").forEach(s => s.value = S.city);
+  $$("#fcond button").forEach(b => b.setAttribute("aria-pressed", b.dataset.c === S.cond));
+  $$("#cnav button").forEach(b => b.setAttribute("aria-current", !S.view && b.dataset.cat === S.cat));
+  const chips = [];
+  if (S.q) chips.push(["q", `«${S.q}»`]); if (S.cat) chips.push(["cat", catName(S.cat)]); if (S.city) chips.push(["city", S.city]);
+  if (S.cond) chips.push(["cond", S.cond]); if (S.min || S.max) chips.push(["price", `${S.min ? "من " + num(S.min) : ""} ${S.max ? "إلى " + num(S.max) : ""}`.trim()]); if (S.img) chips.push(["img", "بصور"]);
+  $("#chips").innerHTML = chips.map(([k, t]) => `<button type="button" data-unchip="${k}">${esc(t)}${ic("x", 2.4)}</button>`).join("");
+  $$(".bnav [data-view], .bnav [data-nav]").forEach(b => b.classList.toggle("on", b.dataset.nav ? !S.view : b.dataset.view === S.view));
+}
+function go(patch, scroll = true) {
+  Object.assign(S, { limit: 12 }, patch); render();
+  $("#home").hidden = !!(S.view || S.q || S.cat || S.city);
+  if (scroll) $("#browse").scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
-function waLink(phone, text) {
-  let p = String(phone).replace(/\D/g, ""); if (p.length === 8) p = "222" + p;
-  return `https://wa.me/${p}?text=${encodeURIComponent(text)}`;
-}
-function openDetail(id) {
-  const a = all().find(x => String(x.id) === String(id)); if (!a) return;
-  const imgs = a.imgs || (a.img ? [a.img] : []);
-  const tel = String(a.phone || "").replace(/\D/g, "");
-  $("#detailBody").innerHTML = `
-    <div class="thumb c-${a.cat}">${imgs[0] ? `<img src="${esc(imgs[0])}" alt="">` : ico(a.cat, "ph")}</div>
-    ${imgs.length > 1 ? `<div class="photos" style="margin-top:8px">${imgs.map(s => `<img src="${esc(s)}" alt="">`).join("")}</div>` : ""}
-    <h4>${esc(a.title)}</h4><div class="price">${fmtPrice(a)}</div>
-    <div class="facts"><span>${esc(catName(a.cat))}</span><span>${esc(a.city)}</span><span>${ago(a.date)}</span></div>
-    <p class="desc">${esc(a.desc || "")}</p>
-    ${tel ? `<div class="actions"><a class="btn navy" href="tel:${tel.length === 8 ? "+222" + tel : "+" + tel}">اتصال</a><a class="btn green" target="_blank" rel="noopener" href="${waLink(tel, "السلام عليكم، رأيت إعلانك في البياع: " + a.title)}">واتساب</a></div>`
-      : `<p class="note">${C.demo && !a.mine ? "هذا إعلان تجريبي بلا رقم تواصل." : "لم يضع المعلن رقماً."}</p>`}
-    ${a.mine ? `<button class="btn line" type="button" data-del="${esc(a.id)}" style="width:100%;margin-top:8px;color:var(--red)">حذف إعلاني</button>` : ""}
-    <p class="note">نصيحة: عاين السلعة في مكان عام قبل الدفع، ولا تحوّل أي مبلغ مسبقاً.</p>`;
-  $("#detail").showModal();
+function waLink(phone, text) { let p = String(phone).replace(/\D/g, ""); if (p.length === 8) p = "222" + p; return `https://wa.me/${p}?text=${encodeURIComponent(text)}`; }
+function openAd(id) {
+  const list = all(), a = list.find(x => String(x.id) === String(id)); if (!a) return;
+  const im = imgsOf(a), tel = String(a.phone || "").replace(/\D/g, ""), on = favs().has(String(a.id));
+  const sim = list.filter(x => x.cat === a.cat && x.id !== a.id).slice(0, 4);
+  const specs = { "القسم": catName(a.cat), ...(a.cond ? { "الحالة": a.cond } : {}), "المدينة": a.city + (a.area ? "، " + a.area : ""), ...(a.specs || {}), "رقم الإعلان": String(a.id).replace(/^m/, "") };
+  $("#crumb").textContent = `البياع ‹ ${catName(a.cat)} ‹ ${a.city}`;
+  $("#adBody").innerHTML = `<div class="ad">
+    <div class="a-gal"><div class="gal"><div class="main" id="galMain">${im[0] ? `<img src="${esc(im[0])}" alt="${esc(a.title)}">` : art(a)}</div>
+      ${im.length > 1 ? `<div class="th">${im.map((s, i) => `<button type="button" data-gal="${i}" aria-current="${!i}"><img src="${esc(s)}" alt="صورة ${i + 1}"></button>`).join("")}</div>` : ""}</div></div>
+    <div class="a-det"><div class="specs">${Object.entries(specs).map(([k, v]) => `<div><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join("")}</div>
+      <div class="desc"><h4>الوصف</h4><p>${esc(a.desc || "لا يوجد وصف.")}</p></div></div>
+    <div class="a-info">
+      ${a.featured ? `<span class="pill feat" style="position:static;display:inline-flex;margin-bottom:8px">${ic("star", 2.4)}مميز</span>` : ""}
+      <h2>${esc(a.title)}</h2>
+      <div class="dprice">${a.price ? priceHTML(a) : `<span style="font-size:20px;color:var(--navy)">${askText(a)}</span>`}</div>
+      <div class="dmeta"><span>${ic("pin", 2)}${esc(a.city)}${a.area ? "، " + esc(a.area) : ""}</span><span>${ic("clock", 2)}نُشر ${ago(a.date)}</span></div>
+      <div class="seller"><div class="who"><span class="av">${esc((a.seller || "؟").trim().charAt(0))}</span><span><b>${esc(a.seller || "معلن")}</b><span>${a.mine ? "هذا إعلانك" : "معلن على البياع"}</span></span></div>
+        ${tel ? `<div class="cta"><a class="btn btn-navy" href="tel:${tel.length === 8 ? "+222" + tel : "+" + tel}">${ic("phone", 2)}اتصال</a><a class="btn btn-green" target="_blank" rel="noopener" href="${waLink(tel, "السلام عليكم، رأيت إعلانك في البياع: " + a.title)}">${WA}واتساب</a></div>`
+          : `<div class="tip" style="margin:0">${ic("phone", 2)}<span>${C.demo && !a.mine ? "إعلان تجريبي بلا رقم تواصل." : "لم يضع المعلن رقماً."}</span></div>`}</div>
+      <div class="share"><button class="btn btn-out btn-sm" type="button" data-fav="${esc(a.id)}" aria-pressed="${on}">${ic("heart", 2)}${on ? "في المفضلة" : "حفظ"}</button><button class="btn btn-out btn-sm" type="button" data-share="${esc(a.id)}">${ic("share", 2)}مشاركة</button></div>
+      ${a.mine ? `<button class="btn btn-out" type="button" data-del="${esc(a.id)}" style="width:100%;margin-top:10px;color:var(--red)">حذف إعلاني</button>` : ""}
+      <div class="tip">${ic("shield", 2)}<span><b>للبيع الآمن:</b> عاين السلعة والتقِ في مكان عام، ولا تحوّل أي مبلغ قبل الاستلام.</span></div>
+    </div></div>
+    ${sim.length ? `<div class="similar"><h4>إعلانات مشابهة</h4><div class="grid">${sim.map(x => card(x)).join("")}</div></div>` : ""}`;
+  const d = $("#dAd"); if (!d.open) d.showModal(); d.scrollTop = 0; $("#adBody").scrollTop = 0;
+  if (location.hash !== "#ad-" + a.id) history.replaceState(null, "", "#ad-" + a.id);
 }
 
-// photo resize to keep localStorage small
 function shrink(file) {
   return new Promise((res, rej) => { const r = new FileReader(); r.onerror = rej; r.onload = () => { const im = new Image(); im.onerror = rej; im.onload = () => {
-    const s = Math.min(1, 900 / Math.max(im.width, im.height)), cv = document.createElement("canvas");
+    const s = Math.min(1, 1000 / Math.max(im.width, im.height)), cv = document.createElement("canvas");
     cv.width = Math.round(im.width * s); cv.height = Math.round(im.height * s); cv.getContext("2d").drawImage(im, 0, 0, cv.width, cv.height);
-    res(cv.toDataURL("image/jpeg", .72)); }; im.src = r.result; }; r.readAsDataURL(file); });
+    res(cv.toDataURL("image/jpeg", .74)); }; im.src = r.result; }; r.readAsDataURL(file); });
 }
 let photos = [];
 $("#p-img").addEventListener("change", async e => {
-  photos = []; for (const f of [...e.target.files].slice(0, 3)) { try { photos.push(await shrink(f)); } catch {} }
-  $("#p-prev").innerHTML = photos.map(s => `<img src="${s}" alt="">`).join("");
+  for (const f of [...e.target.files]) { if (photos.length >= 4) break; try { photos.push(await shrink(f)); } catch {} }
+  e.target.value = ""; $("#p-prev").innerHTML = photos.map(s => `<img src="${s}" alt="">`).join("");
 });
 $("#postForm").addEventListener("submit", e => {
   e.preventDefault();
-  const ad = { id: "m" + Date.now(), cat: $("#p-cat").value, title: $("#p-title").value.trim(), price: Number($("#p-price").value) || 0,
-    city: $("#p-city").value, phone: $("#p-phone").value.replace(/[^\d]/g, ""), desc: $("#p-desc").value.trim(),
-    date: new Date().toISOString().slice(0, 10), imgs: photos };
-  const mine = store.get(); mine.unshift(ad);
-  if (!store.set(mine)) { mine[0].imgs = []; if (!store.set(mine)) { toast("تعذّر الحفظ على هذا الجهاز"); return; } toast("حُفظ الإعلان دون الصور لضيق المساحة"); }
-  else toast("نُشر إعلانك");
-  if (C.whatsapp) window.open(waLink(C.whatsapp, `إعلان جديد في البياع\nالقسم: ${catName(ad.cat)}\nالعنوان: ${ad.title}\nالسعر: ${ad.price || "عند الاتصال"} ${C.currency}\nالمدينة: ${ad.city}\nالهاتف: ${ad.phone}\n${ad.desc}`), "_blank");
+  const cat = (document.querySelector("input[name=pcat]:checked") || {}).value;
+  const need = [[!cat, "اختر القسم"], [!$("#p-title").value.trim(), "اكتب عنوان الإعلان", "#p-title"], [!$("#p-name").value.trim(), "اكتب اسمك", "#p-name"],
+    [$("#p-phone").value.replace(/\D/g, "").length < 8, "اكتب رقم هاتف صحيحاً (8 أرقام)", "#p-phone"], [!$("#p-city").value, "اختر المدينة", "#p-city"]].find(x => x[0]);
+  if (need) { toast(need[1]); if (need[2]) $(need[2]).focus(); return; }
+  const ad = { id: "m" + Date.now(), cat, title: $("#p-title").value.trim(), price: Number($("#p-price").value) || 0, cond: $("#p-cond").value,
+    city: $("#p-city").value, area: $("#p-area").value.trim(), seller: $("#p-name").value.trim(), phone: $("#p-phone").value.replace(/\D/g, ""),
+    desc: $("#p-desc").value.trim(), date: new Date().toISOString().slice(0, 10), imgs: photos };
+  const m = mine(); m.unshift(ad);
+  if (!ls.set("bayya-mine", m)) { m[0].imgs = []; if (!ls.set("bayya-mine", m)) { toast("تعذّر الحفظ على هذا الجهاز"); return; } toast("حُفظ الإعلان دون الصور لضيق المساحة"); }
+  else toast("نُشر إعلانك بنجاح");
+  if (C.whatsapp) window.open(waLink(C.whatsapp, `إعلان جديد في البياع\nالقسم: ${catName(ad.cat)}\nالعنوان: ${ad.title}\nالسعر: ${ad.price ? num(ad.price) + " " + C.currency : "عند الاتصال"}\nالحالة: ${ad.cond || "-"}\nالمدينة: ${ad.city}${ad.area ? "، " + ad.area : ""}\nالمعلن: ${ad.seller}\nالهاتف: ${ad.phone}\n${ad.desc}`), "_blank");
+  ls.set("bayya-seller", { name: ad.seller, phone: ad.phone, city: ad.city });
   e.target.reset(); photos = []; $("#p-prev").innerHTML = "";
-  $("#post").close(); state.mine = true; state.cat = ""; renderCats(); render();
+  $("#dPost").close(); renderStatic(); go({ view: "mine", q: "", cat: "", city: "", cond: "", min: "", max: "", img: false });
 });
+function openPost() {
+  const s = ls.get("bayya-seller", null);
+  if (s) { if (!$("#p-name").value) $("#p-name").value = s.name || ""; if (!$("#p-phone").value) $("#p-phone").value = s.phone || ""; if (!$("#p-city").value) $("#p-city").value = s.city || ""; }
+  $("#dPost").showModal();
+}
 
-document.addEventListener("click", e => {
-  const t = e.target;
-  const chip = t.closest("[data-cat]"); if (chip) { state.cat = chip.dataset.cat; state.mine = false; renderCats(); render(); return; }
-  const c = t.closest(".card"); if (c) { openDetail(c.dataset.id); return; }
-  const del = t.closest("[data-del]"); if (del && confirm("حذف هذا الإعلان؟")) { store.set(store.get().filter(a => a.id !== del.dataset.del)); $("#detail").close(); renderCats(); render(); toast("حُذف الإعلان"); return; }
-  if (t.closest("[data-close]")) t.closest("dialog").close();
+document.addEventListener("click", async e => {
+  const t = e.target, q = s => t.closest(s);
+  let el;
+  if ((el = q("[data-fav]"))) { e.stopPropagation(); const id = el.dataset.fav, f = favs(); f.has(id) ? f.delete(id) : f.add(id); ls.set("bayya-favs", [...f]);
+    toast(f.has(id) ? "أُضيف إلى المفضلة" : "حُذف من المفضلة"); renderStatic(); render(); if ($("#dAd").open) openAd(id); return; }
+  if ((el = q("[data-post]"))) { openPost(); return; }
+  if ((el = q("[data-share]"))) { const url = location.href.split("#")[0] + "#ad-" + el.dataset.share, a = all().find(x => String(x.id) === el.dataset.share);
+    if (navigator.share) { try { await navigator.share({ title: a.title, url }); } catch {} } else { try { await navigator.clipboard.writeText(url); toast("نُسخ رابط الإعلان"); } catch { prompt("رابط الإعلان", url); } } return; }
+  if ((el = q("[data-del]"))) { if (confirm("حذف هذا الإعلان نهائياً؟")) { ls.set("bayya-mine", mine().filter(a => a.id !== el.dataset.del)); $("#dAd").close(); renderStatic(); render(); toast("حُذف الإعلان"); } return; }
+  if ((el = q("[data-gal]"))) { const a = all().find(x => String(x.id) === location.hash.slice(4)); if (a) { $("#galMain").innerHTML = `<img src="${esc(imgsOf(a)[+el.dataset.gal])}" alt="">`; $$("[data-gal]").forEach(b => b.setAttribute("aria-current", b === el)); } return; }
+  if ((el = q(".card"))) { openAd(el.dataset.id); return; }
+  if ((el = q("[data-cat]"))) { $("#dAd").open && $("#dAd").close(); go({ cat: el.dataset.cat, view: "" }); return; }
+  if ((el = q("[data-city]"))) { go({ city: el.dataset.city, view: "" }); return; }
+  if ((el = q("[data-view]"))) { go({ view: S.view === el.dataset.view ? "" : el.dataset.view, q: "", cat: "", city: "", cond: "", min: "", max: "", img: false }); return; }
+  if ((el = q("[data-nav=home]"))) { reset(); scrollTo({ top: 0, behavior: "smooth" }); return; }
+  if ((el = q("[data-unchip]"))) { const k = el.dataset.unchip; go(k === "price" ? { min: "", max: "" } : { [k]: k === "img" ? false : "" }, false); if (k === "q") $$("input[name=q]").forEach(i => i.value = ""); $("#fmin").value = S.min; $("#fmax").value = S.max; return; }
+  if ((el = q("[data-reset]")) || t.id === "freset") { reset(false); return; }
+  if ((el = q("#fcond button"))) { go({ cond: el.dataset.c }, false); return; }
+  if (t.id === "moreBtn") { S.limit += 12; render(); return; }
+  if (t.id === "openFilters" || q("#openFilters")) { $("#filters").classList.add("open"); return; }
+  if (q("[data-closefilters]")) { $("#filters").classList.remove("open"); return; }
+  if (q("[data-close]")) { t.closest("dialog").close(); return; }
   if (t.tagName === "DIALOG") t.close();
 });
-$("#postBtn").onclick = () => $("#post").showModal();
-$("#mineBtn").onclick = () => { state.mine = !state.mine; state.cat = ""; renderCats(); render(); };
-$("#searchForm").onsubmit = e => { e.preventDefault(); state.q = $("#q").value; state.city = $("#city").value; render(); $("#grid").scrollIntoView({ behavior: "smooth", block: "start" }); };
-$("#q").oninput = e => { state.q = e.target.value; render(); };
-$("#city").onchange = e => { state.city = e.target.value; render(); };
-$("#sort").onchange = e => { state.sort = e.target.value; render(); };
+document.addEventListener("keydown", e => { if (e.key === "Enter" && e.target.classList?.contains("card")) openAd(e.target.dataset.id); });
+function reset(scroll) { $$("input[name=q]").forEach(i => i.value = ""); $("#fmin").value = $("#fmax").value = ""; $("#fimg").checked = false; go({ q: "", cat: "", city: "", cond: "", min: "", max: "", img: false, view: "" }, scroll); }
+$("#dAd").addEventListener("close", () => { if (location.hash.startsWith("#ad-")) history.replaceState(null, "", location.pathname + location.search); });
+$$("[data-search]").forEach(f => {
+  f.addEventListener("submit", e => { e.preventDefault(); go({ q: f.q.value.trim(), city: f.city.value, view: "" }); });
+  f.city.addEventListener("change", () => go({ city: f.city.value, view: "" }));
+});
+$("#fcats").addEventListener("change", e => go({ cat: e.target.value, view: "" }, false));
+$("#fcity").addEventListener("change", e => go({ city: e.target.value }, false));
+let pt; [["#fmin", "min"], ["#fmax", "max"]].forEach(([s, k]) => $(s).addEventListener("input", e => { clearTimeout(pt); pt = setTimeout(() => go({ [k]: e.target.value }, false), 350); }));
+$("#fimg").addEventListener("change", e => go({ img: e.target.checked }, false));
+$("#sort").addEventListener("change", e => go({ sort: e.target.value }, false));
+$("#cnav").innerHTML = [{ id: "", name: "كل الإعلانات" }, ...C.categories].map(c => `<button type="button" data-cat="${c.id}">${ic(c.id || "all")}${esc(c.name)}</button>`).join("");
+
+// install prompt
+let deferred; addEventListener("beforeinstallprompt", e => { e.preventDefault(); deferred = e; $("#installTop").hidden = false; });
+async function install() { if (deferred) { deferred.prompt(); deferred = null; } else toast(/iphone|ipad/i.test(navigator.userAgent) ? "في سفاري: زر المشاركة ثم «إضافة إلى الشاشة الرئيسية»" : "من قائمة المتصفح اختر «تثبيت التطبيق» أو «إضافة إلى الشاشة الرئيسية»"); }
+$("#installTop").onclick = install; $("#installBand").onclick = install;
+
 init();
+if (location.hash.startsWith("#ad-")) openAd(location.hash.slice(4));
 if ("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js").catch(() => {});
 </script>
 </body>
