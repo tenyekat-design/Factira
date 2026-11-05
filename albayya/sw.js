@@ -1,5 +1,5 @@
 /* البياع: يحفظ ملفات الموقع ليعمل دون إنترنت. غيّر VERSION عند كل نشر جديد (مثلاً بعد تعديل ads.js). */
-const VERSION = "bayya-v1";
+const VERSION = "bayya-v2";
 const FILES = ["./", "./index.html", "./config.js", "./ads.js", "./manifest.webmanifest",
   "./icons/icon.svg", "./icons/icon-192.png", "./icons/icon-512.png", "./icons/maskable-512.png", "./icons/apple-touch-icon.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(VERSION).then(c => c.addAll(FILES)).then(() => self.skipWaiting())); });

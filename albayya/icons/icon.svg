@@ -4,7 +4,7 @@
       <stop offset="0" stop-color="#f9cf63"/><stop offset="1" stop-color="#ef9f3a"/>
     </linearGradient>
     <linearGradient id="robe" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#4b8fe6"/><stop offset="1" stop-color="#2f6fc8"/>
+      <stop offset="0" stop-color="#6aaaf0"/><stop offset="1" stop-color="#3a7fd6"/>
     </linearGradient>
     <linearGradient id="wood" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#a8642d"/><stop offset="1" stop-color="#7d4520"/>
@@ -13,7 +13,7 @@
   </defs>
   <g clip-path="url(#tile)">
     <rect width="512" height="512" fill="url(#sky)"/>
-    <circle cx="420" cy="250" r="70" fill="#fde39a" opacity=".55"/>
+    <circle cx="104" cy="236" r="62" fill="#fde39a" opacity=".55"/>
     <!-- dunes -->
     <path d="M0 330 Q120 290 250 325 T512 315 V512 H0Z" fill="#e88d2f" opacity=".55"/>
     <!-- stall poles -->
@@ -21,37 +21,41 @@
     <rect x="434" y="120" width="16" height="300" rx="6" fill="#6e3b18"/>
     <!-- seller -->
     <g>
-      <!-- robe (daraa) -->
-      <path d="M200 262 Q256 248 312 262 L392 400 H120 Z" fill="url(#robe)"/>
-      <!-- raised arm (sleeve) -->
-      <path d="M300 268 Q350 250 372 200 L400 214 Q384 280 318 306 Z" fill="#3a7ed8"/>
-      <!-- open hand -->
-      <ellipse cx="388" cy="198" rx="18" ry="20" fill="#8a5636"/>
-      <rect x="367" y="170" width="8" height="24" rx="4" fill="#8a5636"/>
-      <rect x="377" y="160" width="8" height="28" rx="4" fill="#8a5636"/>
-      <rect x="387" y="158" width="8" height="30" rx="4" fill="#8a5636"/>
-      <rect x="397" y="163" width="8" height="26" rx="4" fill="#8a5636"/>
-      <rect x="404" y="188" width="8" height="20" rx="4" transform="rotate(-35 408 198)" fill="#8a5636"/>
-      <!-- embroidered chest pocket -->
-      <path d="M232 292 H280 V330 Q256 344 232 330 Z" fill="none" stroke="#ffd45a" stroke-width="5" stroke-linejoin="round"/>
-      <path d="M244 306 H268 M244 318 H268" stroke="#ffd45a" stroke-width="4" stroke-linecap="round"/>
-      <!-- neck opening -->
-      <path d="M238 258 Q256 280 274 258" fill="#f4f6fb"/>
+      <!-- daraa: wide robe hanging from the shoulders, its right side lifted by the raised arm -->
+      <path d="M228 256 Q188 260 166 286 L92 404 H428 L404 236 Q372 252 334 268 Q306 258 284 256 Z" fill="url(#robe)"/>
+      <path d="M166 286 Q150 340 140 404 M196 290 Q186 350 184 404 M330 280 Q352 330 372 404 M372 262 Q392 320 412 404" fill="none" stroke="#2c69b8" stroke-width="4" stroke-linecap="round" opacity=".7"/>
+      <!-- forearm and open hand -->
+      <path d="M368 238 L380 200 L398 206 L390 244 Z" fill="#edc29a"/>
+      <path d="M362 246 Q384 226 404 236 L400 254 Q384 248 368 258 Z" fill="#f4f7fb"/>
+      <ellipse cx="389" cy="196" rx="17" ry="19" fill="#edc29a"/>
+      <rect x="369" y="170" width="8" height="22" rx="4" fill="#edc29a"/>
+      <rect x="378" y="160" width="8" height="28" rx="4" fill="#edc29a"/>
+      <rect x="387" y="158" width="8" height="30" rx="4" fill="#edc29a"/>
+      <rect x="396" y="163" width="8" height="26" rx="4" fill="#edc29a"/>
+      <rect x="403" y="187" width="8" height="20" rx="4" transform="rotate(-35 407 197)" fill="#edc29a"/>
+      <!-- white undershirt at the neck and gold embroidery -->
+      <path d="M234 256 L256 298 L278 256 Z" fill="#f4f7fb"/>
+      <path d="M230 256 L256 304 L282 256" fill="none" stroke="#f2c230" stroke-width="5" stroke-linejoin="round"/>
+      <path d="M256 304 V350" stroke="#f2c230" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 7"/>
+      <path d="M276 306 H312 V338 Q294 350 276 338 Z" fill="none" stroke="#f2c230" stroke-width="4.5" stroke-linejoin="round"/>
+      <path d="M284 318 H304 M284 328 H304" stroke="#f2c230" stroke-width="3.5" stroke-linecap="round"/>
       <!-- head -->
-      <circle cx="256" cy="212" r="42" fill="#8a5636"/>
-      <!-- beard -->
-      <path d="M216 214 Q218 262 256 264 Q294 262 296 214 Q290 240 272 242 Q256 234 240 242 Q222 240 216 214Z" fill="#2a1a10"/>
-      <!-- face -->
-      <circle cx="241" cy="208" r="5" fill="#2a1a10"/>
-      <circle cx="271" cy="208" r="5" fill="#2a1a10"/>
-      <path d="M244 226 Q256 220 268 226" fill="none" stroke="#2a1a10" stroke-width="5" stroke-linecap="round"/>
-      <path d="M246 238 Q256 244 266 238" fill="none" stroke="#e7b48f" stroke-width="3.5" stroke-linecap="round"/>
-      <!-- turban (wrapped hawli) with tail over the shoulder -->
-      <path d="M214 196 Q202 236 194 266 Q192 300 212 318 L230 304 Q214 286 216 262 Q218 232 224 200Z" fill="#1d2552"/>
-      <path d="M208 198 Q204 146 256 140 Q308 146 304 198 Q284 184 256 186 Q228 184 208 198Z" fill="#1d2552"/>
-      <path d="M212 184 Q250 160 300 176" fill="none" stroke="#33408a" stroke-width="6" stroke-linecap="round"/>
-      <path d="M214 170 Q256 146 294 160" fill="none" stroke="#33408a" stroke-width="6" stroke-linecap="round"/>
-      <path d="M210 194 Q256 178 302 194" fill="none" stroke="#141a3d" stroke-width="5" stroke-linecap="round"/>
+      <circle cx="256" cy="210" r="40" fill="#edc29a"/>
+      <!-- eyes and brows in the gap of the litham -->
+      <path d="M233 200 Q241 195 249 199 M263 199 Q271 195 279 200" fill="none" stroke="#5a3a22" stroke-width="3.5" stroke-linecap="round"/>
+      <ellipse cx="241" cy="208" rx="4.5" ry="4" fill="#2a1a10"/>
+      <ellipse cx="271" cy="208" rx="4.5" ry="4" fill="#2a1a10"/>
+      <!-- litham: indigo hawli covering nose, mouth and neck -->
+      <path d="M210 214 Q256 226 302 214 L308 246 Q304 276 256 280 Q208 276 204 246 Z" fill="#1f2b6b"/>
+      <path d="M210 230 Q256 246 304 228 M208 248 Q256 266 306 246 M226 270 Q258 262 292 268" fill="none" stroke="#33449a" stroke-width="4" stroke-linecap="round"/>
+      <path d="M210 214 Q256 226 302 214" fill="none" stroke="#141c4a" stroke-width="4" stroke-linecap="round"/>
+      <!-- tail of the hawli over the left shoulder -->
+      <path d="M212 236 Q198 270 186 300 Q178 326 190 344 L212 336 Q204 318 212 296 Q222 268 228 250 Z" fill="#1f2b6b"/>
+      <path d="M200 280 Q196 310 200 336" fill="none" stroke="#33449a" stroke-width="3.5" stroke-linecap="round"/>
+      <!-- turban wraps -->
+      <path d="M212 200 Q208 144 256 138 Q306 144 300 200 Q282 190 256 190 Q230 190 212 200Z" fill="#1f2b6b"/>
+      <path d="M216 172 Q256 150 298 168 M214 186 Q252 164 300 184" fill="none" stroke="#33449a" stroke-width="5" stroke-linecap="round"/>
+      <path d="M212 198 Q256 186 300 198" fill="none" stroke="#141c4a" stroke-width="4" stroke-linecap="round"/>
     </g>
     <!-- awning -->
     <path d="M40 92 H472 V150 Q445 176 418 150 Q391 176 364 150 Q337 176 310 150 Q283 176 256 150 Q229 176 202 150 Q175 176 148 150 Q121 176 94 150 Q67 176 40 150 Z" fill="#fff3d6"/>
