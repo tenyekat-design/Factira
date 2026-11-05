@@ -17,6 +17,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600;700&display=swap">
 <script src="config.js"></script>
+<script src="catalog.js"></script>
 <script src="ads.js"></script>
 <style>
 :root {
@@ -126,6 +127,7 @@ section.blk { padding: 40px 0 8px; scroll-margin-top: 130px; }
 
 /* browse layout */
 .browse { display: grid; grid-template-columns: 260px 1fr; gap: 24px; align-items: start; }
+.browse > div { min-width: 0; }
 .filters { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 6px 18px 18px; position: sticky; top: 140px; }
 .filters h3 { font-size: 15px; margin: 14px 0 8px; color: var(--navy); }
 .filters .opt { display: flex; align-items: center; gap: 8px; padding: 5px 0; cursor: pointer; font-size: 14px; color: var(--ink-2); }
@@ -171,6 +173,21 @@ section.blk { padding: 40px 0 8px; scroll-margin-top: 130px; }
 .card .ft { display: flex; justify-content: space-between; gap: 8px; color: var(--muted); font-size: 12.5px; border-top: 1px solid var(--line-2); margin-top: 8px; padding-top: 8px; }
 .card .ft span { display: inline-flex; align-items: center; gap: 4px; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .card .ft svg { width: 14px; height: 14px; }
+.card .tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; max-height: 50px; overflow: hidden; }
+.card .tags span { background: var(--line-2); color: var(--ink-2); border-radius: 6px; padding: 0 7px; font-size: 12px; line-height: 21px; white-space: nowrap; }
+.nego { display: inline-block; font-size: 11.5px; font-weight: 500; color: #9a6a0c; background: var(--sand-soft); border-radius: 6px; padding: 0 7px; margin-inline-start: 6px; vertical-align: 3px; }
+.subs { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin: -2px 0 14px; padding-bottom: 2px; }
+.subs::-webkit-scrollbar { display: none; }
+.subs button { flex: none; border: 1px solid var(--line); background: var(--surface); border-radius: 10px; padding: 6px 12px; cursor: pointer; font-size: 13.5px; color: var(--ink-2); }
+.subs button span { color: var(--muted); font-size: 12px; margin-inline-start: 4px; }
+.subs button[aria-pressed="true"] { background: var(--navy); border-color: var(--navy); color: #fff; }
+.subs button[aria-pressed="true"] span { color: #c8cce4; }
+#fdyn select, #fdyn input { width: 100%; border: 1px solid var(--line); border-radius: 10px; height: 40px; padding: 0 10px; background: var(--surface); }
+#fdyn select:disabled { background: var(--line-2); color: var(--muted); }
+.pf { display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; }
+.pf .full { grid-column: 1 / -1; }
+.chk { display: flex; align-items: center; gap: 8px; font-size: 14px; margin: -4px 0 14px; cursor: pointer; }
+.chk input { width: 18px; height: 18px; accent-color: var(--green); }
 .cond { display: inline-block; font-size: 11.5px; border-radius: 6px; padding: 0 7px; background: var(--line-2); color: var(--ink-2); margin-inline-start: 6px; vertical-align: 2px; font-weight: 500; }
 .cond.new { background: var(--green-soft); color: var(--green); }
 .empty { grid-column: 1 / -1; text-align: center; padding: 56px 16px; background: var(--surface); border: 1px dashed var(--line); border-radius: var(--r); color: var(--muted); }
@@ -337,11 +354,12 @@ dialog::backdrop { background: rgba(14,17,40,.6); backdrop-filter: blur(2px); }
   .safety { grid-template-columns: 1fr; }
   .specs { grid-template-columns: 1fr; }
   .specs div:nth-child(odd) { border-inline-end: 0; }
-  .row2 { grid-template-columns: 1fr; gap: 0; }
+  .row2, .pf { grid-template-columns: 1fr; gap: 0; }
   .db { padding: 16px; }
   .logo small { display: none; }
   .sh h2 { font-size: 20px; }
 }
+@media (min-width: 861px) { .ffab { display: none !important; } }
 .msearch { display: none; padding: 0 16px 12px; background: var(--surface); gap: 8px; border-bottom: 1px solid var(--line); }
 .msearch .q { flex: 1; display: flex; align-items: center; gap: 8px; background: var(--line-2); border-radius: 11px; padding: 0 12px; height: 44px; }
 .msearch .q svg { width: 19px; height: 19px; color: var(--muted); }
@@ -413,7 +431,7 @@ dialog::backdrop { background: rgba(14,17,40,.6); backdrop-filter: blur(2px); }
   <div class="browse">
     <aside class="filters" id="filters" aria-label="تصفية النتائج">
       <div style="display:flex;align-items:center;justify-content:space-between"><h3 style="font-size:17px">تصفية النتائج</h3><button class="x ffab" type="button" data-closefilters aria-label="إغلاق"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
-      <h3>القسم</h3><div id="fcats"></div>
+      <h3>القسم</h3><div id="fcats"></div><div id="fdyn"></div>
       <h3>المدينة</h3><select id="fcity" aria-label="المدينة"></select>
       <h3>السعر (أوقية)</h3><div class="pr"><input id="fmin" type="number" min="0" inputmode="numeric" placeholder="من" aria-label="السعر من"><input id="fmax" type="number" min="0" inputmode="numeric" placeholder="إلى" aria-label="السعر إلى"></div>
       <h3>الحالة</h3><div class="seg" id="fcond"><button type="button" data-c="" aria-pressed="true">الكل</button><button type="button" data-c="جديد" aria-pressed="false">جديد</button><button type="button" data-c="مستعمل" aria-pressed="false">مستعمل</button></div>
@@ -427,7 +445,7 @@ dialog::backdrop { background: rgba(14,17,40,.6); backdrop-filter: blur(2px); }
         <button class="btn btn-out btn-sm ffab" type="button" id="openFilters"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg>تصفية</button>
         <select id="sort" aria-label="الترتيب"><option value="new">الأحدث أولاً</option><option value="low">السعر: من الأقل</option><option value="high">السعر: من الأعلى</option></select>
       </div>
-      <div class="chips" id="chips"></div>
+      <div class="subs" id="subs" hidden></div><div class="chips" id="chips"></div>
       <div class="grid" id="grid"></div>
       <div class="more-wrap" id="moreWrap" hidden><button class="btn btn-out" type="button" id="moreBtn">عرض المزيد</button></div>
     </div>
@@ -476,13 +494,16 @@ dialog::backdrop { background: rgba(14,17,40,.6); backdrop-filter: blur(2px); }
 <dialog id="dPost" class="narrow">
   <div class="dh"><h3>أضف إعلانك مجاناً</h3><button class="x" data-close aria-label="إغلاق"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
   <form class="db" id="postForm" novalidate>
-    <fieldset class="fs"><legend>1. اختر القسم</legend><div class="catpick" id="pcats"></div></fieldset>
+    <fieldset class="fs"><legend>1. اختر القسم</legend><div class="catpick" id="pcats"></div>
+      <div class="field" id="p-subw" hidden style="margin-top:14px"><label for="p-sub">النوع <i>*</i></label><select id="p-sub"></select></div></fieldset>
     <fieldset class="fs" style="margin-top:16px"><legend>2. تفاصيل الإعلان</legend>
       <div class="field"><label for="p-title">العنوان <i>*</i></label><input id="p-title" required maxlength="80" placeholder="مثال: تويوتا كورولا 2012 بحالة جيدة"></div>
       <div class="row2">
         <div class="field"><label for="p-price">السعر بالأوقية</label><input id="p-price" type="number" min="0" inputmode="numeric" placeholder="فارغ = السعر عند الاتصال"></div>
-        <div class="field"><label for="p-cond">الحالة</label><select id="p-cond"><option value="">لا ينطبق</option><option>جديد</option><option>مستعمل</option></select></div>
+        <div class="field" id="p-condw"><label for="p-cond">الحالة</label><select id="p-cond"><option value="">اختر</option><option>جديد</option><option>مستعمل</option></select></div>
       </div>
+      <label class="chk"><input type="checkbox" id="p-nego"> السعر قابل للتفاوض</label>
+      <div id="p-specw" hidden><b style="display:block;color:var(--navy);margin:2px 0 10px">المواصفات</b><div class="pf" id="p-fields"></div></div>
       <div class="field"><label for="p-desc">الوصف</label><textarea id="p-desc" rows="4" maxlength="1000" placeholder="الحالة، المواصفات، مكان المعاينة..."></textarea></div>
       <label class="drop" for="p-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h3l2-3h6l2 3h3v12H4z"/><circle cx="12" cy="13" r="3.5"/></svg><b style="color:var(--ink)">أضف صوراً</b><br><span style="font-size:13px">حتى 4 صور. الإعلانات بالصور تُباع أسرع.</span><input id="p-img" type="file" accept="image/*" multiple></label>
       <div class="photos" id="p-prev"></div>
@@ -581,10 +602,17 @@ const mine = () => ls.get("bayya-mine", []);
 const favs = () => new Set(ls.get("bayya-favs", []).map(String));
 const all = () => [...mine().map(a => ({ ...a, mine: true })), ...ADS];
 const imgsOf = a => a.imgs || (a.img ? [a.img] : []);
-const S = { q: "", city: "", cat: "", cond: "", min: "", max: "", img: false, sort: "new", view: "", limit: 12 };
+const CAT = window.BAYYA_CATALOG || {};
+const fieldsFor = (cat, sub) => ((CAT[cat] || {}).fields || []).filter(f => !f.subs || !sub || f.subs.includes(sub));
+const optsOf = (f, vals) => f.dep ? ((f.map || {})[vals[f.dep]] || []) : (f.o || []);
+const fmtVal = (f, v) => v === undefined || v === null || v === "" ? "" : (f.t === "number" ? num(v) : String(v)) + (f.unit ? " " + f.unit : "");
+const subCount = (cat, sub) => all().filter(a => a.cat === cat && a.sub === sub).length;
+const S = { q: "", city: "", cat: "", sub: "", f: {}, cond: "", min: "", max: "", img: false, sort: "new", view: "", limit: 12 };
+const CLEAR = { q: "", cat: "", sub: "", f: {}, city: "", cond: "", min: "", max: "", img: false };
 
 function toast(t) { const el = $("#toast"); el.querySelector("span").textContent = t; el.classList.add("on"); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove("on"), 3000); }
 
+const tagsOf = a => fieldsFor(a.cat, a.sub).filter(f => f.card && f.k !== "brand" && f.k !== "model" && a.f && a.f[f.k] !== undefined && a.f[f.k] !== "").slice(0, 4).map(f => fmtVal(f, a.f[f.k]));
 function card(a, fv = favs()) {
   const im = imgsOf(a), on = fv.has(String(a.id));
   return `<article class="card" data-id="${esc(a.id)}" tabindex="0" aria-label="${esc(a.title)}">
@@ -592,9 +620,10 @@ function card(a, fv = favs()) {
       ${a.mine ? '<span class="pill mine">إعلاني</span>' : a.featured ? `<span class="pill feat">${ic("star", 2.4)}مميز</span>` : ""}
       <button class="fav" type="button" data-fav="${esc(a.id)}" aria-pressed="${on}" aria-label="أضف إلى المفضلة">${ic("heart", 2)}</button>
       ${im.length > 1 ? `<span class="nimg">${ic("cam", 2)}${im.length}</span>` : ""}</div>
-    <div class="bd"><span class="cat">${esc(catName(a.cat))}${a.cond ? `<span class="cond ${a.cond === "جديد" ? "new" : ""}">${esc(a.cond)}</span>` : ""}</span>
+    <div class="bd"><span class="cat">${esc(a.sub || catName(a.cat))}${a.cond ? `<span class="cond ${a.cond === "جديد" ? "new" : ""}">${esc(a.cond)}</span>` : ""}</span>
       <h3>${esc(a.title)}</h3>
-      <div class="pr ${a.price ? "" : "ask"}">${a.price ? priceHTML(a) : askText(a)}</div>
+      <div class="pr ${a.price ? "" : "ask"}">${a.price ? priceHTML(a) : askText(a)}${a.nego && a.price ? '<span class="nego">قابل للتفاوض</span>' : ""}</div>
+      ${tagsOf(a).length ? `<div class="tags">${tagsOf(a).map(t => `<span>${esc(t)}</span>`).join("")}</div>` : ""}
       <div class="ft"><span>${ic("pin", 2)}${esc(a.city)}${a.area ? "، " + esc(a.area) : ""}</span><span>${ic("clock", 2)}${ago(a.date)}</span></div></div></article>`;
 }
 
@@ -624,12 +653,35 @@ function renderStatic() {
   const n = fv.size; $$("[data-favn]").forEach(b => { b.hidden = !n; b.textContent = n; });
 }
 
+function matchF(a) {
+  return Object.entries(S.f).every(([k, v]) => {
+    const x = (a.f || {})[k];
+    if (v && typeof v === "object") { if (!v.min && !v.max) return true; if (x === undefined || x === "") return false; const n = parseFloat(x); return (!v.min || n >= +v.min) && (!v.max || n <= +v.max); }
+    return !v || x === v;
+  });
+}
+function renderDyn() {
+  const box = $("#fdyn");
+  if (!S.cat || !CAT[S.cat]) { box.innerHTML = ""; return; }
+  const c = CAT[S.cat];
+  let h = `<h3>النوع</h3><select data-fsub aria-label="النوع"><option value="">كل الأنواع</option>${c.subs.map(x => `<option ${S.sub === x ? "selected" : ""}>${esc(x)}</option>`).join("")}</select>`;
+  fieldsFor(S.cat, S.sub).filter(f => f.filter).forEach(f => {
+    const v = S.f[f.k];
+    if (f.filter === "range") {
+      h += `<h3>${esc(f.l)}${f.unit ? ` (${esc(f.unit)})` : ""}</h3><div class="pr"><input type="number" inputmode="numeric" data-fr="${f.k}" data-end="min" placeholder="من" value="${esc(v?.min || "")}" aria-label="${esc(f.l)} من"><input type="number" inputmode="numeric" data-fr="${f.k}" data-end="max" placeholder="إلى" value="${esc(v?.max || "")}" aria-label="${esc(f.l)} إلى"></div>`;
+    } else {
+      const o = optsOf(f, S.f), dis = f.dep && !S.f[f.dep];
+      h += `<h3>${esc(f.l)}</h3><select data-fk="${f.k}" aria-label="${esc(f.l)}" ${dis ? "disabled" : ""}><option value="">${dis ? "اختر " + esc((fieldsFor(S.cat).find(x => x.k === f.dep) || {}).l || "") + " أولاً" : "الكل"}</option>${o.map(x => `<option ${v === x ? "selected" : ""}>${esc(x)}</option>`).join("")}</select>`;
+    }
+  });
+  box.innerHTML = h;
+}
 function filtered() {
   const q = S.q.trim().toLowerCase(), fv = favs();
   let list = all().filter(a => (S.view !== "mine" || a.mine) && (S.view !== "favs" || fv.has(String(a.id)))
-    && (!S.cat || a.cat === S.cat) && (!S.city || a.city === S.city) && (!S.cond || a.cond === S.cond)
+    && (!S.cat || a.cat === S.cat) && (!S.sub || a.sub === S.sub) && matchF(a) && (!S.city || a.city === S.city) && (!S.cond || a.cond === S.cond)
     && (!S.min || (a.price && a.price >= +S.min)) && (!S.max || (a.price && a.price <= +S.max)) && (!S.img || imgsOf(a).length)
-    && (!q || [a.title, a.desc, a.area, a.city, catName(a.cat), ...Object.values(a.specs || {})].join(" ").toLowerCase().includes(q)));
+    && (!q || [a.title, a.desc, a.area, a.city, catName(a.cat), a.sub, ...Object.values(a.f || {}), ...Object.values(a.specs || {})].join(" ").toLowerCase().includes(q)));
   const cmp = { new: (a, b) => b.date.localeCompare(a.date) || (b.mine ? 1 : 0) - (a.mine ? 1 : 0),
     low: (a, b) => (a.price || Infinity) - (b.price || Infinity), high: (a, b) => (b.price || 0) - (a.price || 0) };
   return list.sort(cmp[S.sort]);
@@ -637,7 +689,7 @@ function filtered() {
 
 function render() {
   const list = filtered(), fv = favs();
-  $("#ltitle").textContent = S.view === "mine" ? "إعلاناتي" : S.view === "favs" ? "المفضلة" : S.q ? `نتائج البحث عن «${S.q}»` : S.cat ? catName(S.cat) : "أحدث الإعلانات";
+  $("#ltitle").textContent = S.view === "mine" ? "إعلاناتي" : S.view === "favs" ? "المفضلة" : S.q ? `نتائج البحث عن «${S.q}»` : S.sub ? S.sub : S.cat ? catName(S.cat) : "أحدث الإعلانات";
   $("#count").textContent = `${num(list.length)} إعلان`;
   $("#grid").innerHTML = list.length ? list.slice(0, S.limit).map(a => card(a, fv)).join("") : `<div class="empty"><img src="icons/icon-192.png" alt="">${
     S.view === "mine" ? `<b>لم تنشر أي إعلان بعد</b>ابدأ البيع الآن، النشر مجاني.<br><button class="btn btn-green" type="button" data-post style="margin-top:14px">أضف إعلان</button>`
@@ -652,12 +704,18 @@ function render() {
   $$("#cnav button").forEach(b => b.setAttribute("aria-current", !S.view && b.dataset.cat === S.cat));
   const chips = [];
   if (S.q) chips.push(["q", `«${S.q}»`]); if (S.cat) chips.push(["cat", catName(S.cat)]); if (S.city) chips.push(["city", S.city]);
+  if (S.sub) chips.push(["sub", S.sub]);
+  for (const [k, v] of Object.entries(S.f)) { const f = fieldsFor(S.cat).find(x => x.k === k); if (!f || !v) continue;
+    if (typeof v === "object") { if (v.min || v.max) chips.push(["f:" + k, `${f.l}: ${v.min ? "من " + num(v.min) : ""} ${v.max ? "إلى " + num(v.max) : ""}`.trim()]); } else chips.push(["f:" + k, `${f.l}: ${v}`]); }
+  const sb = $("#subs"); sb.hidden = !S.cat || !CAT[S.cat] || !!S.view;
+  if (!sb.hidden) sb.innerHTML = [`<button type="button" data-sub="" aria-pressed="${!S.sub}">الكل</button>`, ...CAT[S.cat].subs.map(x => `<button type="button" data-sub="${esc(x)}" aria-pressed="${S.sub === x}">${esc(x)}<span>${subCount(S.cat, x)}</span></button>`)].join("");
   if (S.cond) chips.push(["cond", S.cond]); if (S.min || S.max) chips.push(["price", `${S.min ? "من " + num(S.min) : ""} ${S.max ? "إلى " + num(S.max) : ""}`.trim()]); if (S.img) chips.push(["img", "بصور"]);
   $("#chips").innerHTML = chips.map(([k, t]) => `<button type="button" data-unchip="${k}">${esc(t)}${ic("x", 2.4)}</button>`).join("");
   $$(".bnav [data-view], .bnav [data-nav]").forEach(b => b.classList.toggle("on", b.dataset.nav ? !S.view : b.dataset.view === S.view));
 }
-function go(patch, scroll = true) {
-  Object.assign(S, { limit: 12 }, patch); render();
+function go(patch, scroll = true, dyn = true) {
+  if ("cat" in patch && patch.cat !== S.cat && !("sub" in patch)) { patch.sub = ""; patch.f = {}; }
+  Object.assign(S, { limit: 12 }, patch); render(); if (dyn) renderDyn();
   $("#home").hidden = !!(S.view || S.q || S.cat || S.city);
   if (scroll) $("#browse").scrollIntoView({ behavior: "smooth", block: "start" });
 }
@@ -666,9 +724,10 @@ function waLink(phone, text) { let p = String(phone).replace(/\D/g, ""); if (p.l
 function openAd(id) {
   const list = all(), a = list.find(x => String(x.id) === String(id)); if (!a) return;
   const im = imgsOf(a), tel = String(a.phone || "").replace(/\D/g, ""), on = favs().has(String(a.id));
-  const sim = list.filter(x => x.cat === a.cat && x.id !== a.id).slice(0, 4);
-  const specs = { "القسم": catName(a.cat), ...(a.cond ? { "الحالة": a.cond } : {}), "المدينة": a.city + (a.area ? "، " + a.area : ""), ...(a.specs || {}), "رقم الإعلان": String(a.id).replace(/^m/, "") };
-  $("#crumb").textContent = `البياع ‹ ${catName(a.cat)} ‹ ${a.city}`;
+  const sim = list.filter(x => x.cat === a.cat && x.id !== a.id).sort((x, y) => (y.sub === a.sub) - (x.sub === a.sub)).slice(0, 4);
+  const fs = {}; fieldsFor(a.cat, a.sub).forEach(f => { const v = fmtVal(f, (a.f || {})[f.k]); if (v) fs[f.l] = v; });
+  const specs = { "القسم": catName(a.cat), ...(a.sub ? { "النوع": a.sub } : {}), ...(a.cond ? { "الحالة": a.cond } : {}), ...fs, ...(a.specs || {}), ...(a.price && a.nego ? { "السعر": "قابل للتفاوض" } : {}), "المدينة": a.city + (a.area ? "، " + a.area : ""), "رقم الإعلان": String(a.id).replace(/^m/, "") };
+  $("#crumb").textContent = `البياع ‹ ${catName(a.cat)}${a.sub ? " ‹ " + a.sub : ""} ‹ ${a.city}`;
   $("#adBody").innerHTML = `<div class="ad">
     <div class="a-gal"><div class="gal"><div class="main" id="galMain">${im[0] ? `<img src="${esc(im[0])}" alt="${esc(a.title)}">` : art(a)}</div>
       ${im.length > 1 ? `<div class="th">${im.map((s, i) => `<button type="button" data-gal="${i}" aria-current="${!i}"><img src="${esc(s)}" alt="صورة ${i + 1}"></button>`).join("")}</div>` : ""}</div></div>
@@ -677,7 +736,8 @@ function openAd(id) {
     <div class="a-info">
       ${a.featured ? `<span class="pill feat" style="position:static;display:inline-flex;margin-bottom:8px">${ic("star", 2.4)}مميز</span>` : ""}
       <h2>${esc(a.title)}</h2>
-      <div class="dprice">${a.price ? priceHTML(a) : `<span style="font-size:20px;color:var(--navy)">${askText(a)}</span>`}</div>
+      <div class="dprice">${a.price ? priceHTML(a) : `<span style="font-size:20px;color:var(--navy)">${askText(a)}</span>`}${a.nego && a.price ? '<span class="nego">قابل للتفاوض</span>' : ""}</div>
+      ${tagsOf(a).length ? `<div class="dmeta" style="margin:-4px 0 10px">${tagsOf(a).map(t => `<span style="background:var(--line-2);border-radius:6px;padding:0 8px;color:var(--ink-2)">${esc(t)}</span>`).join("")}</div>` : ""}
       <div class="dmeta"><span>${ic("pin", 2)}${esc(a.city)}${a.area ? "، " + esc(a.area) : ""}</span><span>${ic("clock", 2)}نُشر ${ago(a.date)}</span></div>
       <div class="seller"><div class="who"><span class="av">${esc((a.seller || "؟").trim().charAt(0))}</span><span><b>${esc(a.seller || "معلن")}</b><span>${a.mine ? "هذا إعلانك" : "معلن على البياع"}</span></span></div>
         ${tel ? `<div class="cta"><a class="btn btn-navy" href="tel:${tel.length === 8 ? "+222" + tel : "+" + tel}">${ic("phone", 2)}اتصال</a><a class="btn btn-green" target="_blank" rel="noopener" href="${waLink(tel, "السلام عليكم، رأيت إعلانك في البياع: " + a.title)}">${WA}واتساب</a></div>`
@@ -705,20 +765,45 @@ $("#p-img").addEventListener("change", async e => {
 $("#postForm").addEventListener("submit", e => {
   e.preventDefault();
   const cat = (document.querySelector("input[name=pcat]:checked") || {}).value;
-  const need = [[!cat, "اختر القسم"], [!$("#p-title").value.trim(), "اكتب عنوان الإعلان", "#p-title"], [!$("#p-name").value.trim(), "اكتب اسمك", "#p-name"],
+  const need = [[!cat, "اختر القسم"], [cat && CAT[cat] && !$("#p-sub").value, "اختر النوع", "#p-sub"], [!$("#p-title").value.trim(), "اكتب عنوان الإعلان", "#p-title"], [!$("#p-name").value.trim(), "اكتب اسمك", "#p-name"],
     [$("#p-phone").value.replace(/\D/g, "").length < 8, "اكتب رقم هاتف صحيحاً (8 أرقام)", "#p-phone"], [!$("#p-city").value, "اختر المدينة", "#p-city"]].find(x => x[0]);
   if (need) { toast(need[1]); if (need[2]) $(need[2]).focus(); return; }
-  const ad = { id: "m" + Date.now(), cat, title: $("#p-title").value.trim(), price: Number($("#p-price").value) || 0, cond: $("#p-cond").value,
+  const f = {}; $$("[data-pf]").forEach(el => { const v = el.value.trim(); if (v) f[el.dataset.pf] = el.type === "number" ? Number(v) : v; });
+  const ad = { id: "m" + Date.now(), cat, sub: $("#p-sub").value, f, nego: $("#p-nego").checked, title: $("#p-title").value.trim(), price: Number($("#p-price").value) || 0, cond: (CAT[cat] || {}).cond ? $("#p-cond").value : "",
     city: $("#p-city").value, area: $("#p-area").value.trim(), seller: $("#p-name").value.trim(), phone: $("#p-phone").value.replace(/\D/g, ""),
     desc: $("#p-desc").value.trim(), date: new Date().toISOString().slice(0, 10), imgs: photos };
   const m = mine(); m.unshift(ad);
   if (!ls.set("bayya-mine", m)) { m[0].imgs = []; if (!ls.set("bayya-mine", m)) { toast("تعذّر الحفظ على هذا الجهاز"); return; } toast("حُفظ الإعلان دون الصور لضيق المساحة"); }
   else toast("نُشر إعلانك بنجاح");
-  if (C.whatsapp) window.open(waLink(C.whatsapp, `إعلان جديد في البياع\nالقسم: ${catName(ad.cat)}\nالعنوان: ${ad.title}\nالسعر: ${ad.price ? num(ad.price) + " " + C.currency : "عند الاتصال"}\nالحالة: ${ad.cond || "-"}\nالمدينة: ${ad.city}${ad.area ? "، " + ad.area : ""}\nالمعلن: ${ad.seller}\nالهاتف: ${ad.phone}\n${ad.desc}`), "_blank");
+  if (C.whatsapp) window.open(waLink(C.whatsapp, `إعلان جديد في البياع\nالقسم: ${catName(ad.cat)}${ad.sub ? " ‹ " + ad.sub : ""}\nالعنوان: ${ad.title}\nالسعر: ${ad.price ? num(ad.price) + " " + C.currency : "عند الاتصال"}${ad.nego ? " (قابل للتفاوض)" : ""}\nالحالة: ${ad.cond || "-"}${fieldsFor(ad.cat, ad.sub).filter(x => f[x.k] !== undefined).map(x => "\n" + x.l + ": " + fmtVal(x, f[x.k])).join("")}\nالمدينة: ${ad.city}${ad.area ? "، " + ad.area : ""}\nالمعلن: ${ad.seller}\nالهاتف: ${ad.phone}\n${ad.desc}`), "_blank");
   ls.set("bayya-seller", { name: ad.seller, phone: ad.phone, city: ad.city });
-  e.target.reset(); photos = []; $("#p-prev").innerHTML = "";
-  $("#dPost").close(); renderStatic(); go({ view: "mine", q: "", cat: "", city: "", cond: "", min: "", max: "", img: false });
+  e.target.reset(); photos = []; $("#p-prev").innerHTML = ""; postCat();
+  $("#dPost").close(); renderStatic(); go({ ...CLEAR, view: "mine" });
 });
+function postFields() {
+  const cat = (document.querySelector("input[name=pcat]:checked") || {}).value, sub = $("#p-sub").value;
+  const vals = {}; $$("[data-pf]").forEach(el => vals[el.dataset.pf] = el.value);
+  const fl = cat ? fieldsFor(cat, sub) : [];
+  $("#p-specw").hidden = !fl.length;
+  $("#p-fields").innerHTML = fl.map(f => {
+    const v = vals[f.k] || "", id = "pf-" + f.k, lab = `<label for="${id}">${esc(f.l)}${f.unit && f.t === "number" ? ` (${esc(f.unit)})` : ""}</label>`;
+    if (f.t === "select") { const o = optsOf(f, vals), dis = f.dep && !vals[f.dep];
+      return `<div class="field">${lab}<select id="${id}" data-pf="${f.k}" ${dis ? "disabled" : ""}><option value="">${dis ? "اختر " + esc((fl.find(x => x.k === f.dep) || {}).l || "") + " أولاً" : "اختر"}</option>${o.map(x => `<option ${v === x ? "selected" : ""}>${esc(x)}</option>`).join("")}</select></div>`; }
+    if (f.t === "number") return `<div class="field">${lab}<input id="${id}" data-pf="${f.k}" type="number" min="0" inputmode="numeric" value="${esc(v)}"></div>`;
+    return `<div class="field full">${lab}<input id="${id}" data-pf="${f.k}" maxlength="80" placeholder="${esc(f.ph || "")}" value="${esc(v)}"></div>`;
+  }).join("");
+}
+function postCat() {
+  const cat = (document.querySelector("input[name=pcat]:checked") || {}).value, c = CAT[cat];
+  $("#p-subw").hidden = !c;
+  $("#p-sub").innerHTML = c ? `<option value="">اختر النوع</option>${c.subs.map(x => `<option>${esc(x)}</option>`).join("")}` : "";
+  $("#p-condw").hidden = !!cat && !(c && c.cond);
+  $("#p-fields").innerHTML = ""; postFields();
+}
+$("#pcats").addEventListener("change", postCat);
+$("#p-sub").addEventListener("change", postFields);
+$("#p-fields").addEventListener("change", e => { const k = e.target.dataset.pf; if (k && fieldsFor((document.querySelector("input[name=pcat]:checked") || {}).value).some(f => f.dep === k)) {
+  const dep = fieldsFor((document.querySelector("input[name=pcat]:checked") || {}).value).filter(f => f.dep === k); dep.forEach(f => { const el = $(`[data-pf="${f.k}"]`); if (el) el.value = ""; }); postFields(); } });
 function openPost() {
   const s = ls.get("bayya-seller", null);
   if (s) { if (!$("#p-name").value) $("#p-name").value = s.name || ""; if (!$("#p-phone").value) $("#p-phone").value = s.phone || ""; if (!$("#p-city").value) $("#p-city").value = s.city || ""; }
@@ -736,11 +821,14 @@ document.addEventListener("click", async e => {
   if ((el = q("[data-del]"))) { if (confirm("حذف هذا الإعلان نهائياً؟")) { ls.set("bayya-mine", mine().filter(a => a.id !== el.dataset.del)); $("#dAd").close(); renderStatic(); render(); toast("حُذف الإعلان"); } return; }
   if ((el = q("[data-gal]"))) { const a = all().find(x => String(x.id) === location.hash.slice(4)); if (a) { $("#galMain").innerHTML = `<img src="${esc(imgsOf(a)[+el.dataset.gal])}" alt="">`; $$("[data-gal]").forEach(b => b.setAttribute("aria-current", b === el)); } return; }
   if ((el = q(".card"))) { openAd(el.dataset.id); return; }
+  if ((el = q("[data-sub]"))) { go({ sub: el.dataset.sub, f: {} }, false); return; }
   if ((el = q("[data-cat]"))) { $("#dAd").open && $("#dAd").close(); go({ cat: el.dataset.cat, view: "" }); return; }
   if ((el = q("[data-city]"))) { go({ city: el.dataset.city, view: "" }); return; }
-  if ((el = q("[data-view]"))) { go({ view: S.view === el.dataset.view ? "" : el.dataset.view, q: "", cat: "", city: "", cond: "", min: "", max: "", img: false }); return; }
+  if ((el = q("[data-view]"))) { go({ ...CLEAR, view: S.view === el.dataset.view ? "" : el.dataset.view }); return; }
   if ((el = q("[data-nav=home]"))) { reset(); scrollTo({ top: 0, behavior: "smooth" }); return; }
-  if ((el = q("[data-unchip]"))) { const k = el.dataset.unchip; go(k === "price" ? { min: "", max: "" } : { [k]: k === "img" ? false : "" }, false); if (k === "q") $$("input[name=q]").forEach(i => i.value = ""); $("#fmin").value = S.min; $("#fmax").value = S.max; return; }
+  if ((el = q("[data-unchip]"))) { const k = el.dataset.unchip;
+    if (k.startsWith("f:")) { const f = { ...S.f }; delete f[k.slice(2)]; fieldsFor(S.cat).filter(x => x.dep === k.slice(2)).forEach(x => delete f[x.k]); go({ f }, false); return; }
+    go(k === "price" ? { min: "", max: "" } : k === "sub" ? { sub: "", f: {} } : k === "cat" ? { cat: "", sub: "", f: {} } : { [k]: k === "img" ? false : "" }, false); if (k === "q") $$("input[name=q]").forEach(i => i.value = ""); $("#fmin").value = S.min; $("#fmax").value = S.max; return; }
   if ((el = q("[data-reset]")) || t.id === "freset") { reset(false); return; }
   if ((el = q("#fcond button"))) { go({ cond: el.dataset.c }, false); return; }
   if (t.id === "moreBtn") { S.limit += 12; render(); return; }
@@ -750,13 +838,20 @@ document.addEventListener("click", async e => {
   if (t.tagName === "DIALOG") t.close();
 });
 document.addEventListener("keydown", e => { if (e.key === "Enter" && e.target.classList?.contains("card")) openAd(e.target.dataset.id); });
-function reset(scroll) { $$("input[name=q]").forEach(i => i.value = ""); $("#fmin").value = $("#fmax").value = ""; $("#fimg").checked = false; go({ q: "", cat: "", city: "", cond: "", min: "", max: "", img: false, view: "" }, scroll); }
+function reset(scroll) { $$("input[name=q]").forEach(i => i.value = ""); $("#fmin").value = $("#fmax").value = ""; $("#fimg").checked = false; go({ ...CLEAR, view: "" }, scroll); }
 $("#dAd").addEventListener("close", () => { if (location.hash.startsWith("#ad-")) history.replaceState(null, "", location.pathname + location.search); });
 $$("[data-search]").forEach(f => {
   f.addEventListener("submit", e => { e.preventDefault(); go({ q: f.q.value.trim(), city: f.city.value, view: "" }); });
   f.city.addEventListener("change", () => go({ city: f.city.value, view: "" }));
 });
 $("#fcats").addEventListener("change", e => go({ cat: e.target.value, view: "" }, false));
+$("#fdyn").addEventListener("change", e => {
+  const t = e.target;
+  if (t.matches("[data-fsub]")) { go({ sub: t.value, f: {} }, false); return; }
+  if (t.dataset.fk) { const f = { ...S.f, [t.dataset.fk]: t.value }; fieldsFor(S.cat).filter(x => x.dep === t.dataset.fk).forEach(x => delete f[x.k]); if (!t.value) delete f[t.dataset.fk]; go({ f }, false); }
+});
+let rt; $("#fdyn").addEventListener("input", e => { const t = e.target; if (!t.dataset.fr) return; clearTimeout(rt);
+  rt = setTimeout(() => { const cur = { ...(S.f[t.dataset.fr] || {}) }; cur[t.dataset.end] = t.value; go({ f: { ...S.f, [t.dataset.fr]: cur } }, false, false); }, 350); });
 $("#fcity").addEventListener("change", e => go({ city: e.target.value }, false));
 let pt; [["#fmin", "min"], ["#fmax", "max"]].forEach(([s, k]) => $(s).addEventListener("input", e => { clearTimeout(pt); pt = setTimeout(() => go({ [k]: e.target.value }, false), 350); }));
 $("#fimg").addEventListener("change", e => go({ img: e.target.checked }, false));

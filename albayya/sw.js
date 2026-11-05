@@ -1,6 +1,6 @@
 /* البياع: يحفظ ملفات الموقع ليعمل دون إنترنت. غيّر VERSION عند كل نشر جديد (مثلاً بعد تعديل ads.js). */
-const VERSION = "bayya-v3";
-const FILES = ["./", "./index.html", "./config.js", "./ads.js", "./manifest.webmanifest",
+const VERSION = "bayya-v4";
+const FILES = ["./", "./index.html", "./config.js", "./catalog.js", "./ads.js", "./manifest.webmanifest",
   "./icons/icon.svg", "./icons/icon-192.png", "./icons/icon-512.png", "./icons/maskable-512.png", "./icons/apple-touch-icon.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(VERSION).then(c => c.addAll(FILES)).then(() => self.skipWaiting())); });
 self.addEventListener("activate", e => {
@@ -11,7 +11,7 @@ self.addEventListener("fetch", e => {
   if (req.method !== "GET") return;
   const url = new URL(req.url);
   // Pages and the ads list: network first so new ads show up; everything else: cache first.
-  if (req.mode === "navigate" || url.pathname.endsWith("/ads.js") || url.pathname.endsWith("/config.js")) {
+  if (req.mode === "navigate" || url.pathname.endsWith("/ads.js") || url.pathname.endsWith("/config.js") || url.pathname.endsWith("/catalog.js")) {
     e.respondWith(fetch(req).then(r => { const copy = r.clone(); caches.open(VERSION).then(c => c.put(req, copy)); return r; })
       .catch(() => caches.match(req).then(r => r || caches.match("./index.html"))));
     return;
