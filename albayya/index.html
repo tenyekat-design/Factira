@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>البياع – بيع واشترِ في موريتانيا</title>
+<meta name="description" content="البياع: موقع إعلانات البيع والشراء في موريتانيا. سيارات، عقارات، هواتف، مواشي، أثاث ووظائف في كل المدن.">
+<meta name="theme-color" content="#1d2552">
+<meta property="og:title" content="البياع – بيع واشترِ في موريتانيا">
+<meta property="og:description" content="إعلانات البيع والشراء في كل مدن موريتانيا.">
+<meta property="og:image" content="icons/icon-512.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="icon" href="icons/icon-192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600;700&display=swap">
+<script src="config.js"></script>
+<script src="ads.js"></script>
+<style>
+:root {
+  --bg: #fbf6ec; --surface: #ffffff; --ink: #1b1f33; --muted: #6b6a75; --line: #ece3d2;
+  --navy: #1d2552; --navy-2: #2d387a; --green: #0b8a4f; --green-soft: #e3f4ea; --sand: #f4b44a; --sand-soft: #fdf0d6; --red: #c8323a;
+  --radius: 16px; --shadow: 0 1px 2px rgba(29,37,82,.06), 0 6px 20px rgba(29,37,82,.07);
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 15px/1.6 "Readex Pro", system-ui, sans-serif; }
+button, input, select, textarea { font: inherit; color: inherit; }
+a { color: inherit; }
+img { max-width: 100%; display: block; }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 16px; }
+
+/* header */
+header.top { background: var(--navy); color: #fff; position: sticky; top: 0; z-index: 20; box-shadow: 0 2px 12px rgba(0,0,0,.15); }
+.bar { display: flex; align-items: center; gap: 12px; height: 64px; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.brand img { width: 42px; height: 42px; border-radius: 11px; }
+.brand b { font-size: 22px; font-weight: 700; letter-spacing: 0; }
+.brand small { display: block; font-size: 11px; opacity: .7; font-weight: 300; margin-top: -4px; }
+.spacer { flex: 1; }
+.btn { border: 0; border-radius: 12px; padding: 10px 16px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; text-decoration: none; justify-content: center; }
+.btn svg { width: 18px; height: 18px; flex: none; }
+.btn.post { background: var(--sand); color: var(--navy); }
+.btn.post:hover { background: #f7c25f; }
+.btn.ghost { background: rgba(255,255,255,.1); color: #fff; }
+.btn.green { background: var(--green); color: #fff; }
+.btn.navy { background: var(--navy); color: #fff; }
+.btn.line { background: var(--surface); border: 1px solid var(--line); color: var(--ink); }
+.btn:focus-visible, .chip:focus-visible, .card:focus-visible { outline: 3px solid var(--sand); outline-offset: 2px; }
+
+/* hero */
+.hero { background: linear-gradient(180deg, var(--navy) 0, var(--navy) 55%, var(--bg) 55%); padding: 22px 0 6px; }
+.hero h1 { color: #fff; margin: 0 0 4px; font-size: clamp(22px, 4vw, 32px); font-weight: 700; }
+.hero p { color: #c9cde6; margin: 0 0 18px; }
+.search { background: var(--surface); border-radius: 18px; box-shadow: var(--shadow); padding: 10px; display: grid; grid-template-columns: 1fr 190px auto; gap: 8px; }
+.search .f { display: flex; align-items: center; gap: 8px; background: var(--bg); border-radius: 12px; padding: 0 12px; min-width: 0; }
+.search .f svg { width: 20px; height: 20px; color: var(--muted); flex: none; }
+.search input, .search select { border: 0; background: transparent; height: 46px; width: 100%; outline: none; min-width: 0; }
+.demo { margin: 14px 0 0; background: var(--sand-soft); border: 1px dashed #e7c27a; color: #7a5410; border-radius: 12px; padding: 8px 12px; font-size: 13px; }
+
+/* categories */
+.cats { display: flex; gap: 8px; overflow-x: auto; padding: 16px 0 6px; scrollbar-width: none; }
+.cats::-webkit-scrollbar { display: none; }
+.chip { flex: none; display: flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px 7px 10px; cursor: pointer; white-space: nowrap; }
+.chip .ic { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--sand-soft); color: var(--navy); }
+.chip .ic svg { width: 17px; height: 17px; }
+.chip[aria-pressed="true"] { background: var(--navy); border-color: var(--navy); color: #fff; }
+.chip[aria-pressed="true"] .ic { background: rgba(255,255,255,.15); color: #fff; }
+.chip .n { font-size: 12px; opacity: .6; }
+
+/* listings */
+.head { display: flex; align-items: baseline; gap: 10px; margin: 14px 0 12px; flex-wrap: wrap; }
+.head h2 { margin: 0; font-size: 19px; }
+.head .count { color: var(--muted); font-size: 14px; }
+.head select { margin-inline-start: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); padding: 6px 10px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px; padding-bottom: 40px; }
+.card { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; cursor: pointer; text-align: start; border: 0; padding: 0; display: flex; flex-direction: column; transition: transform .15s; }
+.card:hover { transform: translateY(-2px); }
+.thumb { aspect-ratio: 4/3; position: relative; display: grid; place-items: center; overflow: hidden; }
+.thumb img { width: 100%; height: 100%; object-fit: cover; }
+.thumb .ph { width: 64px; height: 64px; opacity: .85; }
+.thumb .tag { position: absolute; top: 10px; inset-inline-start: 10px; background: rgba(255,255,255,.92); color: var(--navy); font-size: 12px; font-weight: 600; border-radius: 8px; padding: 2px 8px; }
+.thumb .mine { inset-inline-start: auto; inset-inline-end: 10px; background: var(--green); color: #fff; }
+.body { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 4px; flex: 1; }
+.price { font-weight: 700; font-size: 18px; color: var(--green); }
+.price small { font-weight: 400; font-size: 12px; color: var(--muted); }
+.ttl { font-weight: 500; line-height: 1.45; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.meta { margin-top: auto; padding-top: 6px; display: flex; justify-content: space-between; color: var(--muted); font-size: 13px; gap: 8px; }
+.meta span { display: inline-flex; align-items: center; gap: 4px; }
+.meta svg { width: 14px; height: 14px; }
+.empty { grid-column: 1 / -1; text-align: center; padding: 50px 16px; color: var(--muted); }
+.empty img { width: 110px; margin: 0 auto 12px; border-radius: 24px; opacity: .9; }
+
+/* palette for placeholders */
+.c-cars { background: #e4ecfb; color: #2f6fc8; } .c-realestate { background: #fdecd3; color: #c26a12; }
+.c-phones { background: #e8e4fb; color: #5a45c2; } .c-electronics { background: #dff3f4; color: #127c84; }
+.c-home { background: #f7e6dc; color: #9b4f25; } .c-livestock { background: #e7f2dc; color: #4c7d1e; }
+.c-fashion { background: #fbe3ea; color: #b23560; } .c-jobs { background: #e3eef0; color: #2e5d6b; }
+.c-services { background: #fff1c9; color: #8f6a00; }
+
+/* dialogs */
+dialog { border: 0; border-radius: 20px; padding: 0; width: min(560px, calc(100vw - 24px)); max-height: calc(100dvh - 24px); background: var(--surface); color: var(--ink); box-shadow: 0 20px 60px rgba(0,0,0,.3); }
+dialog::backdrop { background: rgba(20,24,50,.55); }
+.dlg-h { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: var(--surface); z-index: 1; }
+.dlg-h h3 { margin: 0; font-size: 18px; }
+.x { background: var(--bg); border: 0; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 20px; line-height: 1; }
+.dlg-b { padding: 16px 18px 20px; }
+.detail .thumb { border-radius: 14px; aspect-ratio: 16/10; }
+.detail h4 { margin: 14px 0 2px; font-size: 20px; }
+.detail .price { font-size: 24px; }
+.detail .desc { white-space: pre-line; margin: 10px 0 14px; }
+.facts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.facts span { background: var(--bg); border-radius: 8px; padding: 3px 10px; font-size: 13px; color: var(--muted); }
+.actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.note { font-size: 13px; color: var(--muted); margin-top: 10px; }
+.field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+.field label { font-weight: 500; font-size: 14px; }
+.field input, .field select, .field textarea { border: 1px solid var(--line); background: var(--bg); border-radius: 12px; padding: 10px 12px; width: 100%; }
+.field input:focus, .field select:focus, .field textarea:focus { outline: 2px solid var(--sand); border-color: transparent; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.photos { display: flex; gap: 8px; flex-wrap: wrap; }
+.photos img { width: 72px; height: 72px; object-fit: cover; border-radius: 10px; }
+.toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(120px); background: var(--navy); color: #fff; padding: 10px 18px; border-radius: 12px; transition: transform .25s; z-index: 50; max-width: calc(100vw - 32px); }
+.toast.on { transform: translateX(-50%) translateY(0); }
+
+footer { background: var(--navy); color: #c9cde6; padding: 26px 0; font-size: 14px; }
+footer .wrap { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+footer img { width: 36px; border-radius: 9px; }
+
+@media (max-width: 720px) {
+  .search { grid-template-columns: 1fr 1fr; }
+  .search .f:first-child { grid-column: 1 / -1; }
+  .brand small, .btn.ghost .lbl { display: none; }
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .body { padding: 10px 11px 12px; }
+  .price { font-size: 16px; }
+  .ttl { font-size: 14px; }
+  .meta { font-size: 12px; flex-direction: column; gap: 0; }
+  .row2 { grid-template-columns: 1fr; gap: 0; }
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap bar">
+    <a class="brand" href="./"><img src="icons/icon-192.png" alt=""><span><b>البياع</b><small>بيع واشترِ في موريتانيا</small></span></a>
+    <span class="spacer"></span>
+    <button class="btn ghost" id="mineBtn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg><span class="lbl">إعلاناتي</span></button>
+    <button class="btn post" id="postBtn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>أضف إعلان</button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <h1 id="tagline"></h1>
+    <p>سيارات، عقارات، هواتف، مواشي ووظائف في كل المدن. تواصل مع البائع مباشرة.</p>
+    <form class="search" id="searchForm" role="search">
+      <label class="f"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="q" type="search" placeholder="ابحث عن سيارة، هاتف، منزل..." aria-label="بحث"></label>
+      <label class="f"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg><select id="city" aria-label="المدينة"><option value="">كل المدن</option></select></label>
+      <button class="btn navy" type="submit">بحث</button>
+    </form>
+    <div class="demo" id="demo" hidden>الإعلانات المعروضة الآن أمثلة للتوضيح. ستظهر هنا الإعلانات الحقيقية عند نشرها.</div>
+    <nav class="cats" id="cats" aria-label="الأقسام"></nav>
+  </div>
+</section>
+
+<main class="wrap">
+  <div class="head">
+    <h2 id="listTitle">أحدث الإعلانات</h2><span class="count" id="count"></span>
+    <select id="sort" aria-label="الترتيب"><option value="new">الأحدث</option><option value="low">الأرخص</option><option value="high">الأغلى</option></select>
+  </div>
+  <div class="grid" id="grid"></div>
+</main>
+
+<footer>
+  <div class="wrap"><img src="icons/icon-192.png" alt=""><span><b>البياع</b> · سوق موريتانيا على الإنترنت</span><span class="spacer"></span><span>لا تحوّل المال قبل معاينة السلعة.</span></div>
+</footer>
+
+<dialog id="detail"><div class="dlg-h"><h3>تفاصيل الإعلان</h3><button class="x" data-close aria-label="إغلاق">×</button></div><div class="dlg-b detail" id="detailBody"></div></dialog>
+
+<dialog id="post">
+  <div class="dlg-h"><h3>أضف إعلانك</h3><button class="x" data-close aria-label="إغلاق">×</button></div>
+  <form class="dlg-b" id="postForm">
+    <div class="field"><label for="p-title">عنوان الإعلان</label><input id="p-title" required maxlength="80" placeholder="مثال: تويوتا كورولا 2012 بحالة جيدة"></div>
+    <div class="row2">
+      <div class="field"><label for="p-cat">القسم</label><select id="p-cat" required></select></div>
+      <div class="field"><label for="p-city">المدينة</label><select id="p-city" required></select></div>
+    </div>
+    <div class="row2">
+      <div class="field"><label for="p-price">السعر بالأوقية</label><input id="p-price" type="number" min="0" inputmode="numeric" placeholder="اتركه فارغاً: السعر عند الاتصال"></div>
+      <div class="field"><label for="p-phone">رقم الهاتف</label><input id="p-phone" type="tel" inputmode="tel" required placeholder="مثال: 22 00 00 00" pattern="[0-9 +]{8,16}"></div>
+    </div>
+    <div class="field"><label for="p-desc">الوصف</label><textarea id="p-desc" rows="4" maxlength="800" placeholder="الحالة، المواصفات، مكان المعاينة..."></textarea></div>
+    <div class="field"><label for="p-img">صور (حتى 3)</label><input id="p-img" type="file" accept="image/*" multiple><div class="photos" id="p-prev"></div></div>
+    <button class="btn green" type="submit" style="width:100%">نشر الإعلان</button>
+    <p class="note" id="postNote"></p>
+  </form>
+</dialog>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const C = window.BAYYA, ADS = window.BAYYA_ADS || [];
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const ICONS = {
+  all: '<path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/>',
+  cars: '<path d="M5 16h14M3 16v-3l2-5h14l2 5v3"/><circle cx="7.5" cy="17" r="2"/><circle cx="16.5" cy="17" r="2"/><path d="M4 12h16"/>',
+  realestate: '<path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>',
+  phones: '<rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/>',
+  electronics: '<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/>',
+  home: '<path d="M4 18v-6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v6"/><path d="M2 14h20v4H2zM5 18v2M19 18v2M7 10V7a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v3"/>',
+  livestock: '<path d="M6 10c0-3 2.5-5 6-5s6 2 6 5v3c0 3-2.7 6-6 6s-6-3-6-6z"/><path d="M6 9 3 7M18 9l3-2M9.5 12h.01M14.5 12h.01M10 16h4"/>',
+  fashion: '<path d="M8 3 4 6l2 4 2-1v12h8V9l2 1 2-4-4-3c-.5 1.8-2 3-4 3S8.5 4.8 8 3Z"/>',
+  jobs: '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M3 13h18"/>',
+  services: '<path d="M14.5 5.5a4 4 0 0 0-5 5L4 16l4 4 5.5-5.5a4 4 0 0 0 5-5L16 12l-4-4z"/>'
+};
+const ico = (id, cls = "") => `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[id] || ICONS.all}</svg>`;
+const catName = id => (C.categories.find(c => c.id === id) || {}).name || "";
+const fmtPrice = a => a.price ? `${Number(a.price).toLocaleString("en-US")} <small>${C.currency}${a.per ? " " + esc(a.per) : ""}</small>` : `<small style="font-size:14px;color:var(--navy)">${a.cat === "jobs" ? "حسب الخبرة" : "السعر عند الاتصال"}</small>`;
+const ago = d => {
+  const days = Math.round((new Date().setHours(0,0,0,0) - new Date(d + "T00:00:00")) / 864e5);
+  return days <= 0 ? "اليوم" : days === 1 ? "أمس" : days === 2 ? "قبل يومين" : days <= 10 ? `قبل ${days} أيام` : `قبل ${days} يوماً`;
+};
+const store = { get() { try { return JSON.parse(localStorage.getItem("bayya-mine") || "[]"); } catch { return []; } },
+  set(v) { try { localStorage.setItem("bayya-mine", JSON.stringify(v)); return true; } catch { return false; } } };
+const state = { q: "", city: "", cat: "", sort: "new", mine: false };
+const all = () => [...store.get().map(a => ({ ...a, mine: true })), ...ADS];
+
+function toast(t) { const el = $("#toast"); el.textContent = t; el.classList.add("on"); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove("on"), 3200); }
+
+function init() {
+  document.title = C.name + " – بيع واشترِ في موريتانيا";
+  $("#tagline").textContent = C.tagline;
+  $("#demo").hidden = !C.demo;
+  const cityOpts = C.cities.map(c => `<option>${esc(c)}</option>`).join("");
+  $("#city").insertAdjacentHTML("beforeend", cityOpts);
+  $("#p-city").innerHTML = cityOpts;
+  $("#p-cat").innerHTML = C.categories.map(c => `<option value="${c.id}">${esc(c.name)}</option>`).join("");
+  $("#postNote").textContent = C.whatsapp ? "يُرسل إعلانك إلى إدارة البياع عبر واتساب للمراجعة، ثم يُنشر للجميع. ويظهر لك فوراً في «إعلاناتي»." : "يُحفظ إعلانك في «إعلاناتي» على هذا الجهاز.";
+  renderCats(); render();
+}
+
+function renderCats() {
+  const list = all(), n = id => list.filter(a => !id || a.cat === id).length;
+  $("#cats").innerHTML = [{ id: "", name: "الكل" }, ...C.categories].map(c =>
+    `<button class="chip" type="button" data-cat="${c.id}" aria-pressed="${state.cat === c.id && !state.mine}"><span class="ic">${ico(c.id || "all")}</span>${esc(c.name)} <span class="n">${n(c.id)}</span></button>`).join("");
+}
+
+function card(a) {
+  const img = a.imgs?.[0] || a.img;
+  return `<button class="card" type="button" data-id="${esc(a.id)}">
+    <div class="thumb c-${a.cat}">${img ? `<img src="${esc(img)}" alt="" loading="lazy">` : ico(a.cat, "ph")}<span class="tag">${esc(catName(a.cat))}</span>${a.mine ? '<span class="tag mine">إعلاني</span>' : ""}</div>
+    <div class="body"><div class="price">${fmtPrice(a)}</div><div class="ttl">${esc(a.title)}</div>
+    <div class="meta"><span>${ico("pin")}${esc(a.city)}</span><span>${ago(a.date)}</span></div></div></button>`;
+}
+ICONS.pin = '<path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/>';
+
+function render() {
+  const q = state.q.trim().toLowerCase();
+  let list = all().filter(a => (!state.mine || a.mine) && (!state.cat || a.cat === state.cat) && (!state.city || a.city === state.city)
+    && (!q || (a.title + " " + a.desc + " " + catName(a.cat)).toLowerCase().includes(q)));
+  list.sort(state.sort === "new" ? (a, b) => b.date.localeCompare(a.date) || (b.mine ? 1 : 0) - (a.mine ? 1 : 0)
+    : state.sort === "low" ? (a, b) => (a.price || 1e15) - (b.price || 1e15) : (a, b) => (b.price || 0) - (a.price || 0));
+  $("#listTitle").textContent = state.mine ? "إعلاناتي" : state.cat ? catName(state.cat) : "أحدث الإعلانات";
+  $("#count").textContent = `${list.length} إعلان${state.city ? " في " + state.city : ""}`;
+  $("#grid").innerHTML = list.length ? list.map(card).join("") :
+    `<div class="empty"><img src="icons/icon-192.png" alt=""><b>${state.mine ? "لم تنشر أي إعلان بعد" : "لا توجد إعلانات مطابقة"}</b><br>${state.mine ? "اضغط «أضف إعلان» لتبدأ البيع." : "جرّب كلمة أخرى أو مدينة أخرى."}</div>`;
+  $("#mineBtn").setAttribute("aria-pressed", state.mine);
+}
+
+function waLink(phone, text) {
+  let p = String(phone).replace(/\D/g, ""); if (p.length === 8) p = "222" + p;
+  return `https://wa.me/${p}?text=${encodeURIComponent(text)}`;
+}
+function openDetail(id) {
+  const a = all().find(x => String(x.id) === String(id)); if (!a) return;
+  const imgs = a.imgs || (a.img ? [a.img] : []);
+  const tel = String(a.phone || "").replace(/\D/g, "");
+  $("#detailBody").innerHTML = `
+    <div class="thumb c-${a.cat}">${imgs[0] ? `<img src="${esc(imgs[0])}" alt="">` : ico(a.cat, "ph")}</div>
+    ${imgs.length > 1 ? `<div class="photos" style="margin-top:8px">${imgs.map(s => `<img src="${esc(s)}" alt="">`).join("")}</div>` : ""}
+    <h4>${esc(a.title)}</h4><div class="price">${fmtPrice(a)}</div>
+    <div class="facts"><span>${esc(catName(a.cat))}</span><span>${esc(a.city)}</span><span>${ago(a.date)}</span></div>
+    <p class="desc">${esc(a.desc || "")}</p>
+    ${tel ? `<div class="actions"><a class="btn navy" href="tel:${tel.length === 8 ? "+222" + tel : "+" + tel}">اتصال</a><a class="btn green" target="_blank" rel="noopener" href="${waLink(tel, "السلام عليكم، رأيت إعلانك في البياع: " + a.title)}">واتساب</a></div>`
+      : `<p class="note">${C.demo && !a.mine ? "هذا إعلان تجريبي بلا رقم تواصل." : "لم يضع المعلن رقماً."}</p>`}
+    ${a.mine ? `<button class="btn line" type="button" data-del="${esc(a.id)}" style="width:100%;margin-top:8px;color:var(--red)">حذف إعلاني</button>` : ""}
+    <p class="note">نصيحة: عاين السلعة في مكان عام قبل الدفع، ولا تحوّل أي مبلغ مسبقاً.</p>`;
+  $("#detail").showModal();
+}
+
+// photo resize to keep localStorage small
+function shrink(file) {
+  return new Promise((res, rej) => { const r = new FileReader(); r.onerror = rej; r.onload = () => { const im = new Image(); im.onerror = rej; im.onload = () => {
+    const s = Math.min(1, 900 / Math.max(im.width, im.height)), cv = document.createElement("canvas");
+    cv.width = Math.round(im.width * s); cv.height = Math.round(im.height * s); cv.getContext("2d").drawImage(im, 0, 0, cv.width, cv.height);
+    res(cv.toDataURL("image/jpeg", .72)); }; im.src = r.result; }; r.readAsDataURL(file); });
+}
+let photos = [];
+$("#p-img").addEventListener("change", async e => {
+  photos = []; for (const f of [...e.target.files].slice(0, 3)) { try { photos.push(await shrink(f)); } catch {} }
+  $("#p-prev").innerHTML = photos.map(s => `<img src="${s}" alt="">`).join("");
+});
+$("#postForm").addEventListener("submit", e => {
+  e.preventDefault();
+  const ad = { id: "m" + Date.now(), cat: $("#p-cat").value, title: $("#p-title").value.trim(), price: Number($("#p-price").value) || 0,
+    city: $("#p-city").value, phone: $("#p-phone").value.replace(/[^\d]/g, ""), desc: $("#p-desc").value.trim(),
+    date: new Date().toISOString().slice(0, 10), imgs: photos };
+  const mine = store.get(); mine.unshift(ad);
+  if (!store.set(mine)) { mine[0].imgs = []; if (!store.set(mine)) { toast("تعذّر الحفظ على هذا الجهاز"); return; } toast("حُفظ الإعلان دون الصور لضيق المساحة"); }
+  else toast("نُشر إعلانك");
+  if (C.whatsapp) window.open(waLink(C.whatsapp, `إعلان جديد في البياع\nالقسم: ${catName(ad.cat)}\nالعنوان: ${ad.title}\nالسعر: ${ad.price || "عند الاتصال"} ${C.currency}\nالمدينة: ${ad.city}\nالهاتف: ${ad.phone}\n${ad.desc}`), "_blank");
+  e.target.reset(); photos = []; $("#p-prev").innerHTML = "";
+  $("#post").close(); state.mine = true; state.cat = ""; renderCats(); render();
+});
+
+document.addEventListener("click", e => {
+  const t = e.target;
+  const chip = t.closest("[data-cat]"); if (chip) { state.cat = chip.dataset.cat; state.mine = false; renderCats(); render(); return; }
+  const c = t.closest(".card"); if (c) { openDetail(c.dataset.id); return; }
+  const del = t.closest("[data-del]"); if (del && confirm("حذف هذا الإعلان؟")) { store.set(store.get().filter(a => a.id !== del.dataset.del)); $("#detail").close(); renderCats(); render(); toast("حُذف الإعلان"); return; }
+  if (t.closest("[data-close]")) t.closest("dialog").close();
+  if (t.tagName === "DIALOG") t.close();
+});
+$("#postBtn").onclick = () => $("#post").showModal();
+$("#mineBtn").onclick = () => { state.mine = !state.mine; state.cat = ""; renderCats(); render(); };
+$("#searchForm").onsubmit = e => { e.preventDefault(); state.q = $("#q").value; state.city = $("#city").value; render(); $("#grid").scrollIntoView({ behavior: "smooth", block: "start" }); };
+$("#q").oninput = e => { state.q = e.target.value; render(); };
+$("#city").onchange = e => { state.city = e.target.value; render(); };
+$("#sort").onchange = e => { state.sort = e.target.value; render(); };
+init();
+if ("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js").catch(() => {});
+</script>
+</body>
+</html>
