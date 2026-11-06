@@ -124,6 +124,26 @@ section.blk { padding: 40px 0 8px; scroll-margin-top: 130px; }
 /* featured carousel */
 .rail { display: grid; grid-auto-flow: column; grid-auto-columns: calc((100% - 3 * 16px) / 4); gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 8px; scrollbar-width: thin; }
 .rail > * { scroll-snap-align: start; }
+.retabs { display: flex; background: var(--surface); border: 1px solid var(--line); border-radius: 11px; padding: 3px; margin-inline-start: auto; }
+.retabs button { border: 0; background: none; border-radius: 8px; padding: 6px 14px; cursor: pointer; font-size: 14px; color: var(--ink-2); }
+.retabs button[aria-pressed="true"] { background: var(--navy); color: #fff; font-weight: 600; }
+.regrid { display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: repeat(2, 230px); gap: 14px; }
+.recard { position: relative; border-radius: 16px; overflow: hidden; cursor: pointer; background: var(--line-2); border: 0; padding: 0; text-align: start; color: #fff; display: block; }
+.recard:first-child { grid-row: span 2; }
+.recard img, .recard svg.art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+.recard:hover img, .recard:hover svg.art { transform: scale(1.04); }
+.recard .ov { position: absolute; inset: auto 0 0 0; padding: 40px 16px 14px; background: linear-gradient(transparent, rgba(10,14,34,.85)); }
+.recard .deal { position: absolute; top: 12px; inset-inline-start: 12px; background: var(--green); color: #fff; font-size: 12px; font-weight: 600; border-radius: 7px; padding: 2px 9px; }
+.recard .deal.rent { background: var(--sand); color: var(--navy); }
+.recard .np { position: absolute; top: 12px; inset-inline-end: 12px; background: rgba(0,0,0,.55); font-size: 12px; border-radius: 7px; padding: 0 7px; display: flex; gap: 4px; align-items: center; }
+.recard .np svg { width: 13px; height: 13px; }
+.recard b.p { display: block; font-size: 20px; font-weight: 700; }
+.recard b.p small { font-size: 12.5px; font-weight: 400; opacity: .85; }
+.recard:first-child b.p { font-size: 26px; }
+.recard .t { display: block; font-size: 14.5px; line-height: 1.45; margin: 2px 0 6px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.recard .m { display: flex; gap: 10px; flex-wrap: wrap; font-size: 12.5px; opacity: .9; }
+.recard .m span { display: inline-flex; gap: 4px; align-items: center; }
+.recard .m svg { width: 14px; height: 14px; }
 
 /* browse layout */
 .browse { display: grid; grid-template-columns: 260px 1fr; gap: 24px; align-items: start; }
@@ -312,6 +332,8 @@ dialog::backdrop { background: rgba(14,17,40,.6); backdrop-filter: blur(2px); }
   .cgrid { grid-template-columns: repeat(5, 1fr); }
   .rail { grid-auto-columns: calc((100% - 2 * 16px) / 3); }
   .grid { grid-template-columns: repeat(2, 1fr); }
+  .regrid { grid-template-columns: 1fr 1fr; grid-template-rows: 300px repeat(2, 200px); }
+  .recard:first-child { grid-column: span 2; grid-row: auto; }
   .safety { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 860px) {
@@ -345,6 +367,12 @@ dialog::backdrop { background: rgba(14,17,40,.6); backdrop-filter: blur(2px); }
   .ctile { padding: 14px 4px 10px; }
   .ctile .ci { width: 48px; height: 48px; }
   .rail { grid-auto-columns: 62%; gap: 12px; }
+  .regrid { grid-template-rows: 240px repeat(2, 170px); gap: 10px; }
+  .recard .ov { padding: 30px 11px 10px; }
+  .recard b.p { font-size: 16px; } .recard:first-child b.p { font-size: 21px; }
+  .recard .t { font-size: 13px; }
+  .retabs { margin: 10px 0 0; }
+  .sh.wrapm { flex-wrap: wrap; }
   .grid { gap: 10px; }
   .card .bd { padding: 10px 11px; }
   .card h3 { font-size: 14px; min-height: 42px; }
@@ -424,6 +452,13 @@ dialog::backdrop { background: rgba(14,17,40,.6); backdrop-filter: blur(2px); }
 <section class="blk" id="featBlk"><div class="wrap">
   <div class="sh"><div><h2>إعلانات مميزة</h2><p>مختارة من أحدث العروض</p></div></div>
   <div class="rail" id="rail"></div>
+</div></section>
+
+<section class="blk" id="reBlk"><div class="wrap">
+  <div class="sh wrapm"><div><h2>عقارات</h2><p>منازل وشقق وأراضٍ ومحلات للبيع والإيجار</p></div>
+    <div class="retabs" id="reTabs"><button type="button" data-re="" aria-pressed="true">الكل</button><button type="button" data-re="للبيع" aria-pressed="false">للبيع</button><button type="button" data-re="للإيجار" aria-pressed="false">للإيجار</button></div></div>
+  <div class="regrid" id="regrid"></div>
+  <div class="more-wrap"><button class="btn btn-out" type="button" data-cat="realestate">كل العقارات</button></div>
 </div></section>
 </div>
 
@@ -587,7 +622,19 @@ const ART = {
     <circle cx="110" cy="224" r="24" fill="#232838"/><circle cx="110" cy="224" r="9" fill="#c9ced8"/><circle cx="296" cy="224" r="24" fill="#232838"/><circle cx="296" cy="224" r="9" fill="#c9ced8"/>
     <path d="M90 140 h120 M90 166 h90" stroke="#fff" stroke-width="10" stroke-linecap="round" opacity=".5"/>`
 };
-const art = a => { const c = PAL[a.cat] || ["#eee", "#888"]; return `<svg class="art" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="400" height="300" fill="${c[0]}"/>${(ART[a.cat] || ART.services)(c)}</svg>`; };
+const ART_SUB = {
+  "شقق": c => `<rect y="250" width="400" height="50" fill="#e9c98f"/><rect x="120" y="40" width="160" height="214" fill="#f6ead6"/><rect x="120" y="40" width="160" height="14" fill="${c[1]}"/>
+    ${[70, 112, 154, 196].map(y => [140, 186, 232].map(x => `<rect x="${x}" y="${y}" width="28" height="26" rx="2" fill="#bfdcf4"/><rect x="${x - 4}" y="${y + 26}" width="36" height="5" fill="${c[1]}" opacity=".7"/>`).join("")).join("")}
+    <rect x="186" y="228" width="28" height="26" fill="${c[1]}"/><rect x="40" y="150" width="70" height="104" fill="#efe0c6"/><rect x="290" y="120" width="76" height="134" fill="#efe0c6"/>`,
+  "أراضٍ": c => `<rect y="150" width="400" height="150" fill="#e9c98f"/><path d="M0 150 Q100 132 200 146 T400 140 V150 H0Z" fill="#f1d7a8"/>
+    <path d="M90 270 L130 180 H290 L330 270Z" fill="#f3dfb6" stroke="${c[1]}" stroke-width="4" stroke-dasharray="12 8"/>
+    ${[[90, 270], [130, 180], [290, 180], [330, 270]].map(([x, y]) => `<rect x="${x - 4}" y="${y - 22}" width="8" height="24" fill="#7a4a1e"/><rect x="${x - 7}" y="${y - 26}" width="14" height="8" fill="#c8323a"/>`).join("")}
+    <circle cx="330" cy="70" r="26" fill="#fde39a"/>`,
+  "محلات ومكاتب": c => `<rect y="246" width="400" height="54" fill="#d9d2c4"/><rect x="70" y="80" width="260" height="168" fill="#fff8ec"/><rect x="70" y="80" width="260" height="36" fill="${c[1]}"/>
+    <path d="M70 116 H330 V136 Q314 150 298 136 Q282 150 266 136 Q250 150 234 136 Q218 150 202 136 Q186 150 170 136 Q154 150 138 136 Q122 150 106 136 Q90 150 70 136Z" fill="#fff3d6" stroke="${c[1]}" stroke-width="2"/>
+    <rect x="96" y="156" width="120" height="92" fill="#bfdcf4"/><rect x="236" y="156" width="70" height="92" fill="${c[1]}" opacity=".8"/><circle cx="292" cy="204" r="4" fill="#fff"/>`
+};
+const art = a => { const c = PAL[a.cat] || ["#eee", "#888"], d = (a.cat === "realestate" && ART_SUB[a.sub]) || ART[a.cat] || ART.services; return `<svg class="art" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="400" height="300" fill="${c[0]}"/>${d(c)}</svg>`; };
 
 const catName = id => (C.categories.find(c => c.id === id) || {}).name || "";
 const num = n => Number(n).toLocaleString("en-US");
@@ -616,7 +663,7 @@ const tagsOf = a => fieldsFor(a.cat, a.sub).filter(f => f.card && f.k !== "brand
 function card(a, fv = favs()) {
   const im = imgsOf(a), on = fv.has(String(a.id));
   return `<article class="card" data-id="${esc(a.id)}" tabindex="0" aria-label="${esc(a.title)}">
-    <div class="media">${im[0] ? `<img src="${esc(im[0])}" alt="" loading="lazy">` : art(a)}
+    <div class="media">${im[0] ? `<img src="${esc(im[0])}" alt="" loading="lazy" data-fb="${esc(a.id)}">` : art(a)}
       ${a.mine ? '<span class="pill mine">إعلاني</span>' : a.featured ? `<span class="pill feat">${ic("star", 2.4)}مميز</span>` : ""}
       <button class="fav" type="button" data-fav="${esc(a.id)}" aria-pressed="${on}" aria-label="أضف إلى المفضلة">${ic("heart", 2)}</button>
       ${im.length > 1 ? `<span class="nimg">${ic("cam", 2)}${im.length}</span>` : ""}</div>
@@ -642,6 +689,18 @@ function init() {
   renderStatic(); render();
 }
 
+let reDeal = "";
+function renderRE() {
+  const list = all().filter(a => a.cat === "realestate" && (!reDeal || (a.f || {}).deal === reDeal))
+    .sort((a, b) => imgsOf(b).length - imgsOf(a).length || (b.featured ? 1 : 0) - (a.featured ? 1 : 0) || b.date.localeCompare(a.date)).slice(0, 5);
+  $("#reBlk").hidden = !all().some(a => a.cat === "realestate");
+  $$("#reTabs button").forEach(b => b.setAttribute("aria-pressed", b.dataset.re === reDeal));
+  $("#regrid").innerHTML = list.map(a => { const f = a.f || {}, im = imgsOf(a);
+    return `<button class="recard" type="button" data-id="${esc(a.id)}">${im[0] ? `<img src="${esc(im[0])}" alt="" loading="lazy" data-fb="${esc(a.id)}">` : art(a)}
+      ${f.deal ? `<span class="deal ${f.deal === "للإيجار" ? "rent" : ""}">${esc(f.deal)}</span>` : ""}${im.length > 1 ? `<span class="np">${ic("cam", 2)}${im.length}</span>` : ""}
+      <span class="ov"><b class="p">${a.price ? priceHTML(a) : askText(a)}</b><span class="t">${esc(a.title)}</span>
+      <span class="m"><span>${ic("pin", 2)}${esc(a.city)}${a.area ? "، " + esc(a.area) : ""}</span>${f.rooms ? `<span>${ic("realestate", 2)}${esc(f.rooms)} غرف</span>` : ""}${f.size ? `<span>${num(f.size)} م²</span>` : ""}</span></span></button>`; }).join("");
+}
 function renderStatic() {
   const list = all(), cnt = id => list.filter(a => a.cat === id).length, fv = favs();
   $("#stAds").textContent = num(list.length); $("#stCities").textContent = C.cities.length; $("#stCats").textContent = C.categories.length;
@@ -650,6 +709,7 @@ function renderStatic() {
   const feat = list.filter(a => a.featured).sort((a, b) => b.date.localeCompare(a.date));
   $("#featBlk").hidden = !feat.length;
   $("#rail").innerHTML = feat.map(a => card(a, fv)).join("");
+  renderRE();
   const n = fv.size; $$("[data-favn]").forEach(b => { b.hidden = !n; b.textContent = n; });
 }
 
@@ -729,7 +789,7 @@ function openAd(id) {
   const specs = { "القسم": catName(a.cat), ...(a.sub ? { "النوع": a.sub } : {}), ...(a.cond ? { "الحالة": a.cond } : {}), ...fs, ...(a.specs || {}), ...(a.price && a.nego ? { "السعر": "قابل للتفاوض" } : {}), "المدينة": a.city + (a.area ? "، " + a.area : ""), "رقم الإعلان": String(a.id).replace(/^m/, "") };
   $("#crumb").textContent = `البياع ‹ ${catName(a.cat)}${a.sub ? " ‹ " + a.sub : ""} ‹ ${a.city}`;
   $("#adBody").innerHTML = `<div class="ad">
-    <div class="a-gal"><div class="gal"><div class="main" id="galMain">${im[0] ? `<img src="${esc(im[0])}" alt="${esc(a.title)}">` : art(a)}</div>
+    <div class="a-gal"><div class="gal"><div class="main" id="galMain">${im[0] ? `<img src="${esc(im[0])}" alt="${esc(a.title)}" data-fb="${esc(a.id)}">` : art(a)}</div>
       ${im.length > 1 ? `<div class="th">${im.map((s, i) => `<button type="button" data-gal="${i}" aria-current="${!i}"><img src="${esc(s)}" alt="صورة ${i + 1}"></button>`).join("")}</div>` : ""}</div></div>
     <div class="a-det"><div class="specs">${Object.entries(specs).map(([k, v]) => `<div><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join("")}</div>
       <div class="desc"><h4>الوصف</h4><p>${esc(a.desc || "لا يوجد وصف.")}</p></div></div>
@@ -820,7 +880,8 @@ document.addEventListener("click", async e => {
     if (navigator.share) { try { await navigator.share({ title: a.title, url }); } catch {} } else { try { await navigator.clipboard.writeText(url); toast("نُسخ رابط الإعلان"); } catch { prompt("رابط الإعلان", url); } } return; }
   if ((el = q("[data-del]"))) { if (confirm("حذف هذا الإعلان نهائياً؟")) { ls.set("bayya-mine", mine().filter(a => a.id !== el.dataset.del)); $("#dAd").close(); renderStatic(); render(); toast("حُذف الإعلان"); } return; }
   if ((el = q("[data-gal]"))) { const a = all().find(x => String(x.id) === location.hash.slice(4)); if (a) { $("#galMain").innerHTML = `<img src="${esc(imgsOf(a)[+el.dataset.gal])}" alt="">`; $$("[data-gal]").forEach(b => b.setAttribute("aria-current", b === el)); } return; }
-  if ((el = q(".card"))) { openAd(el.dataset.id); return; }
+  if ((el = q("[data-re]"))) { reDeal = el.dataset.re; renderRE(); return; }
+  if ((el = q(".card, .recard"))) { openAd(el.dataset.id); return; }
   if ((el = q("[data-sub]"))) { go({ sub: el.dataset.sub, f: {} }, false); return; }
   if ((el = q("[data-cat]"))) { $("#dAd").open && $("#dAd").close(); go({ cat: el.dataset.cat, view: "" }); return; }
   if ((el = q("[data-city]"))) { go({ city: el.dataset.city, view: "" }); return; }
@@ -837,6 +898,8 @@ document.addEventListener("click", async e => {
   if (q("[data-close]")) { t.closest("dialog").close(); return; }
   if (t.tagName === "DIALOG") t.close();
 });
+// a photo that fails to load falls back to the category drawing
+document.addEventListener("error", e => { const t = e.target; if (t.tagName !== "IMG" || !t.dataset.fb) return; const a = all().find(x => String(x.id) === t.dataset.fb); if (a) t.outerHTML = art(a); }, true);
 document.addEventListener("keydown", e => { if (e.key === "Enter" && e.target.classList?.contains("card")) openAd(e.target.dataset.id); });
 function reset(scroll) { $$("input[name=q]").forEach(i => i.value = ""); $("#fmin").value = $("#fmax").value = ""; $("#fimg").checked = false; go({ ...CLEAR, view: "" }, scroll); }
 $("#dAd").addEventListener("close", () => { if (location.hash.startsWith("#ad-")) history.replaceState(null, "", location.pathname + location.search); });
