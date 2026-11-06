@@ -10,6 +10,12 @@ window.BAYYA = {
   demo: true,
   // بريد التواصل (اختياري) يظهر في التذييل.
   email: "",
+  // قاعدة البيانات (Supabase). اتركها فارغة ليعمل الموقع دونها: تُحفظ الإعلانات الجديدة على جهاز صاحبها فقط.
+  // url و key من Supabase ← Project Settings ← API (Project URL و anon/publishable key). المفتاح العام آمن في الموقع.
+  supabase: { url: "", key: "" },
+  // true: من لم يسجّل الدخول ينشر مباشرة، ويبقى إعلانه مرتبطاً بجهازه (يحتاج تفعيل Anonymous sign-ins في Supabase).
+  // false: يلزم الدخول بالبريد الإلكتروني قبل النشر.
+  allowAnonymous: true,
   cities: ["نواكشوط", "نواذيبو", "روصو", "كيفه", "أطار", "ازويرات", "كيهيدي", "النعمة", "ألاك", "العيون", "سيلبابي", "أكجوجت"],
   categories: [
     { id: "cars", name: "سيارات" }, { id: "realestate", name: "عقارات" }, { id: "phones", name: "هواتف" },

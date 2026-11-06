@@ -27,6 +27,7 @@
   --r: 14px; --sh: 0 1px 2px rgba(22,26,46,.05), 0 4px 16px rgba(22,26,46,.06); --sh-2: 0 10px 30px rgba(22,26,46,.12);
 }
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 body { margin: 0; background: var(--bg); color: var(--ink); font: 400 15px/1.65 "Readex Pro", system-ui, sans-serif; }
 button, input, select, textarea { font: inherit; color: inherit; }
@@ -388,6 +389,10 @@ dialog::backdrop { background: rgba(14,17,40,.6); backdrop-filter: blur(2px); }
   .sh h2 { font-size: 20px; }
 }
 @media (min-width: 861px) { .ffab { display: none !important; } }
+.acct { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; margin: -4px 0 14px; font-size: 14px; display: flex; gap: 6px 10px; align-items: center; flex-wrap: wrap; color: var(--ink-2); }
+.acct svg { width: 18px; height: 18px; color: var(--green); }
+.acct button { border: 0; background: none; color: var(--green); font-weight: 600; cursor: pointer; padding: 0; }
+.pill.pend { inset-inline-start: 10px; background: var(--sand); color: var(--navy); }
 .msearch { display: none; padding: 0 16px 12px; background: var(--surface); gap: 8px; border-bottom: 1px solid var(--line); }
 .msearch .q { flex: 1; display: flex; align-items: center; gap: 8px; background: var(--line-2); border-radius: 11px; padding: 0 12px; height: 44px; }
 .msearch .q svg { width: 19px; height: 19px; color: var(--muted); }
@@ -411,6 +416,7 @@ dialog::backdrop { background: rgba(14,17,40,.6); backdrop-filter: blur(2px); }
       <button type="submit">بحث</button>
     </form>
     <div class="acts">
+      <button class="btn btn-ghost hide-m" type="button" id="authBtn" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg><span>دخول</span></button>
       <button class="btn btn-ghost hide-m" type="button" data-view="favs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z"/></svg>المفضلة<span class="badge-n" data-favn hidden></span></button>
       <button class="btn btn-ghost hide-m" type="button" data-view="mine"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>إعلاناتي</button>
       <button class="btn btn-green" type="button" data-post><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>أضف إعلان</button>
@@ -480,7 +486,7 @@ dialog::backdrop { background: rgba(14,17,40,.6); backdrop-filter: blur(2px); }
         <button class="btn btn-out btn-sm ffab" type="button" id="openFilters"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg>تصفية</button>
         <select id="sort" aria-label="الترتيب"><option value="new">الأحدث أولاً</option><option value="low">السعر: من الأقل</option><option value="high">السعر: من الأعلى</option></select>
       </div>
-      <div class="subs" id="subs" hidden></div><div class="chips" id="chips"></div>
+      <div class="acct" id="acctBar" hidden></div><div class="subs" id="subs" hidden></div><div class="chips" id="chips"></div>
       <div class="grid" id="grid"></div>
       <div class="more-wrap" id="moreWrap" hidden><button class="btn btn-out" type="button" id="moreBtn">عرض المزيد</button></div>
     </div>
@@ -525,6 +531,17 @@ dialog::backdrop { background: rgba(14,17,40,.6); backdrop-filter: blur(2px); }
 </nav>
 
 <dialog id="dAd"><div class="dh"><button class="x" data-close aria-label="رجوع"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 6 6 6-6 6"/></svg></button><span class="crumb" id="crumb"></span></div><div class="db" id="adBody"></div></dialog>
+
+<dialog id="dLogin" class="narrow">
+  <div class="dh"><h3>الدخول إلى البياع</h3><button class="x" data-close aria-label="إغلاق"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+  <form class="db" id="loginForm" novalidate>
+    <p id="loginMsg" style="margin:0 0 14px;color:var(--ink-2)"></p>
+    <div class="field" id="lg-ew"><label for="lg-email">البريد الإلكتروني</label><input id="lg-email" type="email" autocomplete="email" dir="ltr" placeholder="name@example.com"></div>
+    <div class="field" id="lg-cw" hidden><label for="lg-code">الرمز المرسل إلى بريدك</label><input id="lg-code" inputmode="numeric" autocomplete="one-time-code" maxlength="10" dir="ltr" style="letter-spacing:4px;text-align:center;font-size:20px"></div>
+    <button class="btn btn-green" type="submit" id="lg-btn" style="width:100%;height:48px">أرسل الرمز</button>
+    <p class="formnote">لا كلمة سر: نرسل إلى بريدك رمزاً جديداً في كل دخول.</p>
+  </form>
+</dialog>
 
 <dialog id="dPost" class="narrow">
   <div class="dh"><h3>أضف إعلانك مجاناً</h3><button class="x" data-close aria-label="إغلاق"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
@@ -647,7 +664,90 @@ const ago = d => {
 const ls = { get(k, d) { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch { return false; } } };
 const mine = () => ls.get("bayya-mine", []);
 const favs = () => new Set(ls.get("bayya-favs", []).map(String));
-const all = () => [...mine().map(a => ({ ...a, mine: true })), ...ADS];
+/* Supabase: when config.js has url and key, ads come from the database; otherwise new ads stay on the poster's device. */
+const DB = { on: !!(C.supabase && C.supabase.url && C.supabase.key), sb: null, user: null, rows: [] };
+const toAd = r => ({ id: "s" + r.id, dbid: r.id, cat: r.cat, sub: r.sub || "", title: r.title, price: Number(r.price) || 0, per: r.per || "", nego: !!r.nego, cond: r.cond || "",
+  city: r.city, area: r.area || "", seller: r.seller, phone: r.phone, desc: r.descr || "", f: r.f || {}, imgs: r.imgs || [], paths: r.img_paths || [],
+  featured: !!r.featured, status: r.status, date: String(r.created_at || "").slice(0, 10), mine: !!DB.user && r.user_id === DB.user.id });
+const all = () => [...DB.rows.map(toAd), ...mine().map(a => ({ ...a, mine: true })), ...ADS];
+const realUser = () => !!DB.user && !DB.user.is_anonymous;
+function loadScript(src) { return new Promise((res, rej) => { const el = document.createElement("script"); el.src = src; el.onload = res; el.onerror = rej; document.head.appendChild(el); }); }
+async function initDB() {
+  if (!DB.on) return;
+  try {
+    if (!window.supabase) await loadScript("vendor/supabase-2.117.3.js");
+    DB.sb = window.supabase.createClient(C.supabase.url, C.supabase.key);
+    const { data } = await DB.sb.auth.getSession(); DB.user = data.session ? data.session.user : null;
+    DB.sb.auth.onAuthStateChange((_ev, sess) => { const was = DB.user && DB.user.id; DB.user = sess ? sess.user : null; renderAuth(); if (was !== (DB.user && DB.user.id)) loadRows(); });
+    renderAuth(); await loadRows();
+  } catch (err) { console.error(err); toast("تعذّر الاتصال بقاعدة البيانات"); }
+}
+async function loadRows() {
+  const { data, error } = await DB.sb.from("ads").select("*").order("created_at", { ascending: false }).limit(1000);
+  if (error) { console.error(error); toast("تعذّر تحميل الإعلانات"); return; }
+  DB.rows = data || []; renderStatic(); render();
+  if (location.hash.startsWith("#ad-s") && !$("#dAd").open) openAd(location.hash.slice(4));
+}
+async function ensureUser() {
+  if (DB.user) return true;
+  if (C.allowAnonymous) { const { data, error } = await DB.sb.auth.signInAnonymously(); if (!error) { DB.user = data.user; return true; } console.error(error); }
+  openLogin("سجّل الدخول ببريدك لتنشر إعلانك وتديره من أي جهاز."); return false;
+}
+async function uploadPhotos(list) {
+  const urls = [], paths = [], bucket = DB.sb.storage.from("ad-images");
+  for (let i = 0; i < list.length; i++) {
+    const path = `${DB.user.id}/${Date.now()}-${i}.jpg`, blob = await (await fetch(list[i])).blob();
+    const { error } = await bucket.upload(path, blob, { contentType: "image/jpeg" });
+    if (error) { if (paths.length) bucket.remove(paths); throw error; }
+    paths.push(path); urls.push(bucket.getPublicUrl(path).data.publicUrl);
+  }
+  return { urls, paths };
+}
+async function delAd(id) {
+  const a = all().find(x => String(x.id) === String(id)); if (!a) return;
+  if (a.dbid) {
+    const { error } = await DB.sb.from("ads").delete().eq("id", a.dbid);
+    if (error) { console.error(error); toast("تعذّر الحذف"); return; }
+    if (a.paths.length) DB.sb.storage.from("ad-images").remove(a.paths);
+    DB.rows = DB.rows.filter(r => r.id !== a.dbid);
+  } else ls.set("bayya-mine", mine().filter(x => x.id !== a.id));
+  $("#dAd").close(); renderStatic(); render(); toast("حُذف الإعلان");
+}
+function renderAuth() {
+  const b = $("#authBtn"); b.hidden = !DB.on;
+  b.querySelector("span").textContent = realUser() ? (DB.user.email || "حسابي").split("@")[0] : "دخول";
+  render();
+}
+let lg = { step: "email", type: "email" };
+function openLogin(msg) {
+  if (!DB.on) return;
+  lg = { step: "email", type: "email" }; $("#lg-cw").hidden = true; $("#lg-ew").hidden = false; $("#lg-code").value = ""; $("#lg-btn").textContent = "أرسل الرمز";
+  $("#loginMsg").textContent = msg || "سجّل الدخول لتدير إعلاناتك من أي جهاز.";
+  $("#dLogin").showModal(); $("#lg-email").focus();
+}
+async function logout() { if (confirm("تسجيل الخروج من البياع؟")) { await DB.sb.auth.signOut(); toast("تم الخروج"); } }
+$("#loginForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const email = $("#lg-email").value.trim(), btn = $("#lg-btn");
+  if (lg.step === "email" && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { toast("اكتب بريداً إلكترونياً صحيحاً"); return; }
+  btn.disabled = true;
+  try {
+    if (lg.step === "email") {
+      let error;
+      // an anonymous poster keeps their ads: the email is attached to the same account
+      if (DB.user && DB.user.is_anonymous) { ({ error } = await DB.sb.auth.updateUser({ email })); lg.type = "email_change"; }
+      if (!DB.user || !DB.user.is_anonymous || (error && /already|exists|registered/i.test(error.message || ""))) { ({ error } = await DB.sb.auth.signInWithOtp({ email, options: { shouldCreateUser: true } })); lg.type = "email"; }
+      if (error) throw error;
+      lg.step = "code"; $("#lg-ew").hidden = true; $("#lg-cw").hidden = false; $("#lg-btn").textContent = "دخول";
+      $("#loginMsg").textContent = `أرسلنا رمزاً إلى ${email}. اكتبه هنا (قد يصل إلى مجلد الرسائل غير المرغوبة).`; $("#lg-code").focus();
+    } else {
+      const { error } = await DB.sb.auth.verifyOtp({ email, token: $("#lg-code").value.replace(/\s/g, ""), type: lg.type });
+      if (error) throw error;
+      $("#dLogin").close(); toast("تم الدخول"); await loadRows();
+    }
+  } catch (err) { console.error(err); toast(lg.step === "email" ? "تعذّر إرسال الرمز، حاول بعد قليل" : "الرمز غير صحيح أو انتهت صلاحيته"); }
+  finally { btn.disabled = false; }
+});
 const imgsOf = a => a.imgs || (a.img ? [a.img] : []);
 const CAT = window.BAYYA_CATALOG || {};
 const fieldsFor = (cat, sub) => ((CAT[cat] || {}).fields || []).filter(f => !f.subs || !sub || f.subs.includes(sub));
@@ -664,7 +764,7 @@ function card(a, fv = favs()) {
   const im = imgsOf(a), on = fv.has(String(a.id));
   return `<article class="card" data-id="${esc(a.id)}" tabindex="0" aria-label="${esc(a.title)}">
     <div class="media">${im[0] ? `<img src="${esc(im[0])}" alt="" loading="lazy" data-fb="${esc(a.id)}">` : art(a)}
-      ${a.mine ? '<span class="pill mine">إعلاني</span>' : a.featured ? `<span class="pill feat">${ic("star", 2.4)}مميز</span>` : ""}
+      ${a.status === "pending" ? '<span class="pill pend">قيد المراجعة</span>' : a.mine ? '<span class="pill mine">إعلاني</span>' : a.featured ? `<span class="pill feat">${ic("star", 2.4)}مميز</span>` : ""}
       <button class="fav" type="button" data-fav="${esc(a.id)}" aria-pressed="${on}" aria-label="أضف إلى المفضلة">${ic("heart", 2)}</button>
       ${im.length > 1 ? `<span class="nimg">${ic("cam", 2)}${im.length}</span>` : ""}</div>
     <div class="bd"><span class="cat">${esc(a.sub || catName(a.cat))}${a.cond ? `<span class="cond ${a.cond === "جديد" ? "new" : ""}">${esc(a.cond)}</span>` : ""}</span>
@@ -686,7 +786,8 @@ function init() {
   $("#fcitiesList").innerHTML = C.cities.slice(0, 7).map(c => `<li><button class="lnk" type="button" data-city="${esc(c)}">${esc(c)}</button></li>`).join("");
   $("#fcontact").innerHTML = [C.whatsapp && `واتساب: <a href="https://wa.me/${esc(C.whatsapp)}" dir="ltr">+${esc(C.whatsapp)}</a>`, C.email && `<a href="mailto:${esc(C.email)}">${esc(C.email)}</a>`].filter(Boolean).join(" · ");
   $("#postNote").textContent = C.whatsapp ? "يُرسل إعلانك إلى إدارة البياع عبر واتساب للمراجعة ثم يُنشر للجميع، ويظهر لك فوراً في «إعلاناتي»." : "يُحفظ إعلانك في «إعلاناتي» على هذا الجهاز.";
-  renderStatic(); render();
+  if (DB.on) $("#postNote").textContent = "يظهر إعلانك للجميع فور نشره." + (C.whatsapp ? " وتصل نسخة منه إلى إدارة البياع عبر واتساب." : "");
+  renderStatic(); render(); initDB();
 }
 
 let reDeal = "";
@@ -771,6 +872,9 @@ function render() {
   if (!sb.hidden) sb.innerHTML = [`<button type="button" data-sub="" aria-pressed="${!S.sub}">الكل</button>`, ...CAT[S.cat].subs.map(x => `<button type="button" data-sub="${esc(x)}" aria-pressed="${S.sub === x}">${esc(x)}<span>${subCount(S.cat, x)}</span></button>`)].join("");
   if (S.cond) chips.push(["cond", S.cond]); if (S.min || S.max) chips.push(["price", `${S.min ? "من " + num(S.min) : ""} ${S.max ? "إلى " + num(S.max) : ""}`.trim()]); if (S.img) chips.push(["img", "بصور"]);
   $("#chips").innerHTML = chips.map(([k, t]) => `<button type="button" data-unchip="${k}">${esc(t)}${ic("x", 2.4)}</button>`).join("");
+  const ab = $("#acctBar"); ab.hidden = !(DB.on && S.view === "mine");
+  if (!ab.hidden) ab.innerHTML = realUser() ? `${ic("shield", 2)}<span>مسجّل بالبريد <b dir="ltr">${esc(DB.user.email || "")}</b></span><button type="button" data-logout>خروج</button>`
+    : `${ic("phone", 2)}<span>إعلاناتك مرتبطة بهذا الجهاز.</span><button type="button" data-login>سجّل ببريدك</button><span>لتديرها من أي جهاز.</span>`;
   $$(".bnav [data-view], .bnav [data-nav]").forEach(b => b.classList.toggle("on", b.dataset.nav ? !S.view : b.dataset.view === S.view));
 }
 function go(patch, scroll = true, dyn = true) {
@@ -822,7 +926,7 @@ $("#p-img").addEventListener("change", async e => {
   for (const f of [...e.target.files]) { if (photos.length >= 4) break; try { photos.push(await shrink(f)); } catch {} }
   e.target.value = ""; $("#p-prev").innerHTML = photos.map(s => `<img src="${s}" alt="">`).join("");
 });
-$("#postForm").addEventListener("submit", e => {
+$("#postForm").addEventListener("submit", async e => {
   e.preventDefault();
   const cat = (document.querySelector("input[name=pcat]:checked") || {}).value;
   const need = [[!cat, "اختر القسم"], [cat && CAT[cat] && !$("#p-sub").value, "اختر النوع", "#p-sub"], [!$("#p-title").value.trim(), "اكتب عنوان الإعلان", "#p-title"], [!$("#p-name").value.trim(), "اكتب اسمك", "#p-name"],
@@ -832,9 +936,25 @@ $("#postForm").addEventListener("submit", e => {
   const ad = { id: "m" + Date.now(), cat, sub: $("#p-sub").value, f, nego: $("#p-nego").checked, title: $("#p-title").value.trim(), price: Number($("#p-price").value) || 0, cond: (CAT[cat] || {}).cond ? $("#p-cond").value : "",
     city: $("#p-city").value, area: $("#p-area").value.trim(), seller: $("#p-name").value.trim(), phone: $("#p-phone").value.replace(/\D/g, ""),
     desc: $("#p-desc").value.trim(), date: new Date().toISOString().slice(0, 10), imgs: photos };
-  const m = mine(); m.unshift(ad);
-  if (!ls.set("bayya-mine", m)) { m[0].imgs = []; if (!ls.set("bayya-mine", m)) { toast("تعذّر الحفظ على هذا الجهاز"); return; } toast("حُفظ الإعلان دون الصور لضيق المساحة"); }
-  else toast("نُشر إعلانك بنجاح");
+  if (DB.on) {
+    const btn = $("#postForm button[type=submit]"); btn.disabled = true; btn.textContent = "جارٍ النشر...";
+    try {
+      if (!DB.sb) throw new Error("offline");
+      if (!(await ensureUser())) return;
+      const up = await uploadPhotos(photos);
+      const row = { cat, sub: ad.sub || null, title: ad.title, price: ad.price || null, nego: ad.nego, cond: ad.cond || null, city: ad.city, area: ad.area || null,
+        seller: ad.seller, phone: ad.phone, descr: ad.desc || null, f, imgs: up.urls, img_paths: up.paths };
+      const { data, error } = await DB.sb.from("ads").insert(row).select().single();
+      if (error) { if (up.paths.length) DB.sb.storage.from("ad-images").remove(up.paths); throw error; }
+      DB.rows.unshift(data);
+      toast(data.status === "pending" ? "وصل إعلانك، ويظهر للجميع بعد المراجعة" : "نُشر إعلانك للجميع");
+    } catch (err) { console.error(err); toast(/daily_limit/.test((err && err.message) || "") ? "لا يمكن نشر أكثر من 10 إعلانات في اليوم" : "تعذّر النشر، تحقق من الإنترنت وحاول مرة أخرى"); return; }
+    finally { btn.disabled = false; btn.textContent = "نشر الإعلان"; }
+  } else {
+    const m = mine(); m.unshift(ad);
+    if (!ls.set("bayya-mine", m)) { m[0].imgs = []; if (!ls.set("bayya-mine", m)) { toast("تعذّر الحفظ على هذا الجهاز"); return; } toast("حُفظ الإعلان دون الصور لضيق المساحة"); }
+    else toast("نُشر إعلانك بنجاح");
+  }
   if (C.whatsapp) window.open(waLink(C.whatsapp, `إعلان جديد في البياع\nالقسم: ${catName(ad.cat)}${ad.sub ? " ‹ " + ad.sub : ""}\nالعنوان: ${ad.title}\nالسعر: ${ad.price ? num(ad.price) + " " + C.currency : "عند الاتصال"}${ad.nego ? " (قابل للتفاوض)" : ""}\nالحالة: ${ad.cond || "-"}${fieldsFor(ad.cat, ad.sub).filter(x => f[x.k] !== undefined).map(x => "\n" + x.l + ": " + fmtVal(x, f[x.k])).join("")}\nالمدينة: ${ad.city}${ad.area ? "، " + ad.area : ""}\nالمعلن: ${ad.seller}\nالهاتف: ${ad.phone}\n${ad.desc}`), "_blank");
   ls.set("bayya-seller", { name: ad.seller, phone: ad.phone, city: ad.city });
   e.target.reset(); photos = []; $("#p-prev").innerHTML = ""; postCat();
@@ -878,7 +998,10 @@ document.addEventListener("click", async e => {
   if ((el = q("[data-post]"))) { openPost(); return; }
   if ((el = q("[data-share]"))) { const url = location.href.split("#")[0] + "#ad-" + el.dataset.share, a = all().find(x => String(x.id) === el.dataset.share);
     if (navigator.share) { try { await navigator.share({ title: a.title, url }); } catch {} } else { try { await navigator.clipboard.writeText(url); toast("نُسخ رابط الإعلان"); } catch { prompt("رابط الإعلان", url); } } return; }
-  if ((el = q("[data-del]"))) { if (confirm("حذف هذا الإعلان نهائياً؟")) { ls.set("bayya-mine", mine().filter(a => a.id !== el.dataset.del)); $("#dAd").close(); renderStatic(); render(); toast("حُذف الإعلان"); } return; }
+  if ((el = q("[data-del]"))) { if (confirm("حذف هذا الإعلان نهائياً؟")) delAd(el.dataset.del); return; }
+  if (q("[data-login]")) { openLogin(); return; }
+  if (q("[data-logout]")) { logout(); return; }
+  if (q("#authBtn")) { realUser() ? logout() : openLogin(); return; }
   if ((el = q("[data-gal]"))) { const a = all().find(x => String(x.id) === location.hash.slice(4)); if (a) { $("#galMain").innerHTML = `<img src="${esc(imgsOf(a)[+el.dataset.gal])}" alt="">`; $$("[data-gal]").forEach(b => b.setAttribute("aria-current", b === el)); } return; }
   if ((el = q("[data-re]"))) { reDeal = el.dataset.re; renderRE(); return; }
   if ((el = q(".card, .recard"))) { openAd(el.dataset.id); return; }
