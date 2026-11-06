@@ -16,9 +16,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600;700&display=swap">
-<script src="config.js"></script>
-<script src="catalog.js"></script>
-<script src="ads.js"></script>
+<script src="config.js?v=7"></script>
+<script src="catalog.js?v=7"></script>
+<script src="ads.js?v=7"></script>
 <style>
 :root {
   --bg: #f5f3ee; --surface: #fff; --ink: #161a2e; --ink-2: #3c4057; --muted: #757887; --line: #e8e4da; --line-2: #f0ede6;
@@ -928,7 +928,7 @@ $("#installTop").onclick = install; $("#installBand").onclick = install;
 
 init();
 if (location.hash.startsWith("#ad-")) openAd(location.hash.slice(4));
-if ("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js").catch(() => {});
+if ("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js", { updateViaCache: "none" }).catch(() => {});
 </script>
 </body>
 </html>
