@@ -1,8 +1,8 @@
--- البياع: قاعدة البيانات على Supabase.
--- شغّل هذا الملف كاملاً مرة واحدة: Supabase ← SQL Editor ← New query ← الصق ← Run.
--- يمكن تشغيله مرة ثانية دون ضرر.
+/* البياع: قاعدة البيانات على Supabase. */
+/* شغّل هذا الملف كاملاً مرة واحدة: Supabase ← SQL Editor ← New query ← الصق ← Run. التعليقات بين علامتي النجمة حتى يعمل الملف ولو لُصق سطراً واحداً من الهاتف. */
+/* يمكن تشغيله مرة ثانية دون ضرر. */
 
--- 1) جدول الإعلانات ---------------------------------------------------------
+/* 1) جدول الإعلانات --------------------------------------------------------- */
 create table if not exists public.ads (
   id          bigint generated always as identity primary key,
   created_at  timestamptz not null default now(),
@@ -28,10 +28,10 @@ create table if not exists public.ads (
 create index if not exists ads_list_idx on public.ads (status, created_at desc);
 create index if not exists ads_user_idx on public.ads (user_id);
 
--- 2) الصلاحيات ----------------------------------------------------------------
--- يرى الجميع الإعلانات المنشورة، ويرى صاحب الإعلان إعلاناته كلها.
--- يضيف المستخدم المسجّل (ولو دون بريد) إعلاناته، ويعدّلها ويحذفها، ولا يستطيع جعلها «مميزة» ولا تغيير حالتها:
--- ذلك للإدارة من لوحة Supabase (Table Editor ← ads).
+/* 2) الصلاحيات ---------------------------------------------------------------- */
+/* يرى الجميع الإعلانات المنشورة، ويرى صاحب الإعلان إعلاناته كلها. */
+/* يضيف المستخدم المسجّل (ولو دون بريد) إعلاناته، ويعدّلها ويحذفها، ولا يستطيع جعلها «مميزة» ولا تغيير حالتها: */
+/* ذلك للإدارة من لوحة Supabase (Table Editor ← ads). */
 alter table public.ads enable row level security;
 
 drop policy if exists "ads: read published or own" on public.ads;
@@ -56,7 +56,7 @@ grant delete on public.ads to authenticated;
 grant insert (cat, sub, title, price, per, nego, cond, city, area, seller, phone, descr, f, imgs, img_paths) on public.ads to authenticated;
 grant update (cat, sub, title, price, per, nego, cond, city, area, seller, phone, descr, f, imgs, img_paths) on public.ads to authenticated;
 
--- حدّ بسيط ضد الإغراق: 10 إعلانات في اليوم لكل مستخدم.
+/* حدّ بسيط ضد الإغراق: 10 إعلانات في اليوم لكل مستخدم. */
 create or replace function public.ads_daily_limit() returns trigger
 language plpgsql security definer set search_path = public as $$
 begin
@@ -68,8 +68,8 @@ end $$;
 drop trigger if exists ads_daily_limit on public.ads;
 create trigger ads_daily_limit before insert on public.ads for each row execute function public.ads_daily_limit();
 
--- 3) الصور ----------------------------------------------------------------------
--- مستودع عام للقراءة. كل مستخدم يرفع داخل مجلد باسم رقمه فقط، والصورة حتى 2 ميغابايت.
+/* 3) الصور ---------------------------------------------------------------------- */
+/* مستودع عام للقراءة. كل مستخدم يرفع داخل مجلد باسم رقمه فقط، والصورة حتى 2 ميغابايت. */
 insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
 values ('ad-images', 'ad-images', true, 2097152, array['image/jpeg', 'image/png', 'image/webp'])
 on conflict (id) do update set public = true, file_size_limit = 2097152, allowed_mime_types = array['image/jpeg', 'image/png', 'image/webp'];
@@ -84,8 +84,8 @@ create policy "ad-images: delete own" on storage.objects
   for delete to authenticated
   using (bucket_id = 'ad-images' and (storage.foldername(name))[1] = auth.uid()::text);
 
--- 4) اختياري: مراجعة الإعلانات قبل نشرها ---------------------------------------------
--- لتراجع كل إعلان قبل ظهوره شغّل السطر التالي، ثم غيّر status إلى published من Table Editor:
---   alter table public.ads alter column status set default 'pending';
--- وللعودة إلى النشر الفوري:
---   alter table public.ads alter column status set default 'published';
+/* 4) اختياري: مراجعة الإعلانات قبل نشرها --------------------------------------------- */
+/* لتراجع كل إعلان قبل ظهوره شغّل السطر التالي، ثم غيّر status إلى published من Table Editor: */
+/*   alter table public.ads alter column status set default 'pending'; */
+/* وللعودة إلى النشر الفوري: */
+/*   alter table public.ads alter column status set default 'published'; */
