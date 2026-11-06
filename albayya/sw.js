@@ -1,5 +1,5 @@
 /* البياع: يحفظ ملفات الموقع ليعمل دون إنترنت. غيّر VERSION عند كل نشر جديد (مثلاً بعد تعديل ads.js). */
-const VERSION = "bayya-v6";
+const VERSION = "bayya-v7";
 const FILES = ["./", "./index.html", "./config.js", "./catalog.js", "./ads.js", "./manifest.webmanifest",
   "./icons/icon.svg", "./icons/icon-192.png", "./icons/icon-512.png", "./icons/maskable-512.png", "./icons/apple-touch-icon.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(VERSION).then(c => c.addAll(FILES)).then(() => self.skipWaiting())); });
@@ -10,10 +10,10 @@ self.addEventListener("fetch", e => {
   const req = e.request;
   if (req.method !== "GET") return;
   const url = new URL(req.url);
-  // Pages and the ads list: network first so new ads show up; everything else: cache first.
+  // Pages, ads, catalog and config: network first, revalidated with the server (GitHub Pages lets the browser keep files 10 minutes), so new ads show up at once; everything else: cache first.
   if (req.mode === "navigate" || url.pathname.endsWith("/ads.js") || url.pathname.endsWith("/config.js") || url.pathname.endsWith("/catalog.js")) {
-    e.respondWith(fetch(req).then(r => { const copy = r.clone(); caches.open(VERSION).then(c => c.put(req, copy)); return r; })
-      .catch(() => caches.match(req).then(r => r || caches.match("./index.html"))));
+    e.respondWith(fetch(req, { cache: "no-cache" }).then(r => { const copy = r.clone(); caches.open(VERSION).then(c => c.put(req, copy)); return r; })
+      .catch(() => caches.match(req, { ignoreSearch: true }).then(r => r || caches.match("./index.html"))));
     return;
   }
   e.respondWith(caches.match(req).then(hit => hit || fetch(req).then(r => {
